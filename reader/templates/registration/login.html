@@ -1,0 +1,44 @@
+{% load static %}
+<html>
+<head> <title>User Login</title>
+
+    <!--JQuery-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static "reader/css/login.css" %}" />
+
+</head>
+<body>
+  <div class="wrapper">
+    <form class="form-signin" method="post" action=".">
+      <h3 class="form-signin-heading">Welcome to the PAWS Reading System</h3>
+      {% if form.errors %}
+      <p>Your username and password didn't match!
+      Please try again!</p>
+      {% endif %}
+        {% csrf_token %}
+      {{ form.username }}
+      {{ form.password }}
+      <label class="checkbox">
+        <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+      </label>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+    </br>
+      <span>If you have any question or problem, please contact <a href="mailto:jab464@pitt.edu">jab464@pitt.edu</a><span>
+    </form>
+  </div>
+</body>
+<script>
+$( document ).ready(function() {
+  console.log($("input"));
+  $(":input:not(:checkbox)").addClass("form-control");
+});
+</script>
+</html>
