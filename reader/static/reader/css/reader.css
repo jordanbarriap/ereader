@@ -344,7 +344,7 @@ p.question-statement{
 
 .vis-title{
     font-family: 'Roboto', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     /*margin: auto;*/
     fill: white;
@@ -355,8 +355,8 @@ p.question-statement{
 .text-label{
     /*font-weight: bold;*/
     background-color: blue;
-    font-size: 9.5px;
-    text-shadow: 2px 2px #000000;
+    font-size: 8px;
+    text-shadow: 1.5px 1.5px #000000;
     fill: white;
 }
 

@@ -8,8 +8,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 from reader.models import *
 from quiz import models as quiz_models
 
-import random
-
 from django.db import connection
 from django.db.models import Count
 
@@ -36,24 +34,103 @@ def home(request):
 
 
 def load_course(request,url_group_id):
-    global user_id, group_id, num_students
+    global user_id, group_id, num_students, read_pages_dict, group_read_pages_dict, quizzes_correct_dict, quizzes_incorrect_dict, group_quizzes_correct_dict, group_quizzes_incorrect_dict
     group_id = url_group_id
     course_id = Group.objects.only("course").get(id=group_id).course.id
     if request.user.is_authenticated():
         user_id = request.user.id
         try:
             last_page_read = ReadingLog.objects.values().filter(user__id=user_id, group__id=group_id, action="page-load").latest("datetime")
-            #print(connection.queries[-1]["sql"])
-            #print(last_page_read)
+
             last_page_read["datetime"] = str(last_page_read["datetime"])
             last_page_read["zoom"] = float(last_page_read["zoom"])
         except ReadingLog.DoesNotExist:
             last_page_read = {}
-            #print("No reading")
+
         course_json = Course.objects.get(id=course_id)
-        num_students = int(Group.objects.annotate(num_students=Count('students'))[0].num_students)
+
+        num_students = Group.objects.get(id= group_id).students.count()
         hierarchical_structure = course_json.course_structure
+
+        read_pages_dict = {}
+        group_read_pages_dict = {}
+
+        read_pages_queryset = ReadingLog.objects.raw("SELECT id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY user_id, section, page;")
+
+        for section_page in read_pages_queryset:
+            section = section_page.section
+            page = int(section_page.page)
+            if section not in read_pages_dict.keys():
+                read_pages_dict[section] = [page]
+            else:
+                read_pages_dict[section].append(page)
+
+        group_read_pages_queryset = ReadingLog.objects.raw(
+            "SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id<>" + str(
+                user_id) + " AND group_id='" + group_id + "' GROUP BY user_id, section, page;")
+
+        for section_page in group_read_pages_queryset:
+            section = section_page.section
+            page = int(section_page.page)
+            if section not in group_read_pages_dict.keys():
+                group_read_pages_dict[section] = [page]
+            else:
+                group_read_pages_dict[section].append(page)
+
+        quizzes_correct_queryset = quiz_models.AnswerLog.objects.raw("SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE user_id="+str(user_id)+" AND group_id='"+group_id+"' AND submitted=1 AND correct=1;")
+        quizzes_correct_dict = {}
+
+        for quiz_attempt in quizzes_correct_queryset:
+            quiz = quiz_attempt.quiz_id
+            question = quiz_attempt.question_id
+            if quiz not in quizzes_correct_dict.keys():
+                quizzes_correct_dict[quiz] = [question]
+            else:
+                quizzes_correct_dict[quiz].append(question)
+
+        quizzes_incorrect_queryset = quiz_models.AnswerLog.objects.raw(
+            "SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE user_id=" + str(
+                user_id) + " AND group_id='" + group_id + "' AND submitted=1 AND correct=0;")
+        quizzes_incorrect_dict = {}
+
+        for quiz_attempt in quizzes_incorrect_queryset:
+            quiz = quiz_attempt.quiz_id
+            question = quiz_attempt.question_id
+            if quiz not in quizzes_incorrect_dict.keys():
+                quizzes_incorrect_dict[quiz] = [question]
+            else:
+                quizzes_incorrect_dict[quiz].append(question)
+
+
+        group_quizzes_correct_queryset = quiz_models.AnswerLog.objects.raw(
+            "SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE user_id<>" + str(
+                user_id) + " AND group_id='" + group_id + "' AND submitted=1 AND correct=1;")
+        group_quizzes_correct_dict = {}
+
+        for quiz_attempt in group_quizzes_correct_queryset:
+            quiz = quiz_attempt.quiz_id
+            question = quiz_attempt.question_id
+            if quiz not in group_quizzes_correct_dict.keys():
+                group_quizzes_correct_dict[quiz] = [question]
+            else:
+                group_quizzes_correct_dict[quiz].append(question)
+
+        group_quizzes_incorrect_queryset = quiz_models.AnswerLog.objects.raw(
+            "SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE user_id<>" + str(
+                user_id) + " AND group_id='" + group_id + "' AND submitted=1 AND correct=0;")
+        group_quizzes_incorrect_dict = {}
+
+        for quiz_attempt in group_quizzes_incorrect_queryset:
+            quiz = quiz_attempt.quiz_id
+            question = quiz_attempt.question_id
+            if quiz not in group_quizzes_incorrect_dict.keys():
+                group_quizzes_incorrect_dict[quiz] = [question]
+            else:
+                group_quizzes_incorrect_dict[quiz].append(question)
+
+
         calculate_reading_progress(hierarchical_structure)
+
         final_json = {"group":group_id, "course":{"id":course_json.id, "name":course_json.name}, "course_hierarchical":hierarchical_structure,"last_page_read":last_page_read}
         final_json_wo_unicode = json.dumps(final_json)
         final_json_dict = ast.literal_eval(final_json_wo_unicode)
@@ -109,22 +186,25 @@ def get_number_of_pages(node):
 
 
 def get_number_of_read_pages(node):
-    global user_id, group_id
+    global user_id, group_id, read_pages_dict
     section_id = node["id"]
-    read_pages = set(
-        ReadingLog.objects.values_list('page', flat=True).filter(user__id=user_id, group__id=group_id, section=section_id,
-                                                                 action="page-load"))
-    read_pages = list(read_pages)
+    #read_pages = ReadingLog.objects.values_list('page', flat=True).filter(user__id=user_id, group__id=group_id, section=section_id, action="page-load").distinct()
+    #read_pages = list(read_pages)
+    read_pages = []
+    if section_id in read_pages_dict.keys():
+        read_pages = read_pages_dict[section_id]
     return read_pages
 
 
 def get_number_of_group_read_pages(node):
-    global user_id, group_id, num_students
+    global user_id, group_id, num_students, group_read_pages_dict
     section_id = node["id"]
-    tuples_student_and_page_read = ReadingLog.objects.values_list('user__id', 'page').exclude(user__id=user_id).filter(group__id=group_id, section=section_id, action="page-load").distinct().count()
+    #tuples_student_and_page_read = ReadingLog.objects.values_list('user__id', 'page').exclude(user__id=user_id).filter(group__id=group_id, section=section_id, action="page-load").distinct().count()
     group_read_pages = 0
-    if(num_students>1):
-        group_read_pages = tuples_student_and_page_read / (num_students-1)
+    if section_id in group_read_pages_dict.keys():
+        if(num_students>1):
+            tuples_student_and_page_read = len(group_read_pages_dict[section_id])
+            group_read_pages = tuples_student_and_page_read / (num_students-1)
     return group_read_pages
 
 
@@ -148,18 +228,32 @@ def set_number_of_group_read_pages(node, num_group_read_pages):
     node["group_read_pages"] = num_group_read_pages
 
 def set_quiz(node):
-    global user_id, group_id
+    global user_id, group_id, quizzes_correct_dict, quizzes_incorrect_dict, group_quizzes_correct_dict, group_quizzes_incorrect_dict
     section_id = node["id"]
     try:
-        quiz = quiz_models.Quiz.objects.get(course_section=section_id)
-        corrects = quiz_models.AnswerLog.objects.filter(user=user_id, group=group_id, quiz= quiz.id, submitted=True, correct=True).count()
-        incorrects = quiz_models.AnswerLog.objects.filter(user=user_id, group=group_id, quiz=quiz.id, submitted=True,
-                                                        correct=False).count()
-        #corrects = random.randint(0, 10)
-        #incorrects = random.randint(0,10)
-        corrects_group = random.randint(0,10)
-        incorrects_group = random.randint(0, 10)
-        node["quiz"] = {"name": quiz.name, "corrects":corrects, "incorrects": incorrects, "corrects_group":corrects_group, "incorrects_group":incorrects_group}
+        quiz= quiz_models.Quiz.objects.get(course_section=section_id)
+        quiz_name = quiz.name
+        quiz_id = quiz.id
+        # corrects = quiz_models.AnswerLog.objects.filter(user=user_id, group=group_id, quiz= quiz.id, submitted=True, correct=True).count()
+        # incorrects = quiz_models.AnswerLog.objects.filter(user=user_id, group=group_id, quiz=quiz.id, submitted=True,
+        #                                                 correct=False).count()
+        # corrects_group = quiz_models.AnswerLog.objects.exclude(user__id=user_id).filter(group=group_id, quiz=quiz.id, submitted=True,
+        #                                                 correct=True).count()
+        # incorrects_group = quiz_models.AnswerLog.objects.exclude(user__id=user_id).filter(group=group_id, quiz=quiz.id, submitted=True,
+        #                                                   correct=False).count()
+        corrects = 0
+        incorrects = 0
+        corrects_group = 0
+        incorrects_group = 0
+        if quiz_id in quizzes_correct_dict.keys():
+            corrects = len(quizzes_correct_dict[quiz_id])
+        if quiz_id in quizzes_incorrect_dict.keys():
+            incorrects = len(quizzes_incorrect_dict[quiz_id])
+        if quiz_id in group_quizzes_correct_dict.keys():
+            corrects_group = len(group_quizzes_correct_dict[quiz_id])
+        if quiz_id in group_quizzes_incorrect_dict.keys():
+            incorrects_group = len(group_quizzes_incorrect_dict[quiz_id])
+        node["quiz"] = {"name": quiz_name, "corrects":corrects, "incorrects": incorrects, "corrects_group":corrects_group, "incorrects_group":incorrects_group}
     except quiz_models.Quiz.DoesNotExist:
         quiz = None
 

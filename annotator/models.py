@@ -32,6 +32,7 @@ class Annotation(models.Model):
     uri = models.CharField(max_length=4096, blank=True)
     group = models.ForeignKey(reader_models.Group, default="default")
     user = models.ForeignKey(User)
+    username = models.CharField(max_length=32, default="test", blank=True)
     consumer = models.CharField(max_length=64, blank=True)
     permissions = JSONField()
 
