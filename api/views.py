@@ -11,17 +11,17 @@ from rest_framework.parsers import JSONParser
 
 from django.core import serializers
 
-from django.core import serializers
-
 from annotator import models as annotator_models
 
 from quiz import models as quiz_models
 
 from reader import models as reader_models
+from reader import views as reader_views
 
 from django.contrib.auth.models import User
 
 import json
+import csv
 
 from api import serializers
 
@@ -37,7 +37,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs["content_type"] = "application/json"
         super(JSONResponse, self).__init__(content, **kwargs)
-
 
 def root(request):
     if request.method == "GET":
@@ -300,16 +299,38 @@ def attempt(request):
         quiz_id = data["quiz"]
         question_id = data["question"]
         type = data["type"]
-        if type == "multiple-choice-one-answer":
-            answer_id = int(data["answer"])
-            correct = True
-            correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values("choice_id")
-            for correct_answer in correct_answers:
-                if correct_answer["choice_id"] != answer_id:
-                    correct = False
-            answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                                               answer=answer_id, correct=correct,submitted=False)
-            answer_log.save()
+        answers = data["answer"]
+        for answer in answers:
+            if type == "multiple-choice-one-answer":
+                answer_id = int(data["answer"])
+                correct = True
+                correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values("choice_id")
+                for correct_answer in correct_answers:
+                    if correct_answer["choice_id"] != answer_id:
+                        correct = False
+                answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
+                                                   answer=answer_id, correct=correct,submitted=False)
+                answer_log.save()
+            if type == "multiple-choice-multiple-answer":
+                answer_ids = answer["answer"]
+                for i in range(0, len(answer_ids)):
+                    answer_ids[i] = int(answer_ids[i])
+                correct = True
+                correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values(
+                    "choice_id")
+                for correct_answer in correct_answers:
+                    if correct_answer["choice_id"] not in answer_ids:
+                        correct = False
+                        quiz_correctness = False
+                # answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
+                #                                   answer=answer_ids, correct=correct, submitted=True)
+                answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id),
+                                                   group=reader_models.Group.objects.get(id=group_id),
+                                                   session=session_id, datetime=datetime,
+                                                   quiz=quiz_models.Quiz.objects.get(questions__id=question_id),
+                                                   question=quiz_models.Question(id=question_id),
+                                                   answer=answer_ids, correct=correct, submitted=False)
+                answer_log.save()
         return JSONResponse({"tracked":True}, status=201)
     else:
         return HttpResponseForbidden()
@@ -327,6 +348,64 @@ def kcs(request):
         for kc in concepts:
             concepts_json.append(kc["kc__name"])
         return JSONResponse({"section":section_id, "kcs": concepts_json}, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def summary(request):
+    """
+    Returning a requested quiz for an specific course section
+    """
+    if request.method == 'GET':
+        group_id = request.GET["group_id"]
+
+        course_id = reader_models.Group.objects.only("course").get(id=group_id).course.id
+
+        course_json = reader_models.Course.objects.get(id=course_id)
+
+        num_students = reader_models.Group.objects.get(id=group_id).students.count()
+
+        reader_views.read_pages_dict = {}
+        reader_views.group_read_pages_dict = {}
+        reader_views.quizzes_correct_dict = {}
+        reader_views.quizzes_incorrect_dict = {}
+        reader_views.group_quizzes_correct_dict = {}
+        reader_views.group_quizzes_incorrect_dict = {}
+
+        hierarchical_structure = course_json.course_structure
+
+        #reader_views.calculate_reading_progress(hierarchical_structure)
+        reader_views.calculate_sections_with_pages(hierarchical_structure, 0)
+
+        for section in reader_views.section_pages_info:
+            name = section["name"]
+            subsections = section["subsections"]
+            subsections_str = "','".join(subsections)
+            subsections_str = "'"+subsections_str+"'"
+            print subsections_str
+            # quizzes_correct_queryset = quiz_models.AnswerLog.objects.raw(
+            #     "SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE group_id='" + group_id + "' AND submitted=1 AND correct=1 AND section IN ("+subsections_str+");")
+            # quizzes_correct_dict = {}
+            #
+            # for quiz_attempt in quizzes_correct_queryset:
+            #     quiz = quiz_attempt.quiz_id
+            #     question = quiz_attempt.question_id
+            #     if quiz not in quizzes_correct_dict.keys():
+            #         quizzes_correct_dict[quiz] = [question]
+            #     else:
+            #         quizzes_correct_dict[quiz].append(question)
+
+
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="'+group_id+'_summary.csv"'
+
+        writer = csv.writer(response)
+        writer.writerow(['First row', 'Foo', 'Bar', 'Baz'])
+        writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
+
+        return response
 
     else:
         return HttpResponseForbidden()

@@ -3,13 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="9b8f20c7-f21a-4586-be26-ba4ef801d56b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/annotator/models.py" afterPath="$PROJECT_DIR$/annotator/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/annotator/static/annotator/view_annotator/js/view_annotator.js" afterPath="$PROJECT_DIR$/annotator/static/annotator/view_annotator/js/view_annotator.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ereader/urls.py" afterPath="$PROJECT_DIR$/ereader/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/static/reader/css/reader.css" afterPath="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ereader/settings.py" afterPath="$PROJECT_DIR$/ereader/settings.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/templates/reader.html" afterPath="$PROJECT_DIR$/reader/templates/reader.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/views.py" afterPath="$PROJECT_DIR$/reader/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recommender/views.py" afterPath="$PROJECT_DIR$/recommender/views.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,7 +24,7 @@
       <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/recommender/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="75">
               <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -38,8 +36,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/recommender/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+            <state relative-caret-position="210">
+              <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -50,24 +48,24 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reader/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="92" column="67" lean-forward="false" selection-start-line="92" selection-start-column="67" selection-end-line="92" selection-end-column="67" />
+            <state relative-caret-position="1380">
+              <caret line="105" column="8" lean-forward="false" selection-start-line="105" selection-start-column="8" selection-end-line="116" selection-end-column="65" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <marker date="1521516343000" expanded="true" signature="2019:2180" ph="SELECT id, s... " />
-                <marker date="1521516343000" expanded="true" signature="2569:2765" ph="SELECT id, s... " />
-                <marker date="1521516343000" expanded="true" signature="3175:3241" ph="SELECT id FR... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3261" ph="SELECT id FR... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3272" ph="SELECT id FR... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3285" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3301" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3315" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3175:3318" ph="SELECT id FR... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3772:3936" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="3772:3937" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="4409:4561" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="4409:4575" ph="SELECT id, q... quiz_answerlog" />
-                <marker date="1521516343000" expanded="true" signature="5068:5234" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="2043:2204" ph="SELECT id, s... " />
+                <marker date="1525092925000" expanded="true" signature="2593:2789" ph="SELECT id, s... " />
+                <marker date="1525092925000" expanded="true" signature="3199:3265" ph="SELECT id FR... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3285" ph="SELECT id FR... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3296" ph="SELECT id FR... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3309" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3325" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3339" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3199:3342" ph="SELECT id FR... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3796:3960" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="3796:3961" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="4433:4585" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="4433:4599" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525092925000" expanded="true" signature="5092:5258" ph="SELECT id, q... quiz_answerlog" />
               </folding>
             </state>
           </provider>
@@ -76,48 +74,44 @@
       <file leaf-file-name="reader.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="447">
-              <caret line="593" column="133" lean-forward="false" selection-start-line="593" selection-start-column="133" selection-end-line="593" selection-end-column="133" />
+            <state relative-caret-position="-3312">
+              <caret line="196" column="51" lean-forward="true" selection-start-line="196" selection-start-column="51" selection-end-line="196" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="reader.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reader/static/reader/css/reader.css">
+      <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reader/templates/home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="430">
-              <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+            <state relative-caret-position="405">
+              <caret line="27" column="7" lean-forward="false" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../myvenv2/lib/python2.7/site-packages/django/core/handlers/base.py">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3435">
-              <caret line="248" column="0" lean-forward="false" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="5400">
+              <caret line="385" column="33" lean-forward="false" selection-start-line="385" selection-start-column="33" selection-end-line="385" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+                <marker date="1525110178000" expanded="true" signature="8500:10493" ph="..." />
+                <marker date="1525110178000" expanded="true" signature="18897:19012" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525110178000" expanded="true" signature="18897:19024" ph="SELECT id, q... quiz_answerlog" />
+                <marker date="1525110178000" expanded="true" signature="18897:19049" ph="SELECT id, q... quiz_answerlog" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="exception.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../myvenv2/lib/python2.7/site-packages/django/core/handlers/exception.py">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/api/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reader/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+            <state relative-caret-position="180">
+              <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -126,18 +120,8 @@
       <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quiz/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="40" column="36" lean-forward="true" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="manage.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/manage.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+            <state relative-caret-position="1005">
+              <caret line="73" column="60" lean-forward="false" selection-start-line="73" selection-start-column="60" selection-end-line="73" selection-end-column="60" />
               <folding />
             </state>
           </provider>
@@ -154,26 +138,10 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>separation</find>
-      <find>count</find>
-      <find>2*margin</find>
-      <find>list(</find>
-      <find>read_pages</find>
-      <find>print</find>
-      <find>console.log</find>
-      <find>encode</find>
-      <find>time</find>
-      <find>last_page_read</find>
-      <find>course_level_labels</find>
-      <find>label</find>
-      <find>y =</find>
-      <find>vis-title</find>
-      <find>tip</find>
       <find>d3.tip</find>
       <find>labels</find>
       <find>margin =</find>
       <find>title</find>
-      <find>margin =</find>
       <find>svg</find>
       <find>loadnextpage</find>
       <find>loadresource</find>
@@ -183,7 +151,23 @@
       <find>summarize</find>
       <find>summarizeperformancequizzes(</find>
       <find>performance_quizzes</find>
+      <find>@jordan</find>
       <find>summarizeperformancequizzes</find>
+      <find>group_Read_pages</find>
+      <find>group_read_pages_dic</find>
+      <find>unicode</find>
+      <find>encode</find>
+      <find>submitted</find>
+      <find>change</find>
+      <find>visible</find>
+      <find>page-</find>
+      <find>attempt</find>
+      <find>user</find>
+      <find>renderer</find>
+      <find>read_pages_dict</find>
+      <find>read_pages_dict = {}</find>
+      <find>page-not</find>
+      <find>calculate_reading_progress</find>
     </findStrings>
     <replaceStrings>
       <replace>a0a0a0</replace>
@@ -196,17 +180,18 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/reader/templates/registration/login.html" />
-        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/reader/urls.py" />
-        <option value="$PROJECT_DIR$/ereader/settings.py" />
         <option value="$PROJECT_DIR$/reader/templates/home.html" />
         <option value="$PROJECT_DIR$/annotator/models.py" />
         <option value="$PROJECT_DIR$/annotator/static/annotator/view_annotator/js/view_annotator.js" />
         <option value="$PROJECT_DIR$/ereader/urls.py" />
         <option value="$PROJECT_DIR$/recommender/views.py" />
-        <option value="$PROJECT_DIR$/reader/views.py" />
         <option value="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
         <option value="$PROJECT_DIR$/reader/templates/reader.html" />
+        <option value="$PROJECT_DIR$/ereader/settings.py" />
+        <option value="$PROJECT_DIR$/api/urls.py" />
+        <option value="$PROJECT_DIR$/reader/views.py" />
+        <option value="$PROJECT_DIR$/api/views.py" />
       </list>
     </option>
   </component>
@@ -216,7 +201,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="1">
     <option name="y" value="23" />
     <option name="width" value="1280" />
     <option name="height" value="748" />
@@ -254,44 +239,22 @@
             <path>
               <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
               <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
               <item name="quiz" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
               <item name="ereader" type="462c0819:PsiDirectoryNode" />
               <item name="reader" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="reader" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="recommender" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -384,20 +347,20 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="748" extended-state="0" />
+    <frame x="0" y="23" width="1280" height="748" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1890625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784432" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32784432" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -426,8 +389,11 @@
         <state relative-caret-position="3720">
           <caret line="273" column="56" lean-forward="false" selection-start-line="273" selection-start-column="56" selection-end-line="273" selection-end-column="56" />
           <folding>
-            <element signature="e#0#32#0" expanded="false" />
-            <marker date="1516351313000" expanded="true" signature="8486:10479" ph="..." />
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1525110178000" expanded="true" signature="8500:10493" ph="..." />
+            <marker date="1525110178000" expanded="true" signature="18897:19012" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19024" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19049" ph="SELECT id, q... quiz_answerlog" />
           </folding>
         </state>
       </provider>
@@ -501,7 +467,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="24" lean-forward="false" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -510,8 +475,11 @@
         <state relative-caret-position="4095">
           <caret line="273" column="56" lean-forward="false" selection-start-line="273" selection-start-column="56" selection-end-line="273" selection-end-column="56" />
           <folding>
-            <element signature="e#0#32#0" expanded="false" />
-            <marker date="1516351313000" expanded="true" signature="8486:10479" ph="..." />
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1525110178000" expanded="true" signature="8500:10493" ph="..." />
+            <marker date="1525110178000" expanded="true" signature="18897:19012" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19024" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19049" ph="SELECT id, q... quiz_answerlog" />
           </folding>
         </state>
       </provider>
@@ -585,7 +553,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="24" lean-forward="false" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -639,13 +606,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/api/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/annotator/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -660,32 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="32" column="9" lean-forward="false" selection-start-line="32" selection-start-column="9" selection-end-line="32" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4000">
-          <caret line="273" column="56" lean-forward="false" selection-start-line="273" selection-start-column="56" selection-end-line="273" selection-end-column="56" />
-          <folding>
-            <element signature="e#0#32#0" expanded="false" />
-            <marker date="1516351313000" expanded="true" signature="8486:10479" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ereader/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2430">
-          <caret line="162" column="44" lean-forward="false" selection-start-line="162" selection-start-column="44" selection-end-line="162" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reader/templates/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="7" lean-forward="false" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
         </state>
       </provider>
     </entry>
@@ -739,21 +673,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/recommender/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -761,7 +684,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3435">
           <caret line="248" column="0" lean-forward="false" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,7 +691,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
           <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -777,7 +698,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -785,7 +705,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -793,72 +712,117 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-669">
           <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quiz/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="40" column="36" lean-forward="true" selection-start-line="40" selection-start-column="36" selection-end-line="40" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reader/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="14" column="26" lean-forward="true" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+          <caret line="14" column="26" lean-forward="false" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reader/static/reader/css/reader.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="95" column="0" lean-forward="true" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        <state relative-caret-position="1425">
+          <caret line="95" column="0" lean-forward="false" selection-start-line="95" selection-start-column="0" selection-end-line="95" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/recommender/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="1" lean-forward="false" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quiz/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1005">
+          <caret line="73" column="60" lean-forward="false" selection-start-line="73" selection-start-column="60" selection-end-line="73" selection-end-column="60" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/recommender/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
+        <state relative-caret-position="210">
+          <caret line="19" column="25" lean-forward="false" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ereader/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="159" column="8" lean-forward="false" selection-start-line="159" selection-start-column="8" selection-end-line="159" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reader/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="7" lean-forward="false" selection-start-line="27" selection-start-column="7" selection-end-line="27" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5400">
+          <caret line="385" column="33" lean-forward="false" selection-start-line="385" selection-start-column="33" selection-end-line="385" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1525110178000" expanded="true" signature="8500:10493" ph="..." />
+            <marker date="1525110178000" expanded="true" signature="18897:19012" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19024" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525110178000" expanded="true" signature="18897:19049" ph="SELECT id, q... quiz_answerlog" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/api/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="14" column="37" lean-forward="false" selection-start-line="14" selection-start-column="37" selection-end-line="14" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reader/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="92" column="67" lean-forward="false" selection-start-line="92" selection-start-column="67" selection-end-line="92" selection-end-column="67" />
+        <state relative-caret-position="1380">
+          <caret line="105" column="8" lean-forward="false" selection-start-line="105" selection-start-column="8" selection-end-line="116" selection-end-column="65" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <marker date="1521516343000" expanded="true" signature="2019:2180" ph="SELECT id, s... " />
-            <marker date="1521516343000" expanded="true" signature="2569:2765" ph="SELECT id, s... " />
-            <marker date="1521516343000" expanded="true" signature="3175:3241" ph="SELECT id FR... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3261" ph="SELECT id FR... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3272" ph="SELECT id FR... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3285" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3301" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3315" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3175:3318" ph="SELECT id FR... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3772:3936" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="3772:3937" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="4409:4561" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="4409:4575" ph="SELECT id, q... quiz_answerlog" />
-            <marker date="1521516343000" expanded="true" signature="5068:5234" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="2043:2204" ph="SELECT id, s... " />
+            <marker date="1525092925000" expanded="true" signature="2593:2789" ph="SELECT id, s... " />
+            <marker date="1525092925000" expanded="true" signature="3199:3265" ph="SELECT id FR... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3285" ph="SELECT id FR... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3296" ph="SELECT id FR... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3309" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3325" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3339" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3199:3342" ph="SELECT id FR... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3796:3960" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="3796:3961" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="4433:4585" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="4433:4599" ph="SELECT id, q... quiz_answerlog" />
+            <marker date="1525092925000" expanded="true" signature="5092:5258" ph="SELECT id, q... quiz_answerlog" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="447">
-          <caret line="593" column="133" lean-forward="false" selection-start-line="593" selection-start-column="133" selection-end-line="593" selection-end-column="133" />
+        <state relative-caret-position="-3312">
+          <caret line="196" column="51" lean-forward="true" selection-start-line="196" selection-start-column="51" selection-end-line="196" selection-end-column="51" />
           <folding />
         </state>
       </provider>

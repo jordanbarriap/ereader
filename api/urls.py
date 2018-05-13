@@ -11,5 +11,6 @@ urlpatterns = [
     url(r"^quiz/?$", views.quiz, name="quiz"),
     url(r"^quiz/assess?$", views.assess, name="assess"),
     url(r"^quiz/attempt?$", views.attempt, name="attempt"),
-    url(r"^kcs/?$", views.kcs, name="kcs")
+    url(r"^kcs/?$", views.kcs, name="kcs"),
+    url(r"^summary/?$", views.summary, name="summary")
 ]

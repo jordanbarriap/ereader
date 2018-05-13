@@ -18,6 +18,7 @@ user_id = 0
 group_id = 0
 num_students = 0
 
+section_pages_info = []
 
 def home(request):
     global user_id
@@ -128,10 +129,9 @@ def load_course(request,url_group_id):
             else:
                 group_quizzes_incorrect_dict[quiz].append(question)
 
-
         calculate_reading_progress(hierarchical_structure)
 
-        final_json = {"group":group_id, "course":{"id":course_json.id, "name":course_json.name}, "course_hierarchical":hierarchical_structure,"last_page_read":last_page_read}
+        final_json = {"group":group_id, "course":{"id":course_json.id, "name": course_json.name}, "course_hierarchical": hierarchical_structure, "last_page_read": last_page_read}
         final_json_wo_unicode = json.dumps(final_json)
         final_json_dict = ast.literal_eval(final_json_wo_unicode)
         return render(request, "reader.html", final_json_dict)
@@ -256,4 +256,43 @@ def set_quiz(node):
         node["quiz"] = {"name": quiz_name, "corrects":corrects, "incorrects": incorrects, "corrects_group":corrects_group, "incorrects_group":incorrects_group}
     except quiz_models.Quiz.DoesNotExist:
         quiz = None
+
+
+def calculate_sections_with_pages(node, level):
+    global section_pages_info
+    if "children" not in node:
+        num_pages = get_number_of_pages(node)
+        section_id = [node["id"]]
+        # if level==1:
+        #     print section_id
+        #     print str(num_pages) + " (level: " + str(level) + ")"
+        return num_pages, section_id
+    else:
+        if has_pages(node):
+            subsections_num_pages, subsections_section_ids = calculate_subsections_with_pages(node["children"], level)
+            num_pages = get_number_of_pages(node) + subsections_num_pages
+            section_id = [node["id"]] + subsections_section_ids
+            # if level==1:
+            #     print section_id
+            #     print str(num_pages) + " (level: " + str(level) + ")"
+            return num_pages, section_id
+        else:
+            num_pages, section_id = calculate_subsections_with_pages(node["children"], level)
+            if level==1:
+                # print "section id: "+node["id"]
+                # print section_id
+                # print str(num_pages) + " (level: " + str(level) + ")"
+                section_pages_info.append({"id": node["id"], "name": node["title"], "subsections": section_id, "pages": num_pages})
+            return num_pages, section_id
+
+
+def calculate_subsections_with_pages(subsections, level):
+    total_pages = 0
+    section_id = []
+    for subsection in subsections:
+        subsection_total_pages, subsection_section_ids = calculate_sections_with_pages(subsection, level+1)
+        total_pages = total_pages + subsection_total_pages
+        section_id = section_id + subsection_section_ids
+    return total_pages, section_id
+
 
