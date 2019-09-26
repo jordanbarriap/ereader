@@ -1,0 +1,306 @@
+body{
+    margin: 0;
+    padding: 0;
+    overflow:hidden;
+}
+
+p{ 
+     text-align: center; 
+     overflow: overlay;
+     position: relative;
+}
+
+body{
+    -webkit-touch-callout: none;
+    
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  /* CSS modified in order to get the focus on text works in Safari Web browsers
+  /*-webkit-user-select: none;
+    user-select: none;*/    
+    -webkit-user-select: text;
+    user-select: text;
+    background-color: rgb(248, 248, 248)
+}
+
+#toolbox{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    margin-bottom: 0.5em;
+    margin-left: 1em;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    padding: 0.5em;
+    z-index: 5;
+}
+
+#toolbox input{
+    width: 30px;
+    opacity: 0.4;
+}
+#toolbox input:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+#hidden-file-upload{
+    display: none;
+}
+
+#download-input{
+    margin: 0 0.5em;
+}
+
+#save-input{
+    margin: 0 0.5em;
+}
+
+.conceptG text{
+    pointer-events: none;
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+marker{
+    fill: #434343;
+}
+
+g.conceptG circle{
+    fill: #fec27e;
+    stroke: #434343;
+    stroke-width: 1.5px;
+}
+
+g.conceptG:hover circle{
+    fill: rgb(255, 108, 39);
+}
+
+g.selected circle{
+    fill: rgb(253, 103, 62);
+}
+g.selected:hover circle{
+    fill: rgb(253, 103, 62);
+}
+
+path.link {
+    fill: none;
+    stroke: #434343;
+    stroke-width: 5px;
+    cursor: default;
+}
+
+path.link:hover{
+    stroke: rgb(94, 196, 204);
+}
+
+g.connect-node circle{
+    /*fill: #BEFFFF;*/
+    stroke: rgb(94, 196, 204);
+}
+
+path.link.hidden{
+    stroke-width: 0;
+}
+
+path.link.selected {
+    stroke: rgb(94, 196, 204);
+}
+
+g.linkG text{
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+}
+
+#graph-toolbox{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: table;
+    margin-bottom: 0.5em;
+    margin-left: 1em;
+    border: 2px solid #EEEEEE;
+    border-radius: 5px;
+    padding: 1em;
+    z-index: 5;
+}
+
+#link-type-div input{
+    width: 30px;
+}
+
+#link-type-div input:hover{
+    cursor: pointer;
+}
+
+#stroke-type-div input{
+    width: 30px;
+}
+
+#stroke-type-div input:hover{
+    cursor: pointer;
+}
+
+.active{
+    opacity: 1;
+}
+
+.inactive{
+    opacity: 0.4;
+}
+
+.inactive:hover{
+    opacity:1;
+}
+
+span.draw-settings{
+    display: table-cell;
+    vertical-align: middle; 
+}
+
+text.shadow {
+    text-shadow:
+       -1px -1px 0 #fff,  
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+         1px 1px 0 #fff;
+}
+
+/*Redefining JQueryUI Autocomplete style */
+.ui-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  float: left;
+  display: none;
+  min-width: 160px;
+  _width: 160px;
+  padding: 4px 0;
+  margin: 2px 0 0 0;
+  list-style: none;
+  background-color: #ffffff;
+  border-color: #ccc;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  *border-right-width: 2px;
+  *border-bottom-width: 2px;
+
+  .ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+  }
+}
+
+.ui-state-focus {
+	color: #ffffff;
+	text-decoration: none;
+	background-color: #0088cc;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	background-image: none;
+	cursor: pointer;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color:rgba(235, 151, 78, 1);
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 11px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: rgba(228, 120, 51, 1);
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.content-collapsible {
+  padding: 0 5px;
+  display: none;
+  overflow: hidden;
+  background-color: rgba(253, 227, 167, 1);
+}
+
+.collapsible:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 11px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.concept-map-help-div{
+    position:absolute;padding:0 2px;
+    margin-left:5px;
+    width:96%;
+    margin-top:5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    background-color:rgba(238,225,138,.7);
+    line-height: 13px;
+    border-radius:10px;
+    text-align: justify;
+    padding:2px;
+    z-index:99;
+}
+
+.svg-concept-map{
+    display: inline-block;
+    position: absolute;
+    /*top: 0;*/
+    /*left: 0;*/
+}
+
+#concept-map-div-modal{
+    height: 100%;
+    width: 78%;
+    background-color: white;
+    border-radius: 10px;
+    margin-left:5px;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    position:relative;
+    border-width: 1px;
+    border-style:solid;
+    border-color:#555;
+    border-style: dashed;
+    z-index:98;
+}
+
+#concept-map-title{
+    font-family: Verdana, Arial, sans-serif;
+    font-weight: bolder;
+}

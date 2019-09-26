@@ -19,7 +19,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
     id = models.AutoField(primary_key=True)
-    statement =  models.CharField(max_length=500, default="test")
+    statement = models.CharField(max_length=500, default="test")
     question = models.ForeignKey(Question)
 
     def __unicode__(self):
@@ -64,6 +64,7 @@ class AnswerLog(models.Model):
     answer = JSONField()
     correct = models.BooleanField(default=False)
     submitted = models.BooleanField(default=False)
+    marked = models.BooleanField(default=True)
 
 
 """class TextualAnswerLog(models.Model):

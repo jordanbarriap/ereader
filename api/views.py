@@ -10,13 +10,14 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
 from django.core import serializers
+from django.forms.models import model_to_dict
 
 from annotator import models as annotator_models
-
 from quiz import models as quiz_models
-
 from reader import models as reader_models
 from reader import views as reader_views
+from recommender import models as rec_models
+from knowledgevis import models as knowledgevis_models
 
 from django.contrib.auth.models import User
 
@@ -190,11 +191,14 @@ def quiz(request):
 
 @csrf_exempt
 def quiz(request):
-    #Returning a requested quiz for an specific course section
+    """
+    Returning a requested quiz for an specific course section
+    """
     if request.method == 'GET':
         #section_id = request.GET["section"]
         section_id = request.GET["section"].split(",")  # ids of quizzes subsections
         user_id = request.GET["user"]
+        group_id = request.GET["group"]
         #Query the multiple choice questions associated with the section
         #questions = quiz_models.Quiz.objects.filter(course_section=section_id).values("questions__id", "questions__statement", "questions__type","questions__choice__id")#,"questions__choice__statement")
         #quiz = quiz_models.Quiz.objects.get(course_section=section_id)
@@ -206,7 +210,7 @@ def quiz(request):
         if len(questions)>0:
             for question in questions:
                 question_id = question.id
-                correct_result = quiz_models.AnswerLog.objects.filter(user=user_id, question=question_id, correct=1)
+                correct_result = quiz_models.AnswerLog.objects.filter(user=user_id, group=reader_models.Group.objects.get(id=group_id), question=question_id, correct=1, submitted=1)
                 correct = False
                 previous_answer = []
                 if (len(correct_result)>0):
@@ -255,7 +259,7 @@ def assess(request):
                         correct = False
                         quiz_correctness = False
                 answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                                                   answer=answer_id, correct=correct, submitted=True)
+                                                   answer=answer_id, correct=correct, submitted=True, marked=True)
                 answer_log.save()
 
             #Process answers from multiple-choice multiple-answer questions
@@ -276,7 +280,7 @@ def assess(request):
                                                    session=session_id, datetime=datetime,
                                                    quiz=quiz_models.Quiz.objects.get(questions__id=question_id),
                                                    question=quiz_models.Question(id=question_id),
-                                                   answer=answer_ids, correct=correct, submitted=True)
+                                                   answer=answer_ids, correct=correct, submitted=True, marked=True)
                 answer_log.save()
 
             assessment.append({"question_id":question_id, "type": type, "correct":correct})
@@ -299,38 +303,25 @@ def attempt(request):
         quiz_id = data["quiz"]
         question_id = data["question"]
         type = data["type"]
-        answers = data["answer"]
-        for answer in answers:
-            if type == "multiple-choice-one-answer":
-                answer_id = int(data["answer"])
-                correct = True
-                correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values("choice_id")
-                for correct_answer in correct_answers:
-                    if correct_answer["choice_id"] != answer_id:
-                        correct = False
-                answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                                                   answer=answer_id, correct=correct,submitted=False)
-                answer_log.save()
-            if type == "multiple-choice-multiple-answer":
-                answer_ids = answer["answer"]
-                for i in range(0, len(answer_ids)):
-                    answer_ids[i] = int(answer_ids[i])
-                correct = True
-                correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values(
-                    "choice_id")
-                for correct_answer in correct_answers:
-                    if correct_answer["choice_id"] not in answer_ids:
-                        correct = False
-                        quiz_correctness = False
-                # answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                #                                   answer=answer_ids, correct=correct, submitted=True)
-                answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id),
-                                                   group=reader_models.Group.objects.get(id=group_id),
-                                                   session=session_id, datetime=datetime,
-                                                   quiz=quiz_models.Quiz.objects.get(questions__id=question_id),
-                                                   question=quiz_models.Question(id=question_id),
-                                                   answer=answer_ids, correct=correct, submitted=False)
-                answer_log.save()
+        answer_data = data["answer"].split(" ")# 0: answer id, 1: marked or unmarked
+        answer = answer_data[0]
+        marked = False
+        if answer_data[1] == "marked":
+            marked = True
+
+        if type == "multiple-choice-one-answer" or type == "multiple-choice-multiple-answer":
+            answer_id = int(answer)
+            correct = False
+            correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values("choice_id")
+            print answer_id
+            print correct_answers
+            for correct_answer in correct_answers:
+                print correct_answer["choice_id"]
+                if correct_answer["choice_id"] == answer_id:
+                    correct = True
+            answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(questions__id=question_id), question=quiz_models.Question(id=question_id),
+                                               answer=answer_id, correct=correct, submitted=False, marked=marked)
+            answer_log.save()
         return JSONResponse({"tracked":True}, status=201)
     else:
         return HttpResponseForbidden()
@@ -406,6 +397,212 @@ def summary(request):
         writer.writerow(['Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"])
 
         return response
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def recommended_videos(request):
+    """
+    Returning all recommended videos for an specific course section
+    """
+    if request.method == 'GET':
+        page_id = request.GET["page"]
+        method = request.GET["method"]
+        user_id = request.GET["user"]
+        group_id = request.GET["group"]
+        section_id = request.GET["section"]
+        print "page: "+page_id+" , method: "+method
+
+        #Generates position for introducing noise into
+        user_noise_position = int(user_id)%10
+        page_noise_position=int(page_id[len(page_id)-1:len(page_id)])%10
+        first_noise_position=(user_noise_position+page_noise_position)%10
+        second_noise_position=first_noise_position*2
+
+        print "1st noise position: "+str(first_noise_position)
+        print "2nd noise position: "+str(second_noise_position)
+
+        similar_videos_ids = rec_models.Similarity.objects.filter(id_textual_resource=page_id, type=method,
+                                                                  resource_id__length__lte=1200).values("resource_id__id","value").order_by('-value')[:50]
+
+
+        videos_json = []
+        top_similar_videos_ids = similar_videos_ids[:23]
+
+        count=0
+        for video_dict in top_similar_videos_ids:
+            if (count == first_noise_position or count == second_noise_position):
+                index_video_noise=len(similar_videos_ids) - 1
+                if(count == first_noise_position):
+                    index_video_noise = index_video_noise - 1
+                video_noise = similar_videos_ids[index_video_noise]
+                video_id = video_noise["resource_id__id"]
+                similarity_value = video_noise["value"]
+                video = rec_models.Resource.objects.get(id=video_id)
+                try:
+                    rating_video = rec_models.Rating.objects.filter(user=user_id,
+                                                                    group=reader_models.Group.objects.get(id=group_id),
+                                                                    section=section_id,
+                                                                    resource=rec_models.Resource(id=video_id)).latest(
+                        'datetime')
+                    rating = rating_video.value
+                    explanation_rating = rating_video.explanation
+                except rec_models.Rating.DoesNotExist:
+                    rating = -1
+                    explanation_rating = ""
+                videos_json.append({"title": video.title, "url": video.url, "value": similarity_value, "id": video_id,
+                                    "rating": rating, "explanation_rating": explanation_rating, "noise":"yes","rank":index_video_noise})
+
+
+            video_id = video_dict["resource_id__id"]
+            similarity_value = video_dict["value"]
+            video = rec_models.Resource.objects.get(id=video_id)
+            try:
+                rating_video = rec_models.Rating.objects.filter(user=user_id, group=reader_models.Group.objects.get(id=group_id), section=section_id, resource=rec_models.Resource(id=video_id)).latest('datetime')
+                rating = rating_video.value
+                explanation_rating = rating_video.explanation
+            except rec_models.Rating.DoesNotExist:
+                rating = -1
+                explanation_rating = ""
+            videos_json.append({"title": video.title, "url": video.url, "value": similarity_value, "id":video_id, "rating":rating, "explanation_rating": explanation_rating,"noise":"no","rank":count})
+            count=count+1
+        return JSONResponse({"page":page_id, "recommended_videos": videos_json}, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def concept_map(request):
+    """
+    Returning a requested concept map created from an specific user for an specific course section
+    """
+    if request.method == 'GET':
+        section_id = request.GET["section"]
+        user_id = request.GET["user"]
+
+        #Get concept map produced by the user (user_id) associated with the specific section (section_id)
+        concept_map_results = knowledgevis_models.ConceptMap.objects.filter(user=user_id, section=section_id)
+
+        concept_map_json = {}
+        if len(concept_map_results)>0:
+            concept_map = concept_map_results.latest("datetime")
+            concept_map_json["result"] = True
+            concept_map_json["conceptMap"] = concept_map.structure
+        else:
+            concept_map_json["result"] = False
+
+        #return JSONResponse({"quiz":quiz.id, "name": quiz.name, "questions": questions_json}, status=201)
+        return JSONResponse(concept_map_json, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def concept_map_log(request):
+    """
+    Returning a requested concept map created from an specific user for an specific course section
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        concept_map = data["conceptMap"]
+        action = data["action"]
+        section_id = data["section"]
+        session_id = data["session"]
+        user_id = data["user"]
+        group_id = data["group"]
+
+        concept_map_log = knowledgevis_models.ConceptMappingLog(user=User.objects.get(id=user_id),
+                                           group=reader_models.Group.objects.get(id=group_id),
+                                           session=session_id, section= section_id,
+                                           action=action, context={"source": "page"})
+
+        concept_map = knowledgevis_models.ConceptMap(user=User.objects.get(id=user_id),
+                                           group=reader_models.Group.objects.get(id=group_id),
+                                           session=session_id, section=section_id,
+                                           structure=concept_map, context={"source": "page"})
+
+        concept_map_log.save()
+        concept_map.save()
+        return JSONResponse({"tracked": True}, status=201)
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def assignments(request):
+    """
+    Returning all the assignments assigned to a certain student in a group
+    """
+    if request.method == 'GET':
+        user_id = request.GET["user"]
+        group_id = request.GET["group"]
+        #Get assignments that the student in the context of that group has to submit
+        assignments = []
+        assignments_results = reader_models.Assignment.objects.filter(user=user_id, group=reader_models.Group.objects.get(id=group_id))
+
+        assignments_json = {}
+        if len(assignments_results)>0:
+            for assignment in assignments_results:
+                assignments.append(model_to_dict(assignment))
+            assignments_json["result"] = True
+            assignments_json["assignments"] = assignments
+        else:
+            assignments_json["result"] = False
+
+        #return JSONResponse({"quiz":quiz.id, "name": quiz.name, "questions": questions_json}, status=201)
+        return JSONResponse(assignments_json, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def rate_resource(request):
+    """
+    Log when a student rate a recommended resource
+    """
+    if request.method == 'POST':
+        data = JSONParser().parse(request)
+        user_id = data["user"]
+        group_id = data["group"]
+        session_id = data["session"]
+        section = data["section"]
+        page = data["page"]
+        res_id = data["res_id"]
+        rating = data["rating"]
+        type = data["type"]
+        datetime = data["datetime"]
+        explanation = data["explanation"]
+        extra = data["extra"]
+
+        rating_log = rec_models.Rating(value=rating, explanation=explanation, user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, section=section, page=page, type=type, resource=rec_models.Resource(id=res_id),extra=extra)
+        rating_log.save()
+        return JSONResponse({"tracked":True}, status=201)
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def recommendations_ratings(request):
+    """
+       Return all the ratings a specific user have done for recommended resources of a certain section_id
+       """
+    if request.method == 'GET':
+        user_id = request.GET["user"]
+        group_id = request.GET["group"]
+        section_id = request.GET["section"]
+
+        # Get rated recommended resources
+        ratings = rec_models.Rating.objects.filter(user=user_id, group=reader_models.Group.objects.get(id=group_id), section=section_id).annotate(max_date=Max('resource__rating__datetime')).filter(date=F('max_date'))
+
+        ratings_json = {}
+        if len(ratings) > 0:
+            #concept_map = concept_map_results.latest("datetime")
+            ratings_json["result"] = True
+            #concept_map_json["conceptMap"] = concept_map.structure
+        else:
+            ratings_json["result"] = False
+
+        # return JSONResponse({"quiz":quiz.id, "name": quiz.name, "questions": questions_json}, status=201)
+        return JSONResponse(ratings_json, status=201)
 
     else:
         return HttpResponseForbidden()

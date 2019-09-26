@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'reader',
     'quiz',
     'api',
+    'recommender',
+    'knowledgevis'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -135,6 +137,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + '/static/'
+BASE_URL = BASE_DIR
 
 
 # MongoDB Database

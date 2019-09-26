@@ -4,43 +4,45 @@
     <!--<link rel="stylesheet" type="text/css" href="{% static "annotorious-0.6.4/css/annotorious.css" %}" />-->
     <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.min.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "knowledgevis/css/graph-editor.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/modal.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "reader/css/recommender.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "annotator/view_annotator/css/style.css" %}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
 
 
     <link href="https://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>-->
 
-    <!--<script src="http://ajax.googxleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>-->
+    <!--JQuery related imports-->
     <script src="{% static "reader/js/jquery-1.9.1.js" %}"></script>
-    <script src="{% static "annotator/js/annotator-full.min.js" %}"></script>
-
-     <script type="text/javascript" src="{% static "annotator/js/short-unique-id.min.js" %}"></script>
+    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
 
 
+    <script type="text/javascript" src="{% static "annotator/js/annotator-full.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "annotator/js/short-unique-id.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/jquery.dateFormat.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/i18n/jquery.i18n.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/i18n/locale/en/annotator.js" %}"></script>
-
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/view_annotator.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/jquery.slimscroll.js" %}"></script>
-
     <script type="text/javascript" src="{% static "annotator/tinymce/tinymce.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/richEditor.js" %}"></script>
-
-
-
-
     <!--<script type="text/javascript" src="{% static "annotorious-0.6.4/annotorious.min.js" %}"></script>-->
+
+
+    <!-- Visualization related imports-->
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    <script type="text/javascript" src="{% static "reader/js/cloud.js" %}"></script>
+
+
     <script type="text/javascript" src="{% static "reader/js/within-viewport/withinviewport.js" %}"></script>
 
     <!--<script src="https://hypothes.is/embed.js" async></script>-->
-
-
 
     <!-- Latest compiled and minified CSS -->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
@@ -48,24 +50,41 @@
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
     <!-- Latest compiled and minified JavaScript -->
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
-
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script type="text/javascript" src="{% static "reader/js/cloud.js" %}"></script>
-
-    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
     <!--<script type="text/javascript" src="{% static "reader/js/fisheye.js" %}"></script>-->
+    <!--<script type="text/javascript" src="{% static "reader/js/rater/rater.js" %}"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script>
+
+    <!--Tab sliders library and stylesheet-->
+    <script src="https://cdn.rawgit.com/hawk-ip/jquery.tabSlideOut.js/v2.4/jquery.tabSlideOut.js"></script>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/hawk-ip/jquery.tabSlideOut.js/v2.4/jquery.tabSlideOut.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+
+    <!-- Concept map editor required imports -->
+    <script type="text/javascript" src="{% static "knowledgevis/js/graph-editor-functions.js" %}"></script>
+    <script type="text/javascript" src="{% static "knowledgevis/js/graph-editor.js" %}"></script>
+
+
 
 </head>
 <body>
 <div id="left-div">
-    <div id="toc-div">
+    <div id="left-upper-div">
+        <div id="toc-div">
+        </div>
+        <div id="vis-div">
+        </div>
     </div>
-    <div id="vis-div">
+    <div id="left-lower-div">
+        <div id="concept-map-div">
+        </div>
     </div>
 </div>
 <div id="reader-div">
    <div id="reader-controls">
+        <a id="manual-link" href="{% static "reader/manuals/manual_ereader_v1.pdf" %}"target="_blank"><img id="icon-manual" src="{% static "reader/img/manual.png" %}" alt="user manual icon" />User Manual</a>
         <button class="previous-btn">❮ Previous</button>
         <span class="title-current-section"></span>
         <button class="quiz-btn" disabled>Go to quiz ✎</button>
@@ -100,9 +119,25 @@
     </div>
 </div>
 
+<!-- Loader for making students wait -->
+<div id="loader">
+    <!--<img src="loading.gif" alt="Loading" /><br/>
+    Loading…-->
+</div>
+
 <script type="text/javascript">
 
+    //Global variables
+    var user_id = "{{ request.user.id }}";
+    var group_id = "{{ group }}";
+    var session = "{{ request.session.session_key }}";
+    var current_section_id = "";
+
+    var extra_base_url = "";
+
     var social_comparison = true;
+    var concept_map = true;
+    var video_recommendation = true;
 
     var level_quiz_showing = 3;
 
@@ -119,6 +154,19 @@
 
     var button_animation;
 
+    var map_old_new_section_ids = {};
+    var recommended_videos = [];
+    var rec_resource_id = "";
+    var recommended_activities = [];
+
+
+    var assignments = [];
+    var concept_map_width = $("#concept-map-div").innerWidth(),//window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
+        concept_map_height =  $("#concept-map-div").innerHeight();//window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
+
+    var xLoc = concept_map_width/2 - 25,
+      yLoc = 100;
+
 
     var toc_color = d3.scale.linear()
         .domain([1,5])
@@ -131,9 +179,100 @@
         //.range(["#E0E0E0", "#2562c3"]);
         .range(["#ffffff", "#2562c3"]);
 
+    //This code loads the Youtube IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady(){
+        console.log("Youtube API ready!");
+    };
+
+    // This function creates an <iframe> (and YouTube player)s
+    // after the API code downloads.
+    var player;
+    var last_player_action = "";
+    var last_time_player = -1;
+
+    // The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        //Log video load
+        var player_action = "video-load";
+        var video_id = player.getVideoData().video_id;
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
+             {"user": {{ request.user.id }},
+             "session": "{{ request.session.session_key }}",
+             "group": "{{ group }}",
+             "section": current_section_id,
+             "section_name": last_page_read["name"],
+             "resource": resource_id,
+             "page": last_page_read["page"],
+             "action":player_action,
+             "datetime": new Date().toIsoString(),
+             "visible_text": "",
+             "extra": {"videoid":video_id,"resid":rec_resource_id}}));
+
+        //Auto-play video when opened
+        event.target.playVideo();
+    }
+
+    //  The API calls this function when the player's state changes.
+    //  The function indicates that when playing a video (state=1),
+    //  the player should play for six seconds and then stop.
+    var done = false;
+    var last_player_action = "";
+    var last_player_time = -1;
+    function onPlayerStateChange(event)
+    {
+        var video_id = player.getVideoData().video_id;
+        var player_action = "";
+        var current_player_time = Math.floor(player.getCurrentTime());
+        console.log(event.data);
+        if (event.data == YT.PlayerState.PLAYING){
+            player_action = "play";
+            if(last_player_action=="pause" && last_player_time==current_player_time){
+                console.log("Play jump video");
+                //console.log("play-jump: "+current_player_time);
+            }else{
+                 console.log("Play video clicked");
+                 //console.log("play: "+current_player_time);
+            }
+        }
+        else if(event.data == YT.PlayerState.PAUSED) {
+            player_action = "pause";
+        }
+        else if(event.data == YT.PlayerState.ENDED) {
+            player_action = "end";
+        }else{
+            return;
+        }
+
+        //Log video player actions
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
+             {"user": {{ request.user.id }},
+             "session": "{{ request.session.session_key }}",
+             "group": "{{ group }}",
+             "section": current_section_id,
+             "section_name": last_page_read["name"],
+             "resource": resource_id,
+             "page": last_page_read["page"],
+             "action":player_action,
+             "datetime": new Date().toIsoString(),
+             "visible_text": "",
+             "extra": {"videoid":video_id,"time":current_player_time,"resid":rec_resource_id}}));
+
+        last_player_time = current_player_time;
+        last_player_action = player_action;
+
+    }
+
 
     jQuery(function ($) {
         $.i18n.load(i18n_dict);
+
+        $( document ).tooltip();
 
         var t = '';
 
@@ -151,6 +290,21 @@
         document.onkeydown = checkKey;
 
         loadHtml();
+
+        /*$.ajax({
+            url: 'http://halley.exp.sis.pitt.edu/behnam/book/api.php?sid=iir_14_2',
+            headers: {
+                'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            method: 'GET',
+            dataType: 'json',
+            //data: dataSent,
+            success: function(data){
+                if(data.message == "OK"){
+                    recommended_videos = data.items;
+                }
+            }
+          });*/
 
         // Set the name of the hidden property and the change event for visibility
         var hidden, visibilityChange;
@@ -182,8 +336,8 @@
                 }
             });
           if (document[hidden]) {
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -197,8 +351,8 @@
              "visible_text": visible_text_elements,
              "extra": []}));
           } else {
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -255,13 +409,41 @@
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
-            closeQuizWindow();
+            closeModalWindow();
+            //After the student close the activity modal, the user model is updated in order to provide progress feedback on the interface
+            /*$.ajax({
+            url: 'http://pawscomp2.sis.pitt.edu/aggregate2/GetContentLevels?usr=akhuseyinoglu&grp=SPLICELTI&sid=TEST&cid=368&mod=all&models=0&avgtop=10&updatesm=true',
+            method: 'GET',
+            dataType: 'text',
+            //data: dataSent,
+            success: function(data){
+                var objKeysRegex = /({|,)(?:\s*)(?:')?([A-Za-z0-9_$\.][A-Za-z0-9_ \-\.$]*)(?:')?(?:\s*):/g;// look for object names
+                var newQuotedKeysString = data.replace(objKeysRegex, "$1\"$2\":");// all object names should be double quoted
+                //var jsondata = JSON.parse(newQuotedKeysString);
+                var jsondata = eval('(' + data + ')');
+                var jsondata_str = JSON.stringify(jsondata);
+                //if(data.message == "OK"){
+                console.log(jsondata);
+                var progress_codeworkout = jsondata["learners"][0]["state"]["activities"]["Loops"]["CodeWorkout"]["repeatEnd"]["values"]["p"];//[0]["state"]["activities"]["Loops"]["CodeWorkout"]["endRepeat"];
+                var attempts_codeworkout = jsondata["learners"][0]["state"]["activities"]["Loops"]["CodeWorkout"]["repeatEnd"]["values"]["a"];
+                console.log(progress_codeworkout+"-a: "+attempts_codeworkout);
+
+                //}
+            },
+            error : function(data,xhr,textStatus,errorThrown){
+               console.log("getContentLevels did not work!");
+               console.log(data);
+               console.log("ERROR : ", errorThrown);
+               console.log("ERROR : ", xhr);
+               console.log("ERROR : ", textStatus);
+            }
+          });*/
         }
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
-                closeQuizWindow();
+                closeModalWindow();
             }
         }
 
@@ -277,12 +459,15 @@
         }
 
         function processResult(apiResult){
-         for (var i = 0; i < apiResult.query.search.length; i++){
-              $('#recommendations-div').append('<p>'+apiResult.query.search[i].title+'</p>');
-         }
-      }
+             for (var i = 0; i < apiResult.query.search.length; i++){
+                  $('#recommendations-div').append('<p>'+apiResult.query.search[i].title+'</p>');
+             }
+        }
 
+        //$("#left-lower-div").html('<iframe style="width:100%;height:100%;style="-webkit-transform:scale(0.5);-moz-transform-scale(0.5);" src="http://columbus.exp.sis.pitt.edu/interactive_concept_map/icm.jsp?userID=1&cmID=10&name=Network%20Basics:%20(Set%201)%20-%20Nodes%20and%20Links"></iframe>');
         //document.onmouseup = gText;
+
+
     });
 
 // extension:
@@ -312,9 +497,10 @@ function loadHtml() {
     course_hierarchical_structure = {{course_hierarchical}};
     last_page_read = {{last_page_read}};
     {% endautoescape %}
-    hierarchicalToLinearStructure(course_hierarchical_structure);
-    //If the user has not read any page from the course, the first page needs to be shown
 
+    hierarchicalToLinearStructure(course_hierarchical_structure);
+
+    //If the user has not read any page from the course, the first page needs to be shown
     if(jQuery.isEmptyObject(last_page_read)){
         last_page_read = course_linear_structure[0];
         last_page_read["page"]=last_page_read["spage"];
@@ -324,13 +510,58 @@ function loadHtml() {
         last_page_read = last_section_read[0];
         last_page_read["page"] = last_page_read_number;
     }
-    initProgressVis(course_hierarchical_structure);
+
     //Once the TOC is completely loaded, the view need to be focused on the current section
     $.when(initToc(course_hierarchical_structure)).then(function () {
         focusCurrentTocSection();
     });
 
-    loadResource(last_page_read["id"],last_page_read["name"],last_page_read["resourceid"],last_page_read["page"],"site-load");
+    //Load student assignments
+     $.getJSON("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader/assignments?user="+user_id+"&group="+group_id,function(json){
+         var result = json.result;
+         if(result){
+             assignments = json.assignments;
+             var current_assignment = []
+             current_assignment = assignments.filter(function(d){
+                 var start_date = new Date(d.datetime_start);
+                 var end_date = new Date(d.datetime_end);
+                 var today_date = new Date();
+                 return (today_date>=start_date && today_date<=end_date);
+             })
+             var str_current_assignment  = "";
+             if(current_assignment.length>0){
+                 var section_id_assigned = current_assignment[0].section;
+                str_current_assignment = "This week you have to perform the concept mapping activity associated with section "+$("#toc-section-"+section_id_assigned).find("text").text()+" . You have to add at least 5 new concepts and 5 relationships between concepts. Additionally, you have to evaluate the relevance of at least 10 recommended videos. Remember that you are encouraged to watch the recommended videos in order to discover new information about concepts or relationships that could be added to the concept map.";
+             }else{
+                str_current_assignment = "This week you have to answer all the quizzes related to the current Lecture.";
+             }
+             $("#reader-controls").append('<img id="assignment-img" height="30px" src="{% static "/reader/img/todo-icon.png" %}" title="'+str_current_assignment+'"></img>');
+         }
+         initProgressVis(course_hierarchical_structure);
+         loadResource(last_page_read["id"],last_page_read["name"],last_page_read["resourceid"],last_page_read["page"],"site-load");
+         for(var i=0;i<assignments.length;i++){
+             var section_assignment = assignments[i].section;
+             d3.select("#toc-section-"+section_assignment).append("svg:image")//('<img title="For this section the concept mapping activity is mandatory" class="concept-map-img" src="{% static "/reader/img/concept-map-icon.png" %}">');
+                 .attr("width",25)
+                 .attr("x",-22)
+                 .attr("y",-12)
+                 .attr("title","For this section, the concept mapping activity is mandatory")
+                 .attr("xlink:href", "{% static "/reader/img/concept-map-icon.png" %}");
+         }
+     })
+
+    //Load json that have the mapping between legacy ids and new ids
+    $.getJSON("{% static "/reader/data/map_old_new_section_ids.json" %}",function(json){
+        for(var i=0;i<json.length;i++){
+            map_old_new_section_ids[json[i]["docno"]] = $.trim(json[i]["id"]);
+        }
+        //updateRecommendations();
+
+    });
+
+
+
+
 
 }
 
@@ -339,7 +570,7 @@ function initProgressVis(root){
 
     var margin = {top: 50, right: 2, bottom: 2, left: 2};
 
-    var w = $("#vis-div").width()- margin.left - margin.right;
+    var w = $("#vis-div").width() - margin.left - margin.right;
     var h = $("#vis-div").height()- margin.top - margin.bottom;
     //var h = $("#vis-div").height() - margin.bottom;
 
@@ -425,6 +656,9 @@ function initProgressVis(root){
                         return classname;
                     })*/
                 .attr("id",function(d){return "vis-comp-section-"+d.id})
+                .on("click", visCompSectionClick)
+                .on("mouseover", visSectionMouseover)
+                .on("mouseout", visSectionMouseout)
                 .append("rect")
               .attr("x", function(d) {
                     return x_comp(d.y) + x(d.dy); //- (d.depth-1)*separation;
@@ -452,8 +686,6 @@ function initProgressVis(root){
               .attr("stroke-width",".5px")
               .attr("stroke","#4e5255")
               .attr("opacity",1)
-              .on("mouseover",visSectionMouseover)
-              .on("mouseout",visSectionMouseout);
               /*.on("click", visSectionClick)
               .on("dblclick", partitionTableDoubleClick)
               .on("mouseout",partitionTableMouseout);*/
@@ -599,8 +831,6 @@ function initProgressVis(root){
                 }else{
                     return d.name+"<hr style='height:0.2em; visibility:hidden; margin:0px;'>Me ➜ Reading progress: "+(proportion_visited_pages*100).toFixed(0)+"% <br><hr style='height:0.2em; visibility:hidden; margin:0px;'>Group ➜ Reading progress: "+(proportion_group_visited_pages*100).toFixed(0)+"%";
                 }
-
-
          });
 
 
@@ -886,11 +1116,26 @@ function initProgressVis(root){
 
 function loadResource(section_id,section_name,resource_id,page_num,source){
 
-     var current_section = getSectionById(section_id);
+     //Sets global variables which keeps the current_section_id
+     current_section_id = section_id;
+
+     var current_section = getSectionById(current_section_id);
      var epage = parseInt(current_section["epage"]);
      var spage = parseInt(current_section["spage"]);
      var kcs = current_section["kcs"];
-     console.log(kcs);
+     //console.log(kcs);
+     var isConceptMapRequired = assignments.filter(function(d){return d.section === section_id}).length>0;
+
+     //if (isConceptMapRequired){
+     $("#left-upper-div").css("height","28%");
+     $("#left-lower-div").css("height","69%");
+
+
+     loadConceptMap(user_id, section_id, section_name, "concept-map-div");
+     /*}else{
+         $("#left-upper-div").css("height","100%");
+         $("#left-lower-div").css("height","0%");
+     }*/
 
      console.log("section_id:"+section_id+" epage: "+epage+" spage: "+spage+" page: "+page_num);
 
@@ -912,10 +1157,10 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
         highlightVisSection(section_id);
     });
 
-     if(page_num == spage){
-        //$.get( "http://{{ request.META.HTTP_HOST }}/ereader/api/kcs",
-        /*$.get( "http://{{ request.META.HTTP_HOST }}/api/kcs",
-                 {"user": {{ request.user.id }},
+     if(page_num === spage){
+        //$.get( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/kcs",
+        /*$.get( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/kcs",
+                 {"user": "{{ request.user.id }}",
                  "group": "{{ group }}",
                  "sections": last_page_read["id"]},
                 function(data){
@@ -927,11 +1172,11 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
         if (index_last_page_read==0){
             $(".previous-btn").prop("disabled",true);
         }
-     }else{
+     }/*else{
          clearInterval(button_animation);
-     }
+     }*/
      //var section_quizzes_ids = Object.keys(section_quizzes);
-     if(page_num == epage){
+     if(page_num === epage){
         //Load quiz, if there is any quiz related to the section
         loadQuiz();
          // if(section_quizzes_ids.indexOf(section_id)>-1 && !section_quizzes[section_id]){
@@ -942,13 +1187,11 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
         if (index_last_page_read==course_linear_structure.length-1){
             $(".next-btn").prop("disabled",true);
         }
-
      }else{
          clearInterval(button_animation);
      }
 
      hierarchicalCourseSectionUpdate(course_hierarchical_structure.children,section_id,parseInt(page_num));
-
 
 
      var resource_path = "resources/"+resource_id+"/"+resource_id+"-"+page_num+".html";
@@ -958,6 +1201,14 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
          //Set section title at the top of the reader
         $(".title-current-section").html(section_name+ "   ("+(last_section_read[0]["page"]-last_section_read[0]["spage"]+1)+"/"+(last_section_read[0]["epage"]-last_section_read[0]["spage"]+1)+")");
 
+        if(assignments.map(function(d){return d.section;}).includes(section_id)){
+            d3.select(".title-current-section").append("svg:image")//('<img title="For this section the concept mapping activity is mandatory" class="concept-map-img" src="{% static "/reader/img/concept-map-icon.png" %}">');
+                 .attr("width",25)
+                 .attr("x",-22)
+                 .attr("y",-12)
+                 .attr("title","For this section, the concept mapping activity is mandatory")
+                 .attr("xlink:href", "{% static "/reader/img/concept-map-icon.png" %}");
+        }
         //initWordCloud(text_html);
 
         var annotator = $('#page-container').annotator();
@@ -1035,8 +1286,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
          var extra_info={"source":source,"top":top,"bottom":bottom};
 
-         //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-         $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+         //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+         $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -1096,8 +1347,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 		    bottom = (100 * bottom / reader_height).toFixed(2);
 
             var viewport_positions={"top":top,"bottom":bottom};
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{request.session.session_key}}",
              "group": "{{ group }}",
@@ -1140,8 +1391,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
 		    console.log("top: "+top+"bottom: "+bottom);
             var viewport_positions={"top":top,"bottom":bottom};
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{request.session.session_key}}",
              "group": "{{ group }}",
@@ -1155,6 +1406,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
              "extra":viewport_positions}) );
 
         })
+
+         updateRecommendations();
         /*$("#page-container").scrollEnd(function(){
             //Log scroll event by using the reader api
 
@@ -1182,8 +1435,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
 		    console.log("top: "+top+"bottom: "+bottom);
             var viewport_positions={"top":top,"bottom":bottom};
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{request.session.session_key}}",
              "group": "{{ group }}",
@@ -1318,8 +1571,18 @@ function visSectionClick(d){
     var resource_id = section_metadata["resourceid"];
     var page_num = section_metadata["spage"];
     var section_name = section_metadata["name"];
-
     loadResource(section_id,section_name,resource_id,page_num,"click-vis-"+section_id);
+
+    focusCurrentTocSection();
+}
+
+function visCompSectionClick(d){
+    var section_metadata = d;
+    var section_id = section_metadata["id"];
+    var resource_id = section_metadata["resourceid"];
+    var page_num = section_metadata["spage"];
+    var section_name = section_metadata["name"];
+    loadResource(section_id,section_name,resource_id,page_num,"click-vis-comp-"+section_id);
 
     focusCurrentTocSection();
 }
@@ -1401,7 +1664,7 @@ function initToc(course_structure){
           .attr("y", -barHeight / 2)
           .attr("height", barHeight)
           .attr("width", function(d){ return d3.select("#svg-toc").attr("width");})
-          .style("fill", "white");
+          .style("fill", "transparent");
 
       nodeEnter.append("text")
           .attr("dy", 5)
@@ -1647,6 +1910,28 @@ function initToc(course_structure){
         //d3.select(this).style("stroke-width", "1");
         tip_ind.show(d);
         highlightVisSection(d.id);
+
+        var section_id = last_page_read["id"];
+        var section_name = last_page_read["name"];
+        var resource_id = last_page_read["resourceid"];
+        var page_num = last_page_read["page"];
+        var date = new Date();
+        var stringDateFull = moment(date).toISOString();
+        var mouseovered_id = d3.select(this).attr("id");
+
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
+             {"user": {{ request.user.id }},
+             "session": "{{ request.session.session_key }}",
+             "group": "{{ group }}",
+             "section": section_id,
+             "name": section_name,
+             "resource": resource_id,
+             "page": page_num,
+             "action":"mouseover-"+mouseovered_id,
+             "extra": {"progress": d3.select(".d3-tip").text()},
+             //"datetime": new Date().toISOString(),
+             "datetime": stringDateFull}));
+
         // Then highlight only those that are an ancestor of the current segment.
         //var sequenceArray = getAncestors(d);
 
@@ -1686,8 +1971,8 @@ function initToc(course_structure){
         var resource_id = last_page_read["resourceid"];
         var page_num = last_page_read["page"];
 
-        //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-        $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+        //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -1701,7 +1986,7 @@ function initToc(course_structure){
              "visible_text": []}));
     }
 
-    function closeQuizWindow(){
+    function closeModalWindow(){
         modal.style.display = "none";
         $("#left-div").removeClass("blurred");
         $("#page-container").removeClass("blurred");
@@ -1711,7 +1996,7 @@ function initToc(course_structure){
         var resource_id = last_page_read["resourceid"];
         var page_num = last_page_read["page"];
 
-        $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -1719,10 +2004,26 @@ function initToc(course_structure){
              "name": section_name,
              "resource": resource_id,
              "page": page_num,
-             "action":"quiz-close",
+             "action":"modal-close",
              //"datetime": new Date().toISOString(),
              "datetime": new Date().toIsoString(),
              "visible_text": []}));
+
+        //Cleans everything that was inside the modal
+        $(".modal-body").empty();
+
+        //Try to reload quiz into the modal in case it is the last page of a section
+        var current_section = getSectionById(section_id)
+        var epage = current_section["epage"]
+        if(page_num == epage) {
+            loadQuiz();
+        }else{
+            clearInterval(button_animation);
+        }
+
+        if(concept_map){
+            loadConceptMap(user_id, current_section_id, section_name, "concept-map-div");
+        }
     }
 
     function loadQuiz(){
@@ -1730,8 +2031,7 @@ function initToc(course_structure){
         if(section_quizzes.includes(last_page_read["id"])){
             alert("there is a quiz");
         }*/
-        //$.get( "http://{{ request.META.HTTP_HOST }}/ereader/api/quiz",
-        console.log(last_page_read["id"]);
+        //$.get( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/quiz",
         var selected_sections = getAncestors(d3.select("#toc-section-"+last_page_read["id"]).node().__data__);
         var selected_sections_ids =  selected_sections.map(function(d){return d.id;});
         //console.log(selected_sections);
@@ -1748,7 +2048,7 @@ function initToc(course_structure){
             return;
         }
         $(".submit-btn").prop("disabled",false);
-        $.get( "http://{{ request.META.HTTP_HOST }}/api/quiz",
+        $.get( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/quiz",
              {"user": {{ request.user.id }},
              "group": "{{ group }}",
              //"section": last_page_read["id"]},
@@ -1800,8 +2100,8 @@ function initToc(course_structure){
                             $("input[type=radio][name=q" + question_id + "]").change(function () {
                                 var quiz_id = quiz_data["quiz"];
 
-                                //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/quiz/attempt",
-                                $.post("http://{{ request.META.HTTP_HOST }}/api/quiz/attempt",
+                                //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/quiz/attempt",
+                                $.post("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/quiz/attempt",
                                     JSON.stringify({
                                         "quiz": quiz_id,
                                         "user": {{request.user.id}},
@@ -1863,15 +2163,15 @@ function initToc(course_structure){
                                 }else{
                                     action = "unmarked";
                                 }
-                                //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/quiz/attempt",
-                                $.post("http://{{ request.META.HTTP_HOST }}/api/quiz/attempt",
+                                //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/quiz/attempt",
+                                $.post("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/quiz/attempt",
                                     JSON.stringify({
                                         "quiz": quiz_id,
                                         "user": {{request.user.id}},
                                         "session": "{{ request.session.session_key }}",
                                         "group": "{{ group }}",
                                         "datetime": new Date().toIsoString(),
-                                        "question": question_id,
+                                        "question": $(this).attr("name").substring(1,$(this).attr("name").length),
                                         "type": type,
                                         "answer": this.value + " " + action
                                     }));
@@ -1973,9 +2273,13 @@ function initToc(course_structure){
         }
 
         if(quiz_completed){
+            //Deactivates the submit button for avoiding sending duplicate data | activates loader (@Jordan June 4th)
+            $(".submit-btn").prop("disabled",true);
+            loaderOn();
+
             var quiz_id= quiz_data["quiz"];
-            //$.post( "http://{{ request.META.HTTP_HOST }}/ereader/api/reader", JSON.stringify(
-            $.post( "http://{{ request.META.HTTP_HOST }}/api/reader", JSON.stringify(
+            //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+            $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
              {"user": {{ request.user.id }},
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
@@ -1989,9 +2293,9 @@ function initToc(course_structure){
              "visible_text": []}) );
 
             /*$.ajax({
-               url: "http://{{ request.META.HTTP_HOST }}/ereader/api/quiz/assess",*/
+               url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/quiz/assess",*/
             $.ajax({
-               url: "http://{{ request.META.HTTP_HOST }}/api/quiz/assess",
+               url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/quiz/assess",
                data:
                    JSON.stringify({"quiz": quiz_id,
                    "user": {{request.user.id}},
@@ -2004,6 +2308,7 @@ function initToc(course_structure){
                   alert('We could not process your quiz submission, please try it again');
                },
                success: function(data) {
+                  loaderOff();
                   var assessment = data["assessment"];
                   var total_corrects = 0;
                   for (var i=0; i<assessment.length; i++){
@@ -2039,6 +2344,8 @@ function initToc(course_structure){
                   //If all the questions in the quiz are correct, we need to disable the submit button
                   if(total_corrects == assessment.length){
                       $(".submit-btn").prop("disabled",true);
+                  }else{
+                      $(".submit-btn").prop("disabled",false);
                   }
                },
                type: 'POST',
@@ -2065,6 +2372,25 @@ function initToc(course_structure){
     function visSectionMouseout(d, i) {
         tip_ind.hide(d);
         unhighlightVisSections();
+
+        var section_id = last_page_read["id"];
+        var section_name = last_page_read["name"];
+        var resource_id = last_page_read["resourceid"];
+        var page_num = last_page_read["page"];
+        var date = new Date();
+        var stringDateFull = moment(date).toISOString();
+        var mouseovered_id = d3.select(this).attr("id");
+        $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
+             {"user": {{ request.user.id }},
+             "session": "{{ request.session.session_key }}",
+             "group": "{{ group }}",
+             "section": section_id,
+             "name": section_name,
+             "resource": resource_id,
+             "page": page_num,
+             "action":"mouseout-"+mouseovered_id,
+             "extra": {"progress": d3.select(".d3-tip").text()},
+             "datetime": stringDateFull}));
     }
 
     function highlightVisSection(section_id){
@@ -2395,6 +2721,582 @@ Array.prototype.clean = function(deleteValue) {
 
 function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
 
+function loaderOn() {
+    document.getElementById("loader").style.display = "block";
+}
+
+function loaderOff() {
+    document.getElementById("loader").style.display = "none";
+}
+
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
+
+function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score,is_noise){
+
+    var section_name = last_page_read["name"];
+    rec_resource_id = res_id;
+    var resource_id = last_page_read["resourceid"];
+    var page_num = last_page_read["page"];
+
+    modal.style.display="block";
+
+    //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/reader", JSON.stringify(
+    $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
+         {"user": {{ request.user.id }},
+         "session": "{{ request.session.session_key }}",
+         "group": "{{ group }}",
+         "section": current_section_id,
+         "name": section_name,
+         "resource": resource_id,
+         "page": page_num,
+         "action":"open-video",
+         "datetime": new Date().toIsoString(),
+         "visible_text": [],
+         "extra": {"videoid":video_id,"resid":rec_resource_id,"rank":ranking,"score":score,"noise":is_noise,"rating":rating,"exp":explanation_rating}}));
+
+    $(".modal-body").empty();
+
+    $(".quiz-title").html("Video recommendation");
+    $(".modal-footer").empty();
+    $(".modal-body").append('<div id="video-player-div"></div>').ready(function(){
+        player = new YT.Player('video-player-div', {
+          height: '360',
+          width: '640',
+          videoId: video_id,
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+    });
+
+    //Helps to mark the rating that was provided by the student in the past
+    var checked = ["","","",""];
+    if(rating!="" && rating!=-1){
+        checked[rating]="checked";
+    }
+
+    var ratings_div =
+        '<div id="panel-ratings"><span id="prompt-video-watching">Please, watch this video in order to be able to rate it</span><br>'+
+        '<div id="ratings-div">Is this recommended video relevant for the section you just read?<br>\n'+
+        '<div id="relevance-rating-div">'+
+        '<img src="{% static "reader/img/0-star.png" %}" alt="0 star" height="20" width="20"><input type="radio" name="relevance" value="0" '+checked[0]+'> Not relevant at all<br>' +
+        '<img src="{% static "reader/img/1-star.png" %}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" '+checked[1]+'> Relevant for the course but not for the current section<br>' +
+        '<img src="{% static "reader/img/2-star.png" %}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" '+checked[2]+'> Partly relevant for the current section<br>'+
+        '<img src="{% static "reader/img/3-star.png" %}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" '+checked[3]+'> Relevant for the current section<br>'+
+        '<div id="rating-exp">Why? (please, provide a short explanation)</div><textarea id="rating-explanation" rows="3" cols="100">'+explanation_rating+'</textarea><button id="rate-btn">Rate video <i class="far fa-star"></i></button>' +
+        '</div>'+
+        '<div id="relevance-reason-div" style="display:none;">Why?<select id="relevance-reason-cb">' +
+        '  <option value="r1">Reason a</option>' +
+        '  <option value="r2">Reason b</option>' +
+        '  <option value="r3">Reason c</option></select>' +
+        '</div></div>' +
+        '<div id="concept-mapping-div-modal">'+
+        '<div id="concept-map-prompt">If you think the video is relevant please use the concept map to describe the new information that the video addresses (concept or relationship between concepts):</div>' +
+        '<div id="concept-map-div-modal"></div>'+
+        '</div></div>';
+
+
+    $(".modal-body").append(ratings_div);
+
+
+    loadConceptMap(user_id, current_section_id, section_name, "concept-map-div-modal");
+
+    //Log the video rating
+    //$('input[type=radio][name=relevance]').change(function() {
+    $('#rate-btn').click( function(e) {
+        e.preventDefault();
+        var error_message = "";
+        if($( 'input[name=relevance]:checked' ).length>0){
+             var rating = $( 'input[name=relevance]:checked' ).val();
+             var explanation =  $('textarea#rating-explanation').val();
+             if(explanation==""){
+                error_message += "Please provide a short explanation for your rating."
+             }else{
+                 var rank=$("#"+video_id).attr("rank");
+                 var score=$("#"+video_id).attr("score");
+                 var noise=$("#"+video_id).attr("noise");
+                 //Log this rating
+                 $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/recommender/rate_resource", JSON.stringify(
+                   {
+                       "user": {{ request.user.id }},
+                       "session": "{{ request.session.session_key }}",
+                       "group": "{{ group }}",
+                       "section": current_section_id,
+                       "page": last_page_read["page"],
+                       "datetime": new Date().toIsoString(),
+                       "res_id": rec_resource_id,
+                       "rating": rating,//1 to 4 (1 not relevant, 2 relevant for the course but not for the section, 3 , 4 relevant for the section)
+                       "type": "video_relevance",
+                       "explanation": explanation,
+                       "extra": {"rank":rank,"score":score,"noise":noise}
+                   }));
+
+                 //Updates UI of recommended videos in the main window
+                 $("#"+video_id).attr("exp",explanation);
+                 $("#"+video_id).attr("rating",rating);
+                 $("#"+video_id).find(".video-thumbnail-div").empty();
+                 var root_src_img_rating = "{% static "reader/img/"%}";
+                 var src_img_rating = root_src_img_rating + rating + "-star.png";
+                 var video_section_content = $('<img class="video-thumbnail" src="//img.youtube.com/vi/'+video_id+'/0.jpg"><div class="rating">Your rating:</br><img src="'+src_img_rating+'" alt="'+rating+' star" height="15px"></img></div>');
+                 $("#"+video_id).find(".video-thumbnail-div").append(video_section_content);
+
+
+                 return;
+             }
+        }else{
+            error_message = "You have to select one of the categories for rating this video recommendation. " + error_message;
+        }
+        //Alert user of the error is doing
+        alert (error_message);
+    });
+
+
+    //or for example
+    var options = {
+        max_value: 3,
+        step_size: 1,
+    }
+
+}
+
+function loadActivityModal(act_url){
+     $(".modal-body").empty();
+
+    $(".quiz-title").html("Related learning activity");
+    $(".modal-footer").empty();
+    $(".modal-body").append('<iframe frameBorder="0" src="'+act_url+'" style="width:95%; height:95%;"></iframe>');
+
+    modal.style.display="block";
+}
+
+if (!Date.prototype.toISOString) {
+  (function() {
+
+    function pad(number) {
+      if (number < 10) {
+        return '0' + number;
+      }
+      return number;
+    }
+
+    Date.prototype.toISOString = function() {
+      return this.getUTCFullYear() +
+        '-' + pad(this.getUTCMonth() + 1) +
+        '-' + pad(this.getUTCDate()) +
+        'T' + pad(this.getUTCHours()) +
+        ':' + pad(this.getUTCMinutes()) +
+        ':' + pad(this.getUTCSeconds()) +
+        '.' + (this.getUTCMilliseconds() / 1000).toFixed(3).slice(2, 5) +
+        'Z';
+    };
+
+  }());
+}
+
+function updateRecommendations(){
+
+    var ir_groups = ["IRSpring2018"];
+    var java_groups = ["INFSCI0017Fall17"];
+
+    //if(java_groups.includes(group)){
+        /*recommended_activities = [{name:"sphereVolume",url:"http://adapt2.sis.pitt.edu/lti/launch?tool=codeworkout&sub=sphereVolume&svc=masterygrids&grp=SPLICELTI&usr=akhuseyinoglu&sid=39F8E&cid=368"},
+            {name:"Print Name Initials", url:"http://pawscomp2.sis.pitt.edu/pcex/pcex_v2/index.html?lang=JAVA&set=strings.substring&lineRec=1&svc=masterygrids&grp=ADL&usr=adl01&sid=2871C&cid=345&v=201803162257"}];
+
+        if($("#right").length == 0){
+            $('#reader-div').append('<div id="right">' +
+            '<a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded">Related activities<i class="fa fa-icon fa-bank"></i></a>' +
+            '      <div id="right-subpanel">' +
+            '      <div id="recommended-activities-list"></div>' +
+            '      </div>' +
+            '</div>');
+
+            $('#right').tabSlideOut({
+              tabLocation: 'right',
+              offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+              otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
+              handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
+              onLoadSlideOut: true, // open by default
+              clickScreenToCloseFilters: [
+                    'button', // ignore button clicks
+                    function(event){ // custom filter
+                        // filters need to return true to filter out the click passed in the parameter
+                        return $('#keepTabOpen').is(':checked');
+                    }
+              ]
+            });
+        }
+        for(var i=0; i<recommended_activities.length;i++){
+            var activity = recommended_activities[i];
+            var act_url = activity.url;
+            var act_name = activity.name;
+            var act_html = $('<div class="activity-div" id="'+act_name+'" url="'+act_url+'"></br><span>'+act_name+'</span></div>');
+            $('#recommended-activities-list').append(act_html);
+        }
+
+        var test_item_html_pcrs = "<div class='activity' url='https://vm003.teach.cs.toronto.edu/dev_serve/problems/java/358/embed?act=PCRS&sub=while2_coding&lineRec=1&svc=masterygrids&grp=ADL&usr=adl06&sid=3BA01&cid=361'>"+
+            "<span class='fa-stack fa-2x'>"+
+            "<i class='fa fa-circle fa-stack-2x' style='color: #a6e7a7;'></i>"+
+            "<i class='far fa-circle fa-stack-2x'></i>"+
+            "<i class='fas fa-laptop-code fa-stack-1x'></i>"+
+            "</span></div>";
+
+        var test_item_html_quizjet = "<div class='activity' url='http://pawscomp2.sis.pitt.edu/quizjet/displayQuiz.jsp?rdfID=jwhile2&act=Loops_while&sub=jWhile2&svc=progvis&lineRec=1&svc=masterygrids&grp=ADL&usr=adl01&sid=TEST'>"+
+            "<span class='fa-stack fa-2x'>"+
+            "<i class='fa fa-circle fa-stack-2x' style='color: #fb9999;'></i>"+
+            "<i class='far fa-circle fa-stack-2x'></i>"+
+            "<i class='fas fa-question fa-stack-1x'></i>"+
+            "</span></div>";
+
+        //var test_item_html =  "<div class='activity' url='https://vm003.teach.cs.toronto.edu/dev_serve/problems/java/358/embed?act=PCRS&sub=while2_coding&lineRec=1&svc=masterygrids&grp=ADL&usr=adl06&sid=3BA01&cid=361'><i class='circle-icon fa fa-question'></i></div>";
+        if(!$(".t.m1.xb.h5.y4d.ff3.fs3.fc1.sc0.ls2.ws3").has(".activity").length){
+            $(".t.m1.xb.h5.y4d.ff3.fs3.fc1.sc0.ls2.ws3").append(test_item_html_pcrs);
+            $(".t.m1.xb.h5.y4d.ff3.fs3.fc1.sc0.ls2.ws3").append(test_item_html_quizjet);
+        }
+
+        var codeworkouts_id="repeatEnd";
+        var test_item_html_codeworkouts = "<div id='"+codeworkouts_id+"' class='activity' url='http://adapt2.sis.pitt.edu/lti/launch?tool=codeworkout&sub=repeatEnd&svc=masterygrids&grp=SPLICELTI&usr=akhuseyinoglu&sid=39F8E&cid=368'>"+
+            "<span class='fa-stack fa-2x'>"+
+            "<i id='"+codeworkouts_id+"-icon'class='fa fa-circle fa-stack-2x' style='color: #D3D3D3;'></i>"+
+            "<i class='far fa-circle fa-stack-2x'></i>"+
+            "<i class='fas fa-keyboard fa-stack-1x'></i>"+
+            "</span></div>";
+
+        var animation_id="ae_while_v2";
+        var test_item_html_animation = "<div class='activity' url='https://acos.cs.hut.fi/pitt/jsvee/jsvee-java/animation?example-id=ae_while_v2&svc=masterygrids&grp=SPLICELTI&usr=akhuseyinoglu&sid=TEST&cid=361'>" +
+            "<span class='fa-stack fa-2x'>"+
+            "<i class='fa fa-circle fa-stack-2x' style='color: #a6e7a7;'></i>"+
+            "<i class='far fa-circle fa-stack-2x'></i>"+
+            "<i class='fas fa-indent fa-stack-1x'></i>"+
+            "</span></div>";
+
+        //var test_item_html_pcex_example = "<div class='activity' url='http://pawscomp2.sis.pitt.edu/pcex/pcex_v2/index.html?lang=JAVA&set=while_loops.win_percentage&lineRec=1&svc=masterygrids&grp=ADL&usr=akhuseyinoglu&sid=2871C&cid=368&v=201803162257'>"+
+        var pcex_id = "while_loops.win_percentage";
+        var test_item_html_pcex = "<div class='activity' url='http://pawscomp2.sis.pitt.edu/pcex/pcex_v2/index.html?lang=JAVA&set=while_loops.win_percentage&ch=JWinPercentageInput&svc=masterygrids&grp=ADL&usr=akhuseyinoglu&sid=TEST&cid=361&v=201803162257'>"+
+            "<span class='fa-stack fa-2x'>"+
+            "<i class='fa fa-circle fa-stack-2x' style='color: #fb9999;'></i>"+
+            "<i class='far fa-circle fa-stack-2x'></i>"+
+            "<i class='fas fa-stream fa-stack-1x'></i>"+
+            "</span></div>";
+
+
+        if(!$(".t.m1.xb.h5.y32.ff3.fs3.fc1.sc0.ls2.ws3").has(".activity").length) {
+            $(".t.m1.xb.h5.y32.ff3.fs3.fc1.sc0.ls2.ws3").append(test_item_html_codeworkouts);
+            $(".t.m1.xb.h5.y32.ff3.fs3.fc1.sc0.ls2.ws3").append(test_item_html_animation);
+            $(".t.m1.xb.h5.y32.ff3.fs3.fc1.sc0.ls2.ws3").append(test_item_html_pcex);
+        }
+
+        $(".activity").click(function(){
+            var act_url = $(this).attr('url');
+            loadActivityModal(act_url);
+        });
+
+
+        /*$(".activity-div").click(function(){
+            var act_url = $(this).attr('url');
+            loadActivityModal(act_url);
+        });*/
+    //}else {
+        recommended_videos = [];
+
+        //var old_section_id = last_page_read["resourceid"]+"-"+last_page_read["id"];
+        var old_section_id = last_page_read["docno"];
+
+        var new_section_id = map_old_new_section_ids[old_section_id];
+
+        new_section_id = "section-"+new_section_id.replace(/_/g, "-");
+
+        $.ajax({
+        //url: 'http://halley.exp.sis.pitt.edu/behnam/book/api.php?sid='+new_section_id,
+        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/recommender/recommended_videos?method=jaccard_lemmatized&page='+new_section_id+'&user='+user_id+'&group='+group_id+'&section='+current_section_id,
+        type: 'GET',
+        crossDomain: true,
+        success: function(data) {
+            console.log("Success!");
+            console.log(data);
+            //if(data["message"] == "OK"){
+                //recommended_videos = data["items"];
+                recommended_videos = data["recommended_videos"];
+                if($("#right").length == 0){
+                    $('#reader-div').append('<div id="right">' +
+                    '<a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded">Recommended videos  <i class="far fa-play-circle fa-lg"></i></a>' +
+                    '      <div id="right-subpanel">' +
+                    '      <div id="recommended-videos-list"></div>' +
+                    '      </div>' +
+                    '</div>');
+
+                    $('#right').tabSlideOut({
+                      tabLocation: 'right',
+                      offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+                      otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
+                      handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
+                      onLoadSlideOut: true, // open by default
+                      /* don't close this tab if a button is clicked, or if the checkbox is set */
+                      clickScreenToCloseFilters: [
+                            'button', // ignore button clicks
+                            function(event){ // custom filter
+                                // filters need to return true to filter out the click passed in the parameter
+                                return $('#keepTabOpen').is(':checked');
+                            }
+                      ]
+                    });
+                }
+
+                $('#recommended-videos-list').html("");
+
+                for(var i=0; i<recommended_videos.length;i++){
+                    //console.log(recommended_videos[i]);
+                    var youtube_video_url = recommended_videos[i].url
+                    var youtube_video_id = youtube_video_url.substring(youtube_video_url.indexOf("?v=")+3,youtube_video_url.length);
+                    var video_title = recommended_videos[i].title;
+                    var resource_id = recommended_videos[i].id;
+                    var rating_video = recommended_videos[i].rating;
+                    var explanation_rating = recommended_videos[i].explanation_rating;
+                    var score = recommended_videos[i].value;
+                    var rank = recommended_videos[i].rank;
+                    var noise = recommended_videos[i].noise;
+                    if(rating_video=="" || rating_video==-1){
+                        rating_video="no";
+                    }
+                    var root_src_img_rating = "{% static "reader/img/"%}";
+                    var src_img_rating = root_src_img_rating + rating_video + "-star.png";
+                    var video_section = $('<div class="video-div" id="'+youtube_video_id+'" rank="'+rank+'" score="'+score+'" noise="'+noise+'" rating="'+rating_video+'" exp="'+explanation_rating+'" resid="'+resource_id+'"><div class="video-thumbnail-div"><img class="video-thumbnail" src="//img.youtube.com/vi/'+youtube_video_id+'/0.jpg"><div class="rating">Your rating:</br><img src="'+src_img_rating+'" alt="'+rating_video+' star" height="15px"></img></div></div><div class="video-metadata-div"><span class="video-title">'+video_title+'</span></div></div>');
+                    $('#recommended-videos-list').append(video_section);
+                }
+                $(".video-div").click(function(){
+                    var video_id = $(this).attr('id');
+                    var res_id = $(this).attr('resid');
+                    var rating = $(this).attr('rating');
+                    var explanation_rating = $(this).attr('exp');
+                    var ranking = $(this).attr("rank");
+                    var score = $(this).attr("score");
+                    var is_noise = $(this).attr("noise")
+                    openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score,is_noise);
+                });
+            //}
+        },
+        error: function(data) { console.log(data); console.log('Failed!'); }
+    });
+    //}
+}
+
+
+function loadConceptMap(user_id, section_id, section_name, container_id){
+
+     var cm_section_id = section_id;
+     var cm_section_name = section_name;
+     if(d3.select("#toc-section-"+section_id).datum().depth==4){
+         cm_section_id=d3.select("#toc-section-"+section_id).datum().parent.id;
+         cm_section_name=d3.select("#toc-section-"+section_id).datum().parent.name;
+     }
+
+    //concept_map_width = $("#concept-map-div").innerWidth();
+    //concept_map_height =  $("#concept-map-div").innerHeight();
+
+    concept_map_width = $("#"+container_id).innerWidth();
+    concept_map_height =  $("#"+container_id).innerHeight();
+
+    $.ajax({
+        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/knowledgevis/concept_map?user='+user_id+'&section='+section_id,
+        type: 'GET',
+        crossDomain: true,
+        dataType: "json",
+        success: function(data) {
+
+            //Remove svg in case it existed before
+             $("#"+container_id).empty();
+
+             //Append instructions for interacting with the concept map
+            $("#"+container_id).append("<div class='concept-map-help-div'>"+
+                "<span id='concept-map-title'>Section: "+cm_section_name+"</span><br>"+
+                "Please use this space to create a concept map to visually represent the ideas and information that were covered in the section. Some automatically extracted concepts are provided. Feel free to add, modifiy or eliminate concepts as well as the relationships between them.</br>"+
+                "<button type='button' class='collapsible'>How to edit the concept map?</button>" +
+                "<div class='content-collapsible'>" +
+                "  Create concept: shift key + click </br>Delete concept: click concept + delete key</br>Rename concept: shift key + click concept</br> Create link: shift key + click source concept + drag cursor to target concept </br>Delete link: click link + delete key</br>Rename concept: shift key + click link" +
+                "</div>"+
+                //"<button type='button' class='collapsible'>Tips for creating concept maps</button>" +
+                "<div class='content-collapsible'>" +
+                "  " +
+                "</div>"+
+                "</div>");
+
+            var coll = document.getElementsByClassName("collapsible");
+            var i;
+
+            for (i = 0; i < coll.length; i++) {
+              coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                } else {
+                  content.style.display = "block";
+                }
+              });
+            }
+
+            var concept_map_svg = d3.select("#"+container_id).append("svg")
+                .attr("class","svg-concept-map")
+                //.attr("width",window.innerWidth)
+                //.attr("height",window.innerHeight)
+                .attr("width",concept_map_width)
+                .attr("height",concept_map_height)
+                .attr("preserveAspectRatio", "xMinYMin meet")
+                .attr("viewBox", "0 0 "+concept_map_width+" "+concept_map_height);
+               // .attr("viewBox", "0 0 460 520");
+
+            if(data.result){
+                var jsonCM = data.conceptMap;
+	        		var nodes = jsonCM.nodes;
+	        		var edges = jsonCM.edges;
+	        		edges.forEach(function(e, i){
+	                    edges[i] = {source: nodes.filter(function(n){return n.id == e.source;})[0],
+	                                   target: nodes.filter(function(n){return n.id == e.target;})[0],
+	                                   type: e.type,
+	                                   title: e.title};//code added by jbarriapineda to include type of links in uploaded json to draw the graph
+	                  });
+	        		var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id);
+	        		graph.setIdCt(nodes.length + 1);
+	        		graph.updateGraph();
+	        		$('#colorpicker').change(function(){
+	        	        var nodeColor = $(this).find("option:selected").attr('value');
+	        	        graph.state.nodeColor=nodeColor;
+	        	    });
+                //drawExistentConceptMap(svg,cmid,user_id);
+            }else{
+                var automatic_concepts = [];
+                var json_new_graph_string = '{"nodes":[{"title":"Concept1","id":0,"x":204.2353515625,"y":158.853515625,"color":"#c2c2c2","stroke":0},{"id":2,"title":"Concept2","x":126.33846282958984,"y":233.52301025390625,"color":"#c2c2c2","stroke":0},{"id":3,"title":"Concept3","x":150.94239044189453,"y":332.99365234375,"color":"#c2c2c2","stroke":0},{"id":4,"title":"Concept4","x":281.6811828613281,"y":233.1337890625,"color":"#c2c2c2","stroke":0},{"id":5,"title":"Concept5","x":253.23483276367188,"y":334.7513427734375,"color":"#c2c2c2","stroke":0}],"edges":[]}';
+
+                //TODO: make this process automatic (create a table in the database in order to pull this information, given an automatic extraction method)
+                //Section 4.1
+                if(section_id=="2105"){
+                    automatic_concepts = ["disk","chunk","hardware basic","caching","block","byte","ir system","seek time","megabyte","data transfer"];
+                }
+                //Section 4.2
+                if(section_id=="2106") {
+                    automatic_concepts = ["block","sort based indexing", "sorting", "byte", "token", "posting list","term","main memory","inverted index","key"]
+                }
+                //Section 4.3
+                if(section_id=="2107"){
+                    automatic_concepts = ["block", "memory", "token", "single pass", "posting list", "sorting", "dictionary term", "compression", "data structure", "algorithm"];
+                }
+                //Section 4.4
+                if (section_id=="2108"){
+                    automatic_concepts=["parser","inverter","distributed indexing","map","index construction","split","key pair","node","chunk","mapping"];
+                }
+                //Section 4.5
+                if(section_id=="2109"){
+                    automatic_concepts=["auxiliary index","merge","main index","logarithmic merging","posting list","memory","scratch","dynamic indexing","query processing","file system"];
+                }
+                //Section 4.6
+                if(section_id=="2110") {
+                    automatic_concepts=["user","posting list","block","sort based indexing","result list","positional index","query processing","spelling correction","list document","merging"];
+                }
+                //Section 5.1
+                if(section_id=="2113" || section_id=="2114" || section_id=="2115"){
+                    automatic_concepts=["heap's law","zipf's law","stop word","folding","vocabulary size","stemming","reuters rcv","token","rank","frequent term"];
+                }
+                //Section 5.2
+                if(section_id=="2116" || section_id=="2117" || section_id=="2118"){
+                    automatic_concepts=["binary search","term pointer","term block","front coding","compressed dictionary","reuters rcv","dictionary compression","disk seek","search system","dictionary term"];
+                }
+                //Section 5.3
+                if(section_id=="2119" || section_id=="2120" || section_id=="2121"){
+                    automatic_concepts=["unary code","reuters rcv","bit word","compression ratio","variable byte code","posting file","posting list","entropy","index compression","compressed index"];
+                }
+                //Section 1.3
+                if(section_id=="2157"){
+                    automatic_concepts=["merge algorithm","result list","intersection operation","conjunctive query", "query processing", "linear", "posting list intersection", "optimization", "dictionary", "inverted index"]
+                }
+                //Section 1.4
+                if(section_id=="2158"){
+                    automatic_concepts = ["term","extended boolean model","web search engine", "retrieval system", "precision", "phrase search", "free text query", "document retrieval", "index", "indexing"]
+                }
+                //Section 6.1 and its subsections
+                if(section_id=="2160" || section_id=="2161" || section_id=="2162" || section_id=="2163"){
+                    automatic_concepts = ["training example","boolean","field","weighted zone scoring","zone index","relevance judgment","weighted zone score","body zone","dictionary","query term"];
+                }
+                //Section 6.2 and its subsections
+                if(section_id == "2164" || section_id=="2165" || section_id=="2166"){
+                    automatic_concepts = ["query term","inverse document frequency","collection frequency","tf idf weight","tf weight","weighting scheme","relevance","vector space model","term weighting", "weighting function"]
+                }
+                //Section 6.3
+                if(section_id == "2167" || section_id=="2168" || section_id=="2169" || section_id=="2170"){
+                    automatic_concepts = ["document vector","dot product","vector space model","query vector","cosine similarity","weighting scheme","tf idf weight","unit vector","term weighting","query term"];
+                }
+                //Section 6.4
+                if(section_id == "2171" || section_id=="2172" || section_id=="2173" || section_id=="2174" || section_id=="2175"){
+                    automatic_concepts = ["cosine normalization","document length normalization","term frequency","tf idf","normalized document","euclidean length","term weighting","document vector","query vector","euclidean distance"];
+                }
+                //Section 12.1
+                if(section_id == "2178" || section_id=="2179" || section_id=="2180" || section_id=="2181"){
+                    automatic_concepts = ["language model","multinomial distribution","likelihood ratio","multinomial coefficient","multinomial model","term vocabulary","context","topic","text","training sampl"];
+                }
+                //Section 12.2
+                if(section_id == "2182" || section_id=="2183" || section_id=="2184" || section_id=="2185"){
+                    automatic_concepts = ["language modeling approach","language model","mle","term weighting","document collection","query likelihood model","length normalization","collection frequency","term frequency","average precision"];
+                }
+                //Section 12.3
+                if(section_id == "2186"){
+                    automatic_concepts = ["idf","language modeling approach","performance","unigram model","language model","term frequency","type","xml retrieval","text retrieval","probabilistic approach"];
+                }
+                //Section 12.4
+                if(section_id == "2187"){
+                    automatic_concepts = ["translation model","language modeling approach","document likelihood model","relevance feedback model","document language model","probability distribution","ranking function","information theory","document retrieval","ad hoc retrieval"];
+                }
+
+                if(automatic_concepts.length==0){
+                    automatic_concepts = ["Concept1","Concept2","Concept3","Concept4","Concept5"];
+                }
+
+                var sample_automatic_concepts = getRandomSubarray(automatic_concepts,5);
+
+                for(var i=0;i<sample_automatic_concepts.length;i++){
+                    var concept_name = "Concept"+(i+1);
+                    json_new_graph_string = json_new_graph_string.replace(concept_name,sample_automatic_concepts[i]);
+                }
+
+                var json_new_graph = JSON.parse(json_new_graph_string);
+
+                var nodes = json_new_graph.nodes;
+                var edges = json_new_graph.edges;
+
+                var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id, group_id, session);
+
+                graph.setIdCt(nodes.length+1);
+                graph.updateGraph();
+
+                //$('#colorpicker').change(function(){
+                //        var nodeColor = $(this).find("option:selected").attr('value');
+                //        graph.state.nodeColor=nodeColor;
+                //});
+                //drawNewConceptMap(concept_map_svg,user_id);
+            }
+
+
+        },
+        error: function(data) { console.log(data); console.log('Failed!'); }
+    });
+
+    function getRandomSubarray(arr, size) {
+        var shuffled = arr.slice(0), i = arr.length, temp, index;
+        while (i--) {
+            index = Math.floor((i + 1) * Math.random());
+            temp = shuffled[index];
+            shuffled[index] = shuffled[i];
+            shuffled[i] = temp;
+        }
+        return shuffled.slice(0, size);
+    }
+}
+
 </script>
+
 </body>
 </html>

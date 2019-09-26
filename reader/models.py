@@ -33,7 +33,7 @@ class Resource(models.Model):
 
 class ReadingLog(models.Model):
     id = models.AutoField(primary_key=True)
-    datetime = models.DateTimeField(default=timezone.now())
+    datetime = models.DateTimeField(default=timezone.now)
     session = models.CharField(max_length=100, default="test")
     user = models.ForeignKey(User)
     group = models.ForeignKey(Group, default=1)
@@ -45,3 +45,24 @@ class ReadingLog(models.Model):
     zoom = models.DecimalField(max_digits=4,decimal_places=2,default=1.0)
     extra = JSONField(blank=True)
 
+class Feedback(models.Model):
+    datetime = models.DateTimeField(default=timezone.now)
+    session = models.CharField(max_length=100, default="test")
+    user = models.ForeignKey(User)
+    group = models.ForeignKey(Group, default=1)
+    section = models.CharField(max_length=100, default="test")
+    resource = models.CharField(max_length=100, default="book")
+    page = models.IntegerField(default=0)
+    type = models.CharField(max_length=100, default="test") #Type of feedback: difficulty (diff) or relevance (rel)
+    target_type = models.CharField(max_length=100, default="test") #Type of target: video, page, etc.
+    target_id = models.CharField(max_length=100, default="test")
+    value = models.CharField(max_length=100, default="-1")
+    explanation = models.CharField(max_length=100, default="")
+
+class Assignment(models.Model):
+    user = models.ForeignKey(User)
+    group = models.ForeignKey(Group, default=1)
+    section = models.CharField(max_length=100, default="test")
+    type = models.CharField(max_length=100, default="test")  # Type of assignment: e.g. concept map
+    datetime_start = models.DateTimeField(default=timezone.now)
+    datetime_end = models.DateTimeField(default=timezone.now)
