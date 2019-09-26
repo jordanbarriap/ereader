@@ -1234,7 +1234,7 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
         $('#page-container').annotator()
                  .annotator('addPlugin', 'Store', {
           // The endpoint of the store on your server.
-          prefix: "/annotator",
+          prefix: extra_base_url+"/annotator",
 
           // Attach the uri of the current page to all annotations to allow search.
           annotationData: {

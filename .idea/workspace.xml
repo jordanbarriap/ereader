@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b8f20c7-f21a-4586-be26-ba4ef801d56b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/educational_video_loader.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/reader/static/reader/css/recommender.css" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/reader/reader.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/urls.py" afterPath="$PROJECT_DIR$/api/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ereader/settings.py" afterPath="$PROJECT_DIR$/ereader/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/quiz/models.py" afterPath="$PROJECT_DIR$/quiz/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/models.py" afterPath="$PROJECT_DIR$/reader/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/static/reader/css/modal.css" afterPath="$PROJECT_DIR$/reader/static/reader/css/modal.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/static/reader/css/reader.css" afterPath="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/templates/reader.html" afterPath="$PROJECT_DIR$/reader/templates/reader.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/recommender/models.py" afterPath="$PROJECT_DIR$/recommender/models.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,8 +22,8 @@
       <file leaf-file-name="reader.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3234" column="41" lean-forward="true" selection-start-line="3234" selection-start-column="41" selection-end-line="3234" selection-end-column="41" />
+            <state relative-caret-position="183">
+              <caret line="1236" column="29" lean-forward="false" selection-start-line="1236" selection-start-column="24" selection-end-line="1236" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -55,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/reader/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1005">
-              <caret line="67" column="61" lean-forward="true" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
+              <caret line="67" column="61" lean-forward="false" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
               <folding>
                 <element signature="e#0#48#0" expanded="true" />
               </folding>
@@ -111,7 +99,7 @@
         <entry file="file://$PROJECT_DIR$/api/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="285">
-              <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+              <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -139,7 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cosine_similarity</find>
       <find>def quiz</find>
       <find>recommended</find>
       <find>concept-map-div</find>
@@ -164,11 +151,12 @@
       <find>jaccard</find>
       <find>api</find>
       <find>localhost:8000</find>
-      <find>annotator</find>
       <find>knowledge</find>
       <find>recommender</find>
       <find>META.</find>
       <find>LOCALHOST</find>
+      <find>annotator</find>
+      <find>base_</find>
     </findStrings>
     <replaceStrings>
       <replace>a0a0a0</replace>
@@ -786,7 +774,7 @@
     <entry file="file://$PROJECT_DIR$/api/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="21" column="1" lean-forward="true" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
+          <caret line="21" column="1" lean-forward="false" selection-start-line="21" selection-start-column="1" selection-end-line="21" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -818,7 +806,7 @@
     <entry file="file://$PROJECT_DIR$/reader/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1005">
-          <caret line="67" column="61" lean-forward="true" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
+          <caret line="67" column="61" lean-forward="false" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
           <folding>
             <element signature="e#0#48#0" expanded="true" />
           </folding>
@@ -843,8 +831,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3234" column="41" lean-forward="true" selection-start-line="3234" selection-start-column="41" selection-end-line="3234" selection-end-column="41" />
+        <state relative-caret-position="183">
+          <caret line="1236" column="29" lean-forward="false" selection-start-line="1236" selection-start-column="24" selection-end-line="1236" selection-end-column="29" />
           <folding />
         </state>
       </provider>
