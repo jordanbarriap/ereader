@@ -446,9 +446,10 @@ p.question-statement{
     border-color: red;
     border-width: 2px;
     width: 200px;
-    max-height: 350px;
     bottom: 20px !important;
+    height: 85% !important;
     border-radius: 6px;
+    z-index:999;
 }
 #right .handle {
     background-color: red;

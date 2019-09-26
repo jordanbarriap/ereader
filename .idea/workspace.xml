@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b8f20c7-f21a-4586-be26-ba4ef801d56b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/templates/reader.html" afterPath="$PROJECT_DIR$/reader/templates/reader.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/api/views.py" afterPath="$PROJECT_DIR$/api/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/static/reader/css/reader.css" afterPath="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,17 +25,17 @@
         <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
-              <caret line="1236" column="29" lean-forward="false" selection-start-line="1236" selection-start-column="24" selection-end-line="1236" selection-end-column="29" />
+              <caret line="2643" column="8" lean-forward="false" selection-start-line="2643" selection-start-column="7" selection-end-line="2643" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="graph-editor.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/css/graph-editor.css">
+      <file leaf-file-name="recommender.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reader/static/reader/css/recommender.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="303" column="26" lean-forward="false" selection-start-line="303" selection-start-column="26" selection-end-line="303" selection-end-column="26" />
+            <state relative-caret-position="0">
+              <caret line="0" column="30" lean-forward="false" selection-start-line="0" selection-start-column="30" selection-end-line="0" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -51,26 +53,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="educational_video_loader.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/educational_video_loader.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3750">
-              <caret line="270" column="41" lean-forward="false" selection-start-line="270" selection-start-column="41" selection-end-line="270" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/api/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6410">
-              <caret line="430" column="55" lean-forward="false" selection-start-line="430" selection-start-column="55" selection-end-line="430" selection-end-column="55" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="0">
+              <caret line="0" column="7" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="7" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -80,6 +68,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
               <caret line="946" column="34" lean-forward="false" selection-start-line="946" selection-start-column="34" selection-end-line="946" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="reader.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reader/static/reader/css/reader.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="433" column="42" lean-forward="true" selection-start-line="433" selection-start-column="42" selection-end-line="433" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -127,7 +125,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>def quiz</find>
       <find>recommended</find>
       <find>concept-map-div</find>
       <find>video-load</find>
@@ -157,6 +154,7 @@
       <find>LOCALHOST</find>
       <find>annotator</find>
       <find>base_</find>
+      <find>right:</find>
     </findStrings>
     <replaceStrings>
       <replace>a0a0a0</replace>
@@ -188,15 +186,15 @@
         <option value="$PROJECT_DIR$/api/urls.py" />
         <option value="$PROJECT_DIR$/reader/static/reader/css/modal.css" />
         <option value="$PROJECT_DIR$/reader/static/reader/css/recommender.css" />
-        <option value="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
         <option value="$PROJECT_DIR$/recommender/models.py" />
         <option value="$PROJECT_DIR$/knowledgevis/static/knowledgevis/css/graph-editor.css" />
-        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/educational_video_loader.py" />
         <option value="$PROJECT_DIR$/reader/models.py" />
         <option value="$PROJECT_DIR$/ereader/settings.py" />
         <option value="$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js" />
+        <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/reader/templates/reader.html" />
+        <option value="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
       </list>
     </option>
   </component>
@@ -252,28 +250,38 @@
             <path>
               <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
               <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="knowledgevis" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="knowledgevis" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="knowledgevis" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
-              <item name="knowledgevis" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="knowledgevis" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ereader" type="462c0819:PsiDirectoryNode" />
               <item name="quiz" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="reader" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ereader" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ereader" type="462c0819:PsiDirectoryNode" />
+              <item name="recommender" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -483,9 +491,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="51" column="12" lean-forward="false" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -541,9 +547,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="51" column="12" lean-forward="false" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -575,9 +579,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="51" column="12" lean-forward="true" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -625,9 +627,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5775">
           <caret line="411" column="147" lean-forward="false" selection-start-line="411" selection-start-column="147" selection-end-line="411" selection-end-column="147" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -735,38 +735,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reader/static/reader/css/reader.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7455">
-          <caret line="497" column="20" lean-forward="false" selection-start-line="497" selection-start-column="20" selection-end-line="497" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reader/static/reader/css/recommender.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="30" lean-forward="false" selection-start-line="0" selection-start-column="30" selection-end-line="0" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/educational_video_loader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3750">
           <caret line="270" column="41" lean-forward="false" selection-start-line="270" selection-start-column="41" selection-end-line="270" selection-end-column="41" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/api/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6410">
-          <caret line="430" column="55" lean-forward="false" selection-start-line="430" selection-start-column="55" selection-end-line="430" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -813,14 +787,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/css/graph-editor.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="303" column="26" lean-forward="false" selection-start-line="303" selection-start-column="26" selection-end-line="303" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor-functions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -829,10 +795,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="7" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reader/static/reader/css/recommender.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="30" lean-forward="false" selection-start-line="0" selection-start-column="30" selection-end-line="0" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/css/graph-editor.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3987">
+          <caret line="303" column="26" lean-forward="false" selection-start-line="303" selection-start-column="26" selection-end-line="303" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reader/static/reader/css/reader.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="433" column="42" lean-forward="true" selection-start-line="433" selection-start-column="42" selection-end-line="433" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
-          <caret line="1236" column="29" lean-forward="false" selection-start-line="1236" selection-start-column="24" selection-end-line="1236" selection-end-column="29" />
+          <caret line="2643" column="8" lean-forward="false" selection-start-line="2643" selection-start-column="7" selection-end-line="2643" selection-end-column="8" />
           <folding />
         </state>
       </provider>

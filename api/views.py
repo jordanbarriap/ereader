@@ -428,7 +428,9 @@ def recommended_videos(request):
 
 
         videos_json = []
-        top_similar_videos_ids = similar_videos_ids[:23]
+        #TODO: add this as a parameter in the api call
+        num_top_videos = 15
+        top_similar_videos_ids = similar_videos_ids[:num_top_videos]
 
         count=0
         for video_dict in top_similar_videos_ids:
