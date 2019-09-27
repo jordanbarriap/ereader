@@ -3282,6 +3282,9 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
                 graph.setIdCt(nodes.length+1);
                 graph.updateGraph();
 
+                //Register in db the first randomly generated concept map from the automatically extracted concepts (avoid potential system gaming)
+                graph.logAction("initial-cm",cm_section_id,"");
+
                 //$('#colorpicker').change(function(){
                 //        var nodeColor = $(this).find("option:selected").attr('value');
                 //        graph.state.nodeColor=nodeColor;

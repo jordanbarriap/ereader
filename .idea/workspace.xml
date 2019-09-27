@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b8f20c7-f21a-4586-be26-ba4ef801d56b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/static/reader/css/recommender.css" afterPath="$PROJECT_DIR$/reader/static/reader/css/recommender.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/templates/reader.html" afterPath="$PROJECT_DIR$/reader/templates/reader.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +22,8 @@
       <file leaf-file-name="reader.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="2795" column="200" lean-forward="true" selection-start-line="2795" selection-start-column="200" selection-end-line="2795" selection-end-column="200" />
+            <state relative-caret-position="439">
+              <caret line="3284" column="142" lean-forward="false" selection-start-line="3284" selection-start-column="142" selection-end-line="3284" selection-end-column="142" />
               <folding />
             </state>
           </provider>
@@ -66,7 +65,7 @@
         <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
-              <caret line="946" column="34" lean-forward="false" selection-start-line="946" selection-start-column="34" selection-end-line="946" selection-end-column="34" />
+              <caret line="673" column="28" lean-forward="false" selection-start-line="673" selection-start-column="18" selection-end-line="673" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -134,11 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>concept-map-div</find>
-      <find>video-load</find>
-      <find>openvideowin</find>
-      <find>rating</find>
-      <find>is_noise</find>
       <find>noise</find>
       <find>rate_resource</find>
       <find>help</find>
@@ -150,7 +144,6 @@
       <find>arial</find>
       <find>link</find>
       <find>cosine</find>
-      <find>loadconceptmap</find>
       <find>This week you have</find>
       <find>jaccard</find>
       <find>api</find>
@@ -164,6 +157,12 @@
       <find>right:</find>
       <find>openvideowindow</find>
       <find>btn</find>
+      <find>context</find>
+      <find>page&quot;</find>
+      <find>loadconceptmap</find>
+      <find>conceptmapping</find>
+      <find>target</find>
+      <find>logAction(</find>
     </findStrings>
     <replaceStrings>
       <replace>a0a0a0</replace>
@@ -770,14 +769,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="946" column="34" lean-forward="false" selection-start-line="946" selection-start-column="34" selection-end-line="946" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/reader/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1005">
@@ -836,10 +827,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="673" column="28" lean-forward="false" selection-start-line="673" selection-start-column="18" selection-end-line="673" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="2795" column="200" lean-forward="true" selection-start-line="2795" selection-start-column="200" selection-end-line="2795" selection-end-column="200" />
+        <state relative-caret-position="439">
+          <caret line="3284" column="142" lean-forward="false" selection-start-line="3284" selection-start-column="142" selection-end-line="3284" selection-end-column="142" />
           <folding />
         </state>
       </provider>
