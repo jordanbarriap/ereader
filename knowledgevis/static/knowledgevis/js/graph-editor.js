@@ -24,6 +24,8 @@
       strokeType: 0, //Added by jbarriapineda | current type of node stroke selected by the user ["solid":0,"dashed":1]
       conceptList: [],
       userID: userID,
+      groupID: grpID,
+      sessionID: session,
       cmID: cmID
       
     };
@@ -944,7 +946,7 @@
     var concept_map = {"nodes": thisGraph.nodes, "edges": saveEdges};
     var action_json = {"type": action, "target": target, "val": value};
     //Register a log of concept mapping activity
-    $.post( "http://localhost:8000/api/knowledgevis/concept_map_log", JSON.stringify({ user: this.state.userID, group: "IRSpring2018", section: this.state.cmID, session: "test", conceptMap: concept_map, action: action_json}) );
+    $.post( "http://localhost:8000/api/knowledgevis/concept_map_log", JSON.stringify({ user: this.state.userID, group: this.state.groupID, section: this.state.cmID, session: this.state.sessionID, conceptMap: concept_map, action: action_json}) );
 
   }
 

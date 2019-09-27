@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b8f20c7-f21a-4586-be26-ba4ef801d56b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/reader/templates/reader.html" afterPath="$PROJECT_DIR$/reader/templates/reader.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js" afterPath="$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="reader.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="reader.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="439">
-              <caret line="3284" column="142" lean-forward="false" selection-start-line="3284" selection-start-column="142" selection-end-line="3284" selection-end-column="142" />
+            <state relative-caret-position="183">
+              <caret line="2914" column="17" lean-forward="false" selection-start-line="2914" selection-start-column="8" selection-end-line="2914" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -61,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="graph-editor.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="graph-editor.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="673" column="28" lean-forward="false" selection-start-line="673" selection-start-column="18" selection-end-line="673" selection-end-column="28" />
+            <state relative-caret-position="173">
+              <caret line="83" column="17" lean-forward="false" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -133,9 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>noise</find>
-      <find>rate_resource</find>
-      <find>help</find>
       <find>jacca</find>
       <find>rate</find>
       <find>recommend</find>
@@ -163,6 +160,9 @@
       <find>conceptmapping</find>
       <find>target</find>
       <find>logAction(</find>
+      <find>irspring2018</find>
+      <find>ir_groups</find>
+      <find>test</find>
     </findStrings>
     <replaceStrings>
       <replace>a0a0a0</replace>
@@ -198,11 +198,11 @@
         <option value="$PROJECT_DIR$/educational_video_loader.py" />
         <option value="$PROJECT_DIR$/reader/models.py" />
         <option value="$PROJECT_DIR$/ereader/settings.py" />
-        <option value="$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js" />
         <option value="$PROJECT_DIR$/api/views.py" />
         <option value="$PROJECT_DIR$/reader/static/reader/css/reader.css" />
         <option value="$PROJECT_DIR$/reader/static/reader/css/recommender.css" />
         <option value="$PROJECT_DIR$/reader/templates/reader.html" />
+        <option value="$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js" />
       </list>
     </option>
   </component>
@@ -827,18 +827,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
+    <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
-          <caret line="673" column="28" lean-forward="false" selection-start-line="673" selection-start-column="18" selection-end-line="673" selection-end-column="28" />
+          <caret line="2914" column="17" lean-forward="false" selection-start-line="2914" selection-start-column="8" selection-end-line="2914" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reader/templates/reader.html">
+    <entry file="file://$PROJECT_DIR$/knowledgevis/static/knowledgevis/js/graph-editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="3284" column="142" lean-forward="false" selection-start-line="3284" selection-start-column="142" selection-end-line="3284" selection-end-column="142" />
+        <state relative-caret-position="173">
+          <caret line="83" column="17" lean-forward="false" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="17" />
           <folding />
         </state>
       </provider>
