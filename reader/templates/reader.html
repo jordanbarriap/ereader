@@ -2778,8 +2778,13 @@ function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score
 
     //Helps to mark the rating that was provided by the student in the past
     var checked = ["","","",""];
-    if(rating!="" && rating!=-1){
+    var icon_rate_btn = "fa-square";
+    var class_rate_btn = "unchecked";
+
+    if(rating!="" && rating!="no"){
         checked[rating]="checked";
+        icon_rate_btn = "fa-check-square";
+        class_rate_btn = "checked";
     }
 
     var ratings_div =
@@ -2790,7 +2795,7 @@ function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score
         '<img src="{% static "reader/img/1-star.png" %}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" '+checked[1]+'> Relevant for the course but not for the current section<br>' +
         '<img src="{% static "reader/img/2-star.png" %}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" '+checked[2]+'> Partly relevant for the current section<br>'+
         '<img src="{% static "reader/img/3-star.png" %}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" '+checked[3]+'> Relevant for the current section<br>'+
-        '<div id="rating-exp">Why? (please, provide a short explanation)</div><textarea id="rating-explanation" rows="3" cols="100">'+explanation_rating+'</textarea><button id="rate-btn">Rate video <i class="far fa-star"></i></button>' +
+        '<div id="rating-exp">Why? (please, provide a short explanation)</div><textarea id="rating-explanation" rows="3" cols="100">'+explanation_rating+'</textarea><button class="'+class_rate_btn+'-rate-btn" id="rate-btn">Rate video <i class="far '+icon_rate_btn+'"></i></button>' +
         '</div>'+
         '<div id="relevance-reason-div" style="display:none;">Why?<select id="relevance-reason-cb">' +
         '  <option value="r1">Reason a</option>' +
@@ -2798,7 +2803,7 @@ function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score
         '  <option value="r3">Reason c</option></select>' +
         '</div></div>' +
         '<div id="concept-mapping-div-modal">'+
-        '<div id="concept-map-prompt">If you think the video is relevant please use the concept map to describe the new information that the video addresses (concept or relationship between concepts):</div>' +
+        '<div id="concept-map-prompt">If you think the video is relevant for the section (you rated it with either <img src="{% static "reader/img/2-star.png" %}" alt="2 star" height="20" width="40"> or <img src="{% static "reader/img/3-star.png" %}" alt="2 star" height="20" width="60">) please use the concept map to describe the new information that the video addresses (concept or relationship between concepts):</div>' +
         '<div id="concept-map-div-modal"></div>'+
         '</div></div>';
 
@@ -2836,17 +2841,22 @@ function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score
                        "type": "video_relevance",
                        "explanation": explanation,
                        "extra": {"rank":rank,"score":score,"noise":noise}
-                   }));
+                   })).done(function(data){
+                     //Updates UI of recommended videos in the main window
+                     $("#"+video_id).attr("exp",explanation);
+                     $("#"+video_id).attr("rating",rating);
+                     $("#"+video_id).find(".video-thumbnail-div").empty();
+                     var root_src_img_rating = "{% static "reader/img/"%}";
+                     var src_img_rating = root_src_img_rating + rating + "-star.png";
+                     var video_section_content = $('<img class="video-thumbnail" src="//img.youtube.com/vi/'+video_id+'/0.jpg"><div class="rating">Your rating:</br><img src="'+src_img_rating+'" alt="'+rating+' star" height="15px"></img></div>');
+                     $("#"+video_id).find(".video-thumbnail-div").append(video_section_content);
 
-                 //Updates UI of recommended videos in the main window
-                 $("#"+video_id).attr("exp",explanation);
-                 $("#"+video_id).attr("rating",rating);
-                 $("#"+video_id).find(".video-thumbnail-div").empty();
-                 var root_src_img_rating = "{% static "reader/img/"%}";
-                 var src_img_rating = root_src_img_rating + rating + "-star.png";
-                 var video_section_content = $('<img class="video-thumbnail" src="//img.youtube.com/vi/'+video_id+'/0.jpg"><div class="rating">Your rating:</br><img src="'+src_img_rating+'" alt="'+rating+' star" height="15px"></img></div>');
-                 $("#"+video_id).find(".video-thumbnail-div").append(video_section_content);
+                     //Updates the button to show feedback that the rating was stored in db
+                     $("#rate-btn").empty();
+                     $("#rate-btn").append('Rate video <i class="far fa-check-square"></i>');
+                     $("#rate-btn").addClass("checked-rate-btn").removeClass("unchecked-rate-btn")
 
+                     });
 
                  return;
              }
