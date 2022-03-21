@@ -23,6 +23,7 @@ class Resource(models.Model):
 
 
 class Similarity(models.Model):
+    id = models.AutoField(primary_key=True)
     resource_id = models.ForeignKey(Resource)
     id_textual_resource = models.CharField(max_length=100, default="page")
     type = models.CharField(max_length=100, default="cosine")

@@ -11,11 +11,15 @@ from quiz import models as quiz_models
 from django.db import connection
 from django.db.models import Count
 
+from django.conf import settings
+from django.contrib.auth import login
+
 import ast
 
 #Global variables
 user_id = 0
 group_id = 0
+course_id = 0
 num_students = 0
 
 section_pages_info = []
@@ -38,6 +42,7 @@ def load_course(request,url_group_id):
     global user_id, group_id, num_students, read_pages_dict, group_read_pages_dict, quizzes_correct_dict, quizzes_incorrect_dict, group_quizzes_correct_dict, group_quizzes_incorrect_dict
     group_id = url_group_id
     course_id = Group.objects.only("course").get(id=group_id).course.id
+
     if request.user.is_authenticated():
         user_id = request.user.id
         try:
@@ -136,6 +141,72 @@ def load_course(request,url_group_id):
         final_json_dict = ast.literal_eval(final_json_wo_unicode)
         return render(request, "reader.html", final_json_dict)
 
+def load_course_with_section_id(request,url_course_id,url_section_id):
+    global user_id, group_id, course_id, num_students, read_pages_dict, group_read_pages_dict, quizzes_correct_dict, quizzes_incorrect_dict, group_quizzes_correct_dict, group_quizzes_incorrect_dict
+#     #group_id = url_group_id
+#     #course_id = Group.objects.only("course").get(id=group_id).course.id
+    
+    group_id = request.GET.get('grp')
+    course_id = url_course_id
+    section_id = url_section_id
+    username = request.GET.get('usr')
+    cid = request.GET.get('cid')
+    sid = request.GET.get('sid')
+
+    #Force login without using password
+    user = User.objects.get(username=username)
+    user_id = user.id
+    user.backend = 'django.contrib.auth.backends.ModelBackend'
+    login(request,user)
+
+    try:
+    #       #last_page_read = ReadingLog.objects.values().filter(user__id=user_id, group__id=group_id, action="page-load",section=section_id).latest("datetime")
+    #       #TO-DO: do not forget to add group_id to the query
+          last_page_read = ReadingLog.objects.values().filter(user__id=user_id, action="page-load",section=section_id).latest("datetime")
+          last_page_read["datetime"] = str(last_page_read["datetime"])
+          last_page_read["zoom"] = float(last_page_read["zoom"])
+
+    except ReadingLog.DoesNotExist:
+          last_page_read = {}
+
+    course_json = Course.objects.get(id=course_id)
+
+    #num_students = Group.objects.get(id= group_id).students.count()
+    hierarchical_structure = course_json.course_structure
+
+    read_pages_dict = {}
+    group_read_pages_dict = {}
+
+    read_pages_queryset = ReadingLog.objects.raw("SELECT id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY user_id, section, page;")
+
+    for section_page in read_pages_queryset:
+        section = section_page.section
+        page = int(section_page.page)
+        if section not in read_pages_dict.keys():
+            read_pages_dict[section] = [page]
+        else:
+            read_pages_dict[section].append(page)
+
+    group_read_pages_queryset = ReadingLog.objects.raw(
+        "SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id<>" + str(
+            user_id) + " AND group_id='" + group_id + "' GROUP BY user_id, section, page;")
+
+    for section_page in group_read_pages_queryset:
+        section = section_page.section
+        page = int(section_page.page)
+        if section not in group_read_pages_dict.keys():
+            group_read_pages_dict[section] = [page]
+        else:
+            group_read_pages_dict[section].append(page)
+
+    calculate_reading_progress_no_quiz(hierarchical_structure)
+
+    final_json = {"group":group_id, "course":{"id":course_json.id, "name": course_json.name}, "course_hierarchical": hierarchical_structure, "last_page_read": last_page_read, "section_id":section_id, "cid": cid, "sid":sid ,"username": username}
+    final_json_wo_unicode = json.dumps(final_json)
+    final_json_dict = ast.literal_eval(final_json_wo_unicode)
+
+    return render(request, "reader.html", final_json_dict)
+
 
 def calculate_reading_progress(node):
     if "children" not in node:
@@ -173,6 +244,48 @@ def calculate_subsections_reading_progress(subsections):
     group_read_pages = 0
     for subsection in subsections:
         subsection_total_pages, subsection_read_pages, subsection_group_read_pages = calculate_reading_progress(subsection)
+        total_pages = total_pages + subsection_total_pages
+        read_pages = list(set(read_pages + subsection_read_pages))
+        group_read_pages = group_read_pages + subsection_group_read_pages
+    return total_pages, read_pages, group_read_pages
+
+
+def calculate_reading_progress_no_quiz(node):
+    if "children" not in node:
+        num_pages = get_number_of_pages(node)
+        read_pages = get_number_of_read_pages(node)
+        group_read_pages = get_number_of_group_read_pages(node)
+        set_number_of_pages(node,num_pages)
+        set_number_of_read_pages(node, read_pages)
+        set_number_of_group_read_pages(node, group_read_pages)
+        #set_quiz(node)
+        return num_pages, read_pages, group_read_pages
+    else:
+        if has_pages(node):
+            subsections_num_pages, subsections_read_pages, subsections_group_read_pages = calculate_subsections_reading_progress_no_quiz(node["children"])
+            num_pages = get_number_of_pages(node) + subsections_num_pages
+            read_pages = list(set(get_number_of_read_pages(node) + subsections_read_pages))
+            group_read_pages = get_number_of_group_read_pages(node) + subsections_group_read_pages
+            set_number_of_pages(node,num_pages)
+            set_number_of_read_pages(node,read_pages)
+            set_number_of_group_read_pages(node, group_read_pages)
+            #set_quiz(node)
+            return num_pages, read_pages, group_read_pages
+        else:
+            num_pages, read_pages, group_read_pages = calculate_subsections_reading_progress_no_quiz(node["children"])
+            set_number_of_pages(node,num_pages)
+            set_number_of_read_pages(node, read_pages)
+            set_number_of_group_read_pages(node, group_read_pages)
+            #set_quiz(node)
+            return num_pages, read_pages, group_read_pages
+
+
+def calculate_subsections_reading_progress_no_quiz(subsections):
+    total_pages = 0
+    read_pages = []
+    group_read_pages = 0
+    for subsection in subsections:
+        subsection_total_pages, subsection_read_pages, subsection_group_read_pages = calculate_reading_progress_no_quiz(subsection)
         total_pages = total_pages + subsection_total_pages
         read_pages = list(set(read_pages + subsection_read_pages))
         group_read_pages = group_read_pages + subsection_group_read_pages

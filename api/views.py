@@ -424,12 +424,12 @@ def recommended_videos(request):
         print "2nd noise position: "+str(second_noise_position)
 
         similar_videos_ids = rec_models.Similarity.objects.filter(id_textual_resource=page_id, type=method,
-                                                                  resource_id__length__lte=1200).values("resource_id__id","value").order_by('-value')[:50]
+                                                                  resource_id__length__range=(30,1200)).values("resource_id__id","value").order_by('-value')[:50]
 
 
         videos_json = []
         #TODO: add this as a parameter in the api call
-        num_top_videos = 15
+        num_top_videos = 18
         top_similar_videos_ids = similar_videos_ids[:num_top_videos]
 
         count=0
@@ -513,16 +513,17 @@ def concept_map_log(request):
         session_id = data["session"]
         user_id = data["user"]
         group_id = data["group"]
+        context = data["context"]
 
         concept_map_log = knowledgevis_models.ConceptMappingLog(user=User.objects.get(id=user_id),
                                            group=reader_models.Group.objects.get(id=group_id),
                                            session=session_id, section= section_id,
-                                           action=action, context={"source": "page"})
+                                           action=action, context=context)
 
         concept_map = knowledgevis_models.ConceptMap(user=User.objects.get(id=user_id),
                                            group=reader_models.Group.objects.get(id=group_id),
                                            session=session_id, section=section_id,
-                                           structure=concept_map, context={"source": "page"})
+                                           structure=concept_map, context=context)
 
         concept_map_log.save()
         concept_map.save()
@@ -546,10 +547,9 @@ def assignments(request):
         if len(assignments_results)>0:
             for assignment in assignments_results:
                 assignments.append(model_to_dict(assignment))
-            assignments_json["result"] = True
-            assignments_json["assignments"] = assignments
-        else:
-            assignments_json["result"] = False
+
+        assignments_json["result"] = True
+        assignments_json["assignments"] = assignments
 
         #return JSONResponse({"quiz":quiz.id, "name": quiz.name, "questions": questions_json}, status=201)
         return JSONResponse(assignments_json, status=201)

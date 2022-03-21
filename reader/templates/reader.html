@@ -3,9 +3,9 @@
 <head>
     <!--<link rel="stylesheet" type="text/css" href="{% static "annotorious-0.6.4/css/annotorious.css" %}" />-->
     <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.min.css" %}" />
+    <!--<link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.min.css" %}" />-->
     <link rel="stylesheet" type="text/css" href="{% static "knowledgevis/css/graph-editor.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css?v=202203151700" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/modal.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/recommender.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "annotator/view_annotator/css/style.css" %}" />
@@ -129,15 +129,31 @@
 
     //Global variables
     var user_id = "{{ request.user.id }}";
+
+    if(user_id==null || user_id==undefined){
+      user_id = "{{ request.usr }}";
+    }
+
+    var username = "{{username}}";
+
     var group_id = "{{ group }}";
+    if(group_id==null || group_id==undefined){
+      group_id = "{{ request.grp }}";
+    }
+
+    var svc = "{{ request.svc }}";
+    var cid = "{{ cid }}";
+    var url_sid = "{{ sid }}";
+
     var session = "{{ request.session.session_key }}";
     var current_section_id = "";
 
-    var extra_base_url = "";
+    var extra_base_url = "/ereader";
+    var recommendation_approach = "jaccard_lemmatized";
 
     var social_comparison = true;
-    var concept_map = true;
-    var video_recommendation = true;
+    var concept_map = false;
+    var video_recommendation = false;
 
     var level_quiz_showing = 3;
 
@@ -161,6 +177,10 @@
 
 
     var assignments = [];
+    if(!concept_map){
+      $("#concept-map-div").hide();
+      $("#left-upper-div").height("98%");
+    }
     var concept_map_width = $("#concept-map-div").innerWidth(),//window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
         concept_map_height =  $("#concept-map-div").innerHeight();//window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
 
@@ -202,7 +222,7 @@
         var player_action = "video-load";
         var video_id = player.getVideoData().video_id;
         $.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader", JSON.stringify(
-             {"user": {{ request.user.id }},
+             {"user": "{{ request.user.id }}",
              "session": "{{ request.session.session_key }}",
              "group": "{{ group }}",
              "section": current_section_id,
@@ -289,7 +309,15 @@
 
         document.onkeydown = checkKey;
 
-        loadHtml();
+        //Load json that have the mapping between legacy ids and new ids
+        $.getJSON("{% static "/reader/data/map_old_new_section_ids.json" %}",function(json){
+            for(var i=0;i<json.length;i++){
+                map_old_new_section_ids[json[i]["docno"]] = $.trim(json[i]["id"]);
+            }
+            //After loading the legacy ids, we can load the html file
+            loadHtml();
+        });
+
 
         /*$.ajax({
             url: 'http://halley.exp.sis.pitt.edu/behnam/book/api.php?sid=iir_14_2',
@@ -496,14 +524,31 @@ function loadHtml() {
     {% autoescape off %}
     course_hierarchical_structure = {{course_hierarchical}};
     last_page_read = {{last_page_read}};
+    url_section_id = "{{section_id}}";
     {% endautoescape %}
 
     hierarchicalToLinearStructure(course_hierarchical_structure);
 
     //If the user has not read any page from the course, the first page needs to be shown
     if(jQuery.isEmptyObject(last_page_read)){
+      if(!jQuery.isEmptyObject(url_section_id)){
+        var last_section_read = $.grep(course_linear_structure, function(d){ return d.id == url_section_id; });
+        if(last_section_read.length > 0){
+          last_page_read = last_section_read[0];
+          if("spage" in last_page_read){
+            last_page_read["page"] = last_page_read["spage"];
+          }
+        }else{
+            last_section_read = findSection(course_hierarchical_structure.children,url_section_id);
+            last_page_read = last_section_read["children"][0];
+            console.log("First child of the section: ");
+            console.log(last_page_read);
+            last_page_read["page"] = last_page_read["spage"];
+        }  
+      }else{
         last_page_read = course_linear_structure[0];
         last_page_read["page"]=last_page_read["spage"];
+      }
     }else{
         var last_section_read = $.grep(course_linear_structure, function(d){ return d.id == last_page_read["section"]; });
         var last_page_read_number = parseInt(last_page_read["page"]);
@@ -516,7 +561,8 @@ function loadHtml() {
         focusCurrentTocSection();
     });
 
-    //Load student assignments
+    //Load student 
+    if(group_id!='CoTaPP22' && group_id!='PFETest'){
      $.getJSON("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader/assignments?user="+user_id+"&group="+group_id,function(json){
          var result = json.result;
          if(result){
@@ -530,39 +576,35 @@ function loadHtml() {
              })
              var str_current_assignment  = "";
              if(current_assignment.length>0){
-                 var section_id_assigned = current_assignment[0].section;
-                str_current_assignment = "This week you have to perform the concept mapping activity associated with section "+$("#toc-section-"+section_id_assigned).find("text").text()+" . You have to add at least 5 new concepts and 5 relationships between concepts. Additionally, you have to evaluate the relevance of at least 10 recommended videos. Remember that you are encouraged to watch the recommended videos in order to discover new information about concepts or relationships that could be added to the concept map.";
+                 str_current_assignment = "This week you have to perform the concept mapping activity associated with section(s) ";
+                 for(var i=0;i<current_assignment.length;i++){
+                     var section_id_assigned = current_assignment[i].section;
+                     str_current_assignment = str_current_assignment+"'"+$("#toc-section-"+section_id_assigned).find("text").text()+"' ";
+                 }
+                 str_current_assignment = str_current_assignment+". You have to add at least 5 new concepts and 5 relationships between concepts to each concept map. Additionally, you have to evaluate the relevance of at least 10 recommended videos for each assigned section. Remember that you are encouraged to watch the recommended videos in order to discover new information about concepts or relationships that could be added to the concept map.";
+
+                 for(var i=0;i<current_assignment.length;i++){
+                     var section_assignment = current_assignment[i].section;
+                     d3.select("#toc-section-"+section_assignment).append("svg:image")//('<img title="For this section the concept mapping activity is mandatory" class="concept-map-img" src="{% static "/reader/img/concept-map-icon.png" %}">');
+                         .attr("width",25)
+                         .attr("x",-22)
+                         .attr("y",-12)
+                         .attr("title","For this section, the concept mapping activity is mandatory")
+                         .attr("xlink:href", "{% static "/reader/img/concept-map-icon.png" %}");
+                 }
+
              }else{
-                str_current_assignment = "This week you have to answer all the quizzes related to the current Lecture.";
+                str_current_assignment = "This week you have to answer all the quizzes related to the current lecture";// (no concept-mapping / video rating activity).";
              }
              $("#reader-controls").append('<img id="assignment-img" height="30px" src="{% static "/reader/img/todo-icon.png" %}" title="'+str_current_assignment+'"></img>');
          }
          initProgressVis(course_hierarchical_structure);
          loadResource(last_page_read["id"],last_page_read["name"],last_page_read["resourceid"],last_page_read["page"],"site-load");
-         for(var i=0;i<assignments.length;i++){
-             var section_assignment = assignments[i].section;
-             d3.select("#toc-section-"+section_assignment).append("svg:image")//('<img title="For this section the concept mapping activity is mandatory" class="concept-map-img" src="{% static "/reader/img/concept-map-icon.png" %}">');
-                 .attr("width",25)
-                 .attr("x",-22)
-                 .attr("y",-12)
-                 .attr("title","For this section, the concept mapping activity is mandatory")
-                 .attr("xlink:href", "{% static "/reader/img/concept-map-icon.png" %}");
-         }
+
      })
-
-    //Load json that have the mapping between legacy ids and new ids
-    $.getJSON("{% static "/reader/data/map_old_new_section_ids.json" %}",function(json){
-        for(var i=0;i<json.length;i++){
-            map_old_new_section_ids[json[i]["docno"]] = $.trim(json[i]["id"]);
-        }
-        //updateRecommendations();
-
-    });
-
-
-
-
-
+   }else{
+    loadResource(last_page_read["id"],last_page_read["name"],last_page_read["resourceid"],last_page_read["page"],"site-load");
+   }
 }
 
 
@@ -1116,6 +1158,7 @@ function initProgressVis(root){
 
 function loadResource(section_id,section_name,resource_id,page_num,source){
 
+    console.log(section_id+" "+section_name+" "+resource_id+" "+page_num);
      //Sets global variables which keeps the current_section_id
      current_section_id = section_id;
 
@@ -1127,11 +1170,13 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
      var isConceptMapRequired = assignments.filter(function(d){return d.section === section_id}).length>0;
 
      //if (isConceptMapRequired){
-     $("#left-upper-div").css("height","28%");
-     $("#left-lower-div").css("height","69%");
+     
 
-
-     loadConceptMap(user_id, section_id, section_name, "concept-map-div");
+     if(concept_map){
+        $("#left-upper-div").css("height","28%");
+        $("#left-lower-div").css("height","69%");
+        loadConceptMap(user_id, section_id, section_name, "concept-map-div");
+      }
      /*}else{
          $("#left-upper-div").css("height","100%");
          $("#left-lower-div").css("height","0%");
@@ -1192,6 +1237,36 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
      }
 
      hierarchicalCourseSectionUpdate(course_hierarchical_structure.children,section_id,parseInt(page_num));
+
+     console.log("Current status of "+url_section_id);
+     console.log(getSectionById(url_section_id));
+
+     if((group_id=="CoTaPP22" || group_id=="PFETest") && (current_section_id.indexOf(url_section_id)>=0 || url_section_id==current_section_id)){
+            console.log("I need to update the section");
+            console.log(course_hierarchical_structure);
+            //TODO
+            //Add um2 query for sending progress part
+            //http://adapt2.sis.pitt.edu/cbum/um
+            app = 55;
+            act=url_section_id;
+            section_to_update  = getSectionById(url_section_id);
+            progress = section_to_update["read_pages"]/section_to_update["num_pages"];
+            sub = url_section_id;
+            act = "ReadingMirror";
+            var um_url = "http://adapt2.sis.pitt.edu/cbum/um" + "?app=" + app + 
+                                                  "&act=" + act + 
+                                                  "&sub=" + sub +
+                                                  "&res=" + progress +
+                                                  "&usr=" + username +
+                                                  "&grp=" + group_id +
+                                                  //"&sid=" + "{{request.session.session_key}}" +
+                                                  "&sid=" + url_sid +
+                                                  "&svc=" + "ReadingMirror" +
+                                                  "&cid=" + cid;
+            $.post(um_url);
+            console.log(um_url);
+
+     }
 
 
      var resource_path = "resources/"+resource_id+"/"+resource_id+"-"+page_num+".html";
@@ -1407,7 +1482,9 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
         })
 
+        if(group_id!="CoTaPP22" && group_id!="PFETest"){
          updateRecommendations();
+        }
         /*$("#page-container").scrollEnd(function(){
             //Log scroll event by using the reader api
 
@@ -1541,9 +1618,7 @@ function isElementInViewport (el) {
     );
 }
 
-
-
-    // Set up Django CSRF Token Protection
+// Set up Django CSRF Token Protection
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -1817,6 +1892,7 @@ function initToc(course_structure){
         var page = parseInt(last_page_read["page"]);
         var resourceid = last_page_read["resourceid"];
         console.log("epage: "+epage+" spage: "+spage+" page: "+page+" resourceid: "+resourceid);
+
         if (page < epage){
             last_page_read["page"] = page + 1;
             console.log("next_page");
@@ -2058,6 +2134,7 @@ function initToc(course_structure){
                 $(".quiz-title").text(data["name"]);
                 var questions = data["questions"];
                 var question_ids = Object.keys(questions);
+                console.log(question_ids);
                 var total_corrects = 0;
                 if(question_ids.length>0){
                     //Insert questions in the quiz
@@ -2097,9 +2174,10 @@ function initToc(course_structure){
                             $(".modal-body").append("</br>");
 
                             //Track students' choice marks in the quiz but (before they submit they final answers)
+                            console.log(question_id);
                             $("input[type=radio][name=q" + question_id + "]").change(function () {
                                 var quiz_id = quiz_data["quiz"];
-
+                                console.log($(this).attr("name").substring(1,$(this).attr("name").length));
                                 //$.post( "http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/ereader/api/quiz/attempt",
                                 $.post("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/quiz/attempt",
                                     JSON.stringify({
@@ -2108,7 +2186,7 @@ function initToc(course_structure){
                                         "session": "{{ request.session.session_key }}",
                                         "group": "{{ group }}",
                                         "datetime": new Date().toIsoString(),
-                                        "question": question_id,
+                                        "question": $(this).attr("name").substring(1,$(this).attr("name").length),
                                         "type": type,
                                         "answer": this.value
                                     }));
@@ -2228,7 +2306,7 @@ function initToc(course_structure){
         var questions_ids = Object.keys(questions);
         console.log(questions_ids);
         for(var i=0;i<questions_ids.length;i++){
-            question_id = questions_ids[i];
+            var question_id = questions_ids[i];
             question = questions[question_id];
             console.log(question_id);
             var type = question["type"];
@@ -2394,6 +2472,7 @@ function initToc(course_structure){
     }
 
     function highlightVisSection(section_id){
+      if(group_id!='CoTaPP22' && group_id!='PFETest'){
         var vis_path_to_highlight = getAncestors(d3.select("#vis-section-"+section_id).node().__data__);
         var sections_ids_to_highlight = vis_path_to_highlight.map(function(d){return d.id});
         for(var i=0;i<vis_path_to_highlight.length;i++){
@@ -2428,9 +2507,11 @@ function initToc(course_structure){
                  d3.select("g#vis-comp-section-"+section).moveToFront();
             }
         }
+      }
     }
 
     function unhighlightVisSections(){
+      if(group_id!='CoTaPP22' && group_id!='PFETest'){
         var selected_sections = getAncestors(d3.select("#vis-section-"+last_page_read["id"]).node().__data__);
         var selected_sections_ids =  selected_sections.map(function(d){return d.id;});
         var selector = "g.vis-section.active";
@@ -2481,6 +2562,7 @@ function initToc(course_structure){
                     return selected_comp_sections_ids.indexOf(d.id)!=-1;
                 }).moveToFront();
         }
+      }
 
 
 
@@ -2541,7 +2623,12 @@ function initToc(course_structure){
 
     function getSectionById(section_id){
         //TODO: check if section exists first or not
-        var section = $.grep(course_linear_structure, function(d){ return d.id == section_id;})[0];
+        var sectionArray = $.grep(course_linear_structure, function(d){ return d.id == section_id;});
+        if(sectionArray.length>0){
+          section = sectionArray[0];
+        }else{
+          section = findSection(course_hierarchical_structure.children,section_id);
+        }
         return section;
     }
 
@@ -2581,6 +2668,7 @@ function initToc(course_structure){
             if(section["parent"]){
                 updateReadPage(section["parent"],page);
             }
+            
         }
     }
 
@@ -2811,7 +2899,9 @@ function openVideoWindow(video_id,res_id,rating,explanation_rating,ranking,score
     $(".modal-body").append(ratings_div);
 
 
-    loadConceptMap(user_id, current_section_id, section_name, "concept-map-div-modal");
+    if(concept_map){
+      loadConceptMap(user_id, current_section_id, section_name, "concept-map-div-modal");
+    }
 
     //Log the video rating
     //$('input[type=radio][name=relevance]').change(function() {
@@ -3024,7 +3114,7 @@ function updateRecommendations(){
 
         $.ajax({
         //url: 'http://halley.exp.sis.pitt.edu/behnam/book/api.php?sid='+new_section_id,
-        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/recommender/recommended_videos?method=jaccard_lemmatized&page='+new_section_id+'&user='+user_id+'&group='+group_id+'&section='+current_section_id,
+        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/recommender/recommended_videos?method='+recommendation_approach+'&page='+new_section_id+'&user='+user_id+'&group='+group_id+'&section='+current_section_id,
         type: 'GET',
         crossDomain: true,
         success: function(data) {
@@ -3055,6 +3145,36 @@ function updateRecommendations(){
                                 return $('#keepTabOpen').is(':checked');
                             }
                       ]
+                    });
+
+                    //Register when they hide or open the video recommendation panel
+                    $(document).on('slideouttabopen slideouttabclose slideouttabbounce',function(event){
+                        var $panel = $(event.target);
+                        var eventType = event.type;
+                        var video_panel_action = "";
+                        if(eventType=="slideouttabopen"){
+                            video_panel_action = "open-video-panel";
+                        }else{
+                            if(eventType=="slideouttabclose"){
+                                video_panel_action = "hide-video-panel"
+                            }
+                        }
+                        if(video_panel_action!="") {
+                            $.post("http://{{ request.META.HTTP_HOST }}" + extra_base_url + "/api/reader", JSON.stringify(
+                                {
+                                    "user": {{ request.user.id }},
+                                    "session": "{{ request.session.session_key }}",
+                                    "group": "{{ group }}",
+                                    "section": current_section_id,
+                                    "name": last_page_read["name"],
+                                    "page": last_page_read["page"],
+                                    "resource": last_page_read["resourceid"],
+                                    "action": video_panel_action,
+                                    "datetime": new Date().toIsoString(),
+                                    "visible_text": [],
+                                    "extra": {}
+                                }));
+                        }
                     });
                 }
 
@@ -3096,6 +3216,28 @@ function updateRecommendations(){
     //}
 }
 
+//Function that helps to find a certain node in the hierarchical structure of the course json
+function findSection(source, id){
+    for (key in source)
+    {
+        var item = source[key];
+        if (item.id == id)
+            return item;
+
+        // Item not returned yet. Search its children by recursive call.
+        if (item.children)
+        {
+            var subresult = findSection(item.children, id);
+
+            // If the item was found in the subchildren, return it.
+            if (subresult)
+                return subresult;
+        }
+    }
+    // Nothing found yet? return null.
+    return null;
+}
+
 
 function loadConceptMap(user_id, section_id, section_name, container_id){
 
@@ -3113,7 +3255,7 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
     concept_map_height =  $("#"+container_id).innerHeight();
 
     $.ajax({
-        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/knowledgevis/concept_map?user='+user_id+'&section='+section_id,
+        url: "http://{{ request.META.HTTP_HOST }}"+extra_base_url+'/api/knowledgevis/concept_map?user='+user_id+'&section='+cm_section_id,
         type: 'GET',
         crossDomain: true,
         dataType: "json",
@@ -3126,7 +3268,7 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
             $("#"+container_id).append("<div class='concept-map-help-div'>"+
                 "<span id='concept-map-title'>Section: "+cm_section_name+"</span><br>"+
                 "Please use this space to create a concept map to visually represent the ideas and information that were covered in the section. Some automatically extracted concepts are provided. Feel free to add, modifiy or eliminate concepts as well as the relationships between them.</br>"+
-                "<button type='button' class='collapsible'>How to edit the concept map?</button>" +
+                "<a target='_blank' href='https://www.youtube.com/watch?v=bFWXQ_CqR18'><img id='video-tutorial-img' src='{% static 'reader/img/video-tutorial-icon.png' %}' title='Watch a tutorial for understanding how to use the system' /></a><button type='button' class='collapsible'>How to edit the concept map?</button>" +
                 "<div class='content-collapsible'>" +
                 "  Create concept: shift key + click </br>Delete concept: click concept + delete key</br>Rename concept: shift key + click concept</br> Create link: shift key + click source concept + drag cursor to target concept </br>Delete link: click link + delete key</br>Rename concept: shift key + click link" +
                 "</div>"+
@@ -3171,7 +3313,7 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
 	                                   type: e.type,
 	                                   title: e.title};//code added by jbarriapineda to include type of links in uploaded json to draw the graph
 	                  });
-	        		var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id);
+	        		var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id, group_id, session);
 	        		graph.setIdCt(nodes.length + 1);
 	        		graph.updateGraph();
 	        		$('#colorpicker').change(function(){
@@ -3180,9 +3322,70 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
 	        	    });
                 //drawExistentConceptMap(svg,cmid,user_id);
             }else{
-                var automatic_concepts = [];
-                var json_new_graph_string = '{"nodes":[{"title":"Concept1","id":0,"x":204.2353515625,"y":158.853515625,"color":"#c2c2c2","stroke":0},{"id":2,"title":"Concept2","x":126.33846282958984,"y":233.52301025390625,"color":"#c2c2c2","stroke":0},{"id":3,"title":"Concept3","x":150.94239044189453,"y":332.99365234375,"color":"#c2c2c2","stroke":0},{"id":4,"title":"Concept4","x":281.6811828613281,"y":233.1337890625,"color":"#c2c2c2","stroke":0},{"id":5,"title":"Concept5","x":253.23483276367188,"y":334.7513427734375,"color":"#c2c2c2","stroke":0}],"edges":[]}';
 
+                var automatic_concepts = [];
+
+                //var old_section_id = last_page_read["docno"];
+                var old_section_id = "iir-"+cm_section_id;
+                var new_section_id = map_old_new_section_ids[old_section_id];
+                new_section_id = new_section_id.replace(/_/g, "-");
+
+                var automatic_concepts_path = "automatic_concepts/"+new_section_id+".txt";
+
+                $.ajax({
+                    type: "GET",
+                    url:"{% static "/" %}"+automatic_concepts_path,
+                    success: function (data){
+                       var lines = data.split('\n');
+                       for(var i = 0; i < lines.length; i++) {
+                          if(i>0){
+                              var line =lines[i];
+                              var concept_values = line.split(",");
+                              var concept = concept_values[0];
+                              if(concept!=""){
+                                  automatic_concepts.push(concept);
+                              }
+
+                          }
+                       }
+                       var json_new_graph_string = '{"nodes":[{"title":"Concept1","id":0,"x":204.2353515625,"y":158.853515625,"color":"#c2c2c2","stroke":0},{"id":2,"title":"Concept2","x":126.33846282958984,"y":233.52301025390625,"color":"#c2c2c2","stroke":0},{"id":3,"title":"Concept3","x":150.94239044189453,"y":332.99365234375,"color":"#c2c2c2","stroke":0},{"id":4,"title":"Concept4","x":281.6811828613281,"y":233.1337890625,"color":"#c2c2c2","stroke":0},{"id":5,"title":"Concept5","x":253.23483276367188,"y":334.7513427734375,"color":"#c2c2c2","stroke":0}],"edges":[]}';
+
+                       if(automatic_concepts.length==0){
+                            automatic_concepts = ["Concept1","Concept2","Concept3","Concept4","Concept5"];
+                        }
+
+                        var sample_automatic_concepts = getRandomSubarray(automatic_concepts,5);
+
+                        for(var i=0;i<sample_automatic_concepts.length;i++){
+                            var concept_name = "Concept"+(i+1);
+                            json_new_graph_string = json_new_graph_string.replace(concept_name,sample_automatic_concepts[i]);
+                        }
+
+                        var json_new_graph = JSON.parse(json_new_graph_string);
+
+                        var nodes = json_new_graph.nodes;
+                        var edges = json_new_graph.edges;
+
+                        var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id, group_id, session);
+
+                        graph.setIdCt(nodes.length+1);
+                        graph.updateGraph();
+
+                        //Register in db the first randomly generated concept map from the automatically extracted concepts (avoid potential system gaming)
+                        graph.logAction("initial-cm",cm_section_id,"");
+
+                        //$('#colorpicker').change(function(){
+                        //        var nodeColor = $(this).find("option:selected").attr('value');
+                        //        graph.state.nodeColor=nodeColor;
+                        //});
+                        //drawNewConceptMap(concept_map_svg,user_id);
+                        },
+                        error:function(err){
+                            console.log("error on getting automatic concepts");
+                        }
+                      });
+
+                /*
                 //TODO: make this process automatic (create a table in the database in order to pull this information, given an automatic extraction method)
                 //Section 4.1
                 if(section_id=="2105"){
@@ -3260,36 +3463,7 @@ function loadConceptMap(user_id, section_id, section_name, container_id){
                 if(section_id == "2187"){
                     automatic_concepts = ["translation model","language modeling approach","document likelihood model","relevance feedback model","document language model","probability distribution","ranking function","information theory","document retrieval","ad hoc retrieval"];
                 }
-
-                if(automatic_concepts.length==0){
-                    automatic_concepts = ["Concept1","Concept2","Concept3","Concept4","Concept5"];
-                }
-
-                var sample_automatic_concepts = getRandomSubarray(automatic_concepts,5);
-
-                for(var i=0;i<sample_automatic_concepts.length;i++){
-                    var concept_name = "Concept"+(i+1);
-                    json_new_graph_string = json_new_graph_string.replace(concept_name,sample_automatic_concepts[i]);
-                }
-
-                var json_new_graph = JSON.parse(json_new_graph_string);
-
-                var nodes = json_new_graph.nodes;
-                var edges = json_new_graph.edges;
-
-                var graph = new GraphCreator(concept_map_svg, nodes, edges, user_id, cm_section_id, group_id, session);
-
-                graph.setIdCt(nodes.length+1);
-                graph.updateGraph();
-
-                //Register in db the first randomly generated concept map from the automatically extracted concepts (avoid potential system gaming)
-                graph.logAction("initial-cm",cm_section_id,"");
-
-                //$('#colorpicker').change(function(){
-                //        var nodeColor = $(this).find("option:selected").attr('value');
-                //        graph.state.nodeColor=nodeColor;
-                //});
-                //drawNewConceptMap(concept_map_svg,user_id);
+                */
             }
 
 
