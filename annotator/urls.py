@@ -1,10 +1,10 @@
-from django.conf.urls import include, url
+from django.urls import include, re_path
 
 from annotator import views
 
 urlpatterns = [
-    url(r"^$", views.root, name="root"),
-    url(r"^annotations/?$", views.index_create, name="index_create"),
-    url(r"^annotations/(?P<pk>.+)/?$", views.read_update_delete, name="read_update_delete"),
-    url(r"^search/?$", views.search, name="search"),
+    re_path(r"^$", views.root, name="root"),
+    re_path(r"^annotations/?$", views.index_create, name="index_create"),
+    re_path(r"^annotations/(?P<pk>.+)/?$", views.read_update_delete, name="read_update_delete"),
+    re_path(r"^search/?$", views.search, name="search"),
 ]

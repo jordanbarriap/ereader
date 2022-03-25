@@ -26,7 +26,7 @@ section_pages_info = []
 
 def home(request):
     global user_id
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user_id = request.user.id
         group_ids_query = Group.objects.values().filter(students__id=user_id)
         group_ids = []
@@ -42,8 +42,7 @@ def load_course(request,url_group_id):
     global user_id, group_id, num_students, read_pages_dict, group_read_pages_dict, quizzes_correct_dict, quizzes_incorrect_dict, group_quizzes_correct_dict, group_quizzes_incorrect_dict
     group_id = url_group_id
     course_id = Group.objects.only("course").get(id=group_id).course.id
-
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user_id = request.user.id
         try:
             last_page_read = ReadingLog.objects.values().filter(user__id=user_id, group__id=group_id, action="page-load").latest("datetime")

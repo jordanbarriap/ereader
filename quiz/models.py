@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django_mysql.models import JSONField, Model
+from django.db.models import JSONField, Model
 
 from reader import models as reader_models
 
@@ -20,7 +20,7 @@ class Question(models.Model):
 class Choice(models.Model):
     id = models.AutoField(primary_key=True)
     statement = models.CharField(max_length=500, default="test")
-    question = models.ForeignKey(Question)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.statement
@@ -28,8 +28,8 @@ class Choice(models.Model):
 
 class Question_Correct_Answer(models.Model):
     id = models.AutoField(primary_key=True)
-    question = models.ForeignKey(Question)
-    choice = models.ForeignKey(Choice)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
 
 
 """class MCQuestion(models.Model):
@@ -55,8 +55,8 @@ class Quiz(models.Model):
 
 class AnswerLog(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User)
-    group = models.ForeignKey(reader_models.Group, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(reader_models.Group, default=1, on_delete=models.CASCADE)
     session = models.CharField(max_length=100, default="test")
     datetime = models.DateTimeField(default=timezone.now())
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -83,14 +83,14 @@ class KC(models.Model):
 
 
 class KC_Section(models.Model):
-    kc = models.ForeignKey(KC)
+    kc = models.ForeignKey(KC, on_delete=models.CASCADE)
     section = models.CharField(max_length=100, default="section")
     random = models.BooleanField(default=False)
 
 
 class KCLevel(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     kc = models.ForeignKey(KC, on_delete=models.CASCADE)
     datetime = models.DateTimeField(default=timezone.now())
     level = models.IntegerField()

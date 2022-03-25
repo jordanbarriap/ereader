@@ -16,7 +16,7 @@ file_name = 'INFSCI_2140_IR_Student_list.csv'
 row_count = 0
 map_index_column = {}
 users_list = []
-with open(file_name, 'rb') as csvfile:
+with open(file_name, 'r') as csvfile:
 	users_reader= csv.reader(csvfile, delimiter=',')#, quotechar='|')
 	for row in users_reader:
 		if (row_count==0):
@@ -29,7 +29,7 @@ with open(file_name, 'rb') as csvfile:
 			users_list.append(user)
 
 		row_count = row_count + 1
-	print users_list
+#	print(users_list)
 		
 
 try:

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import (HttpResponse,
                          HttpResponseForbidden,
                          HttpResponseBadRequest)
@@ -313,10 +313,10 @@ def attempt(request):
             answer_id = int(answer)
             correct = False
             correct_answers = quiz_models.Question_Correct_Answer.objects.filter(question_id=question_id).values("choice_id")
-            print answer_id
-            print correct_answers
+            print(answer_id)
+            print(correct_answers)
             for correct_answer in correct_answers:
-                print correct_answer["choice_id"]
+                print(correct_answer["choice_id"])
                 if correct_answer["choice_id"] == answer_id:
                     correct = True
             answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(questions__id=question_id), question=quiz_models.Question(id=question_id),
@@ -374,7 +374,7 @@ def summary(request):
             subsections = section["subsections"]
             subsections_str = "','".join(subsections)
             subsections_str = "'"+subsections_str+"'"
-            print subsections_str
+            print(subsections_str)
             # quizzes_correct_queryset = quiz_models.AnswerLog.objects.raw(
             #     "SELECT id, quiz_id, question_id FROM quiz_answerlog WHERE group_id='" + group_id + "' AND submitted=1 AND correct=1 AND section IN ("+subsections_str+");")
             # quizzes_correct_dict = {}
@@ -412,7 +412,7 @@ def recommended_videos(request):
         user_id = request.GET["user"]
         group_id = request.GET["group"]
         section_id = request.GET["section"]
-        print "page: "+page_id+" , method: "+method
+        print("page: "+page_id+" , method: "+method)
 
         #Generates position for introducing noise into
         user_noise_position = int(user_id)%10
@@ -420,8 +420,8 @@ def recommended_videos(request):
         first_noise_position=(user_noise_position+page_noise_position)%10
         second_noise_position=first_noise_position*2
 
-        print "1st noise position: "+str(first_noise_position)
-        print "2nd noise position: "+str(second_noise_position)
+        print("1st noise position: "+str(first_noise_position))
+        print("2nd noise position: "+str(second_noise_position))
 
         similar_videos_ids = rec_models.Similarity.objects.filter(id_textual_resource=page_id, type=method,
                                                                   resource_id__length__range=(30,1200)).values("resource_id__id","value").order_by('-value')[:50]

@@ -1,4 +1,4 @@
-from django_mysql.models import JSONField, Model
+from django.db.models import JSONField, Model
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -24,7 +24,7 @@ class Resource(models.Model):
 
 class Similarity(models.Model):
     id = models.AutoField(primary_key=True)
-    resource_id = models.ForeignKey(Resource)
+    resource_id = models.ForeignKey(Resource, on_delete=models.CASCADE)
     id_textual_resource = models.CharField(max_length=100, default="page")
     type = models.CharField(max_length=100, default="cosine")
     value = models.FloatField(default=.0)
@@ -32,9 +32,9 @@ class Similarity(models.Model):
 
 class Rating(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User)
-    group = models.ForeignKey(reader_models.Group, default=1)
-    resource = models.ForeignKey(Resource)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(reader_models.Group, default=1, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     section = models.CharField(max_length=100, default="test")
     page = models.IntegerField(default=0)
     type = models.CharField(max_length=100)

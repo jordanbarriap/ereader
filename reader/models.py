@@ -1,4 +1,4 @@
-from django_mysql.models import JSONField, Model
+from django.db.models import JSONField, Model
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -15,7 +15,7 @@ class Course(Model):
 class Group(models.Model):
     id = models.CharField(primary_key=True, max_length=100, default="group")
     name = models.CharField(max_length=100, default="group")
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     students = models.ManyToManyField(User)
 
     def __str__(self):
@@ -35,8 +35,8 @@ class ReadingLog(models.Model):
     id = models.AutoField(primary_key=True)
     datetime = models.DateTimeField(default=timezone.now)
     session = models.CharField(max_length=100, default="test")
-    user = models.ForeignKey(User)
-    group = models.ForeignKey(Group, default=1)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, default=1, on_delete=models.CASCADE)
     section = models.CharField(max_length=100, default="test")
     resource = models.CharField(max_length=100, default="book")
     page = models.IntegerField(default=0)
@@ -48,8 +48,8 @@ class ReadingLog(models.Model):
 class Feedback(models.Model):
     datetime = models.DateTimeField(default=timezone.now)
     session = models.CharField(max_length=100, default="test")
-    user = models.ForeignKey(User)
-    group = models.ForeignKey(Group, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, default=1, on_delete=models.CASCADE)
     section = models.CharField(max_length=100, default="test")
     resource = models.CharField(max_length=100, default="book")
     page = models.IntegerField(default=0)
@@ -60,8 +60,8 @@ class Feedback(models.Model):
     explanation = models.CharField(max_length=100, default="")
 
 class Assignment(models.Model):
-    user = models.ForeignKey(User)
-    group = models.ForeignKey(Group, default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, default=1, on_delete=models.CASCADE)
     section = models.CharField(max_length=100, default="test")
     type = models.CharField(max_length=100, default="test")  # Type of assignment: e.g. concept map
     datetime_start = models.DateTimeField(default=timezone.now)

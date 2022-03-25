@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import User
 from reader import models as reader_models
-from django_mysql.models import JSONField, Model
+from django.db.models import JSONField, Model
 
 from django.utils import timezone
 
@@ -30,8 +30,8 @@ class Annotation(models.Model):
     text = models.TextField()
     quote = models.TextField()
     uri = models.CharField(max_length=4096, blank=True)
-    group = models.ForeignKey(reader_models.Group, default="default")
-    user = models.ForeignKey(User)
+    group = models.ForeignKey(reader_models.Group, default="default", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     username = models.CharField(max_length=32, default="test", blank=True)
     consumer = models.CharField(max_length=64, blank=True)
     permissions = JSONField()
@@ -55,7 +55,7 @@ class Range(models.Model):
     end = models.CharField(max_length=128)
     startOffset = models.IntegerField()
     endOffset = models.IntegerField()
-    annotation = models.ForeignKey(Annotation, related_name="ranges")
+    annotation = models.ForeignKey(Annotation, related_name="ranges", on_delete=models.CASCADE)
 
 
 """
