@@ -2,7 +2,8 @@ import os
 import django 
 
 from django.contrib.auth.hashers import make_password
-from django.utils.timezone import datetime #important if using timezones
+from django.utils.timezone import datetime #important if using timezones ## SWITCHED INSTEAD TO pytz
+import pytz
 from django.db import IntegrityError
 
 import csv
@@ -40,7 +41,7 @@ try:
 	        username=user['username'],
 	        email=user['email'],
 	        password=make_password(user['password']),
-	        date_joined= datetime.now(),
+	        date_joined= datetime.now().replace(tzinfo=pytz.utc),
 	        is_active=True,
 			is_staff=False,
 	        is_superuser = False,
@@ -55,7 +56,7 @@ except IntegrityError:
 		        username=user['username'],
 		        email=user['email'],
 		        password=make_password(user['password']),
-		        date_joined= datetime.now(),
+		        date_joined= datetime.now().replace(tzinfo=pytz.utc),
 		        is_active=True,
 				is_staff=False,
 		        is_superuser = False,
