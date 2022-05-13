@@ -43,8 +43,8 @@ try:
 	        password=make_password(user['password']),
 	        date_joined= datetime.now().replace(tzinfo=pytz.utc),
 	        is_active=True,
-			is_staff=False,
-	        is_superuser = False,
+			is_staff=True,
+	        is_superuser = True,
 	    ) for user in users_list
 	])
 except IntegrityError:
