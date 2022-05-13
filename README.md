@@ -6,25 +6,25 @@ Barria-Pineda, Jordan et al. “Reading Mirror: Social Navigation and Social Com
 
 #### Project Pre-requisites
 
-The project runs on python3. MySQL client and server will need to be installed locally. The project runs the best on a Linux or MacOS system.
-
-To install mysql client and server 
+The project runs on python3. MySQL client and server will need to be installed locally. The project runs the best on a Linux or MacOS system. These commands are in Ubuntu 20.04. To install mysql client and server and to install python pre-requisites
 
 ```
 sudo apt install mysql-client-core mysql-server-core mysql-server
-```
-To install python pre-requisites
-
-```
 python3 -m pip install -r requirements.txt
 ```
+
 References:
-(https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install-linux-quick.html)
-(https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html)
+[MYSQL-Client Linux installation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install-linux-quick.html)
+
+[MYSQL Linux installation](https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html)
+
+[MYSQL MacOS installation](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install-macos-quick.html)
+
+[MYSQL server MacOS installation](https://dev.mysql.com/downloads/mysql/)
 
 #### Running the Project
 
-If on a Linux machine, [without or without virtualenv](https://realpython.com/python-virtual-environments-a-primer/#how-can-you-work-with-a-python-virtual-environment)
+If on a Linux machine, [without or without virtualenv](https://realpython.com/python-virtual-environments-a-primer/#how-can-you-work-with-a-python-virtual-environment). These commands are in Ubuntu 20.04
 
 ```
 sudo service mysql start
