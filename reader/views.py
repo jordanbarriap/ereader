@@ -60,7 +60,7 @@ def load_course(request,url_group_id):
         read_pages_dict = {}
         group_read_pages_dict = {}
 
-        read_pages_queryset = ReadingLog.objects.raw("SELECT id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY user_id, section, page;")
+        read_pages_queryset = ReadingLog.objects.raw("SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY id, user_id, section, page;")
 
         for section_page in read_pages_queryset:
             section = section_page.section
@@ -72,7 +72,7 @@ def load_course(request,url_group_id):
 
         group_read_pages_queryset = ReadingLog.objects.raw(
             "SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id<>" + str(
-                user_id) + " AND group_id='" + group_id + "' GROUP BY user_id, section, page;")
+                user_id) + " AND group_id='" + group_id + "' GROUP BY id, user_id, section, page;")
 
         for section_page in group_read_pages_queryset:
             section = section_page.section
@@ -176,7 +176,7 @@ def load_course_with_section_id(request,url_course_id,url_section_id):
     read_pages_dict = {}
     group_read_pages_dict = {}
 
-    read_pages_queryset = ReadingLog.objects.raw("SELECT id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY user_id, section, page;")
+    read_pages_queryset = ReadingLog.objects.raw("SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id="+str(user_id)+" AND group_id='"+group_id+"' GROUP BY id, user_id, section, page;")
 
     for section_page in read_pages_queryset:
         section = section_page.section
@@ -188,7 +188,7 @@ def load_course_with_section_id(request,url_course_id,url_section_id):
 
     group_read_pages_queryset = ReadingLog.objects.raw(
         "SELECT id, user_id, section, page FROM reader_readinglog WHERE action='page-load' AND user_id<>" + str(
-            user_id) + " AND group_id='" + group_id + "' GROUP BY user_id, section, page;")
+            user_id) + " AND group_id='" + group_id + "' GROUP BY id, user_id, section, page;")
 
     for section_page in group_read_pages_queryset:
         section = section_page.section

@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.css" %}" />
     <!--<link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.min.css" %}" />-->
     <link rel="stylesheet" type="text/css" href="{% static "knowledgevis/css/graph-editor.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css?v=202203151700" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/modal.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/recommender.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "annotator/view_annotator/css/style.css" %}" />
@@ -148,7 +148,7 @@
     var session = "{{ request.session.session_key }}";
     var current_section_id = "";
 
-    var extra_base_url = "/ereader";
+    var extra_base_url = "";//"/ereader";
     var recommendation_approach = "jaccard_lemmatized";
 
     var social_comparison = true;
