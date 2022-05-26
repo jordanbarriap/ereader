@@ -14,6 +14,7 @@ urlpatterns = [
     re_path(r"^kcs/?$", views.kcs, name="kcs"),
     re_path(r"^summary/?$", views.summary, name="summary"),
     re_path(r"^recommender/recommended_videos?$", views.recommended_videos, name="recommended_videos"),
+    re_path(r"^smart_learning_content/programming?$",views.smart_learning_content,name="slc"),
     re_path(r"^knowledgevis/concept_map?$",views.concept_map, name="get_concept_map"),
     re_path(r"^knowledgevis/concept_map_log?$",views.concept_map_log, name="concept_map_log"),
     re_path(r"^reader/assignments?$",views.assignments, name="assignments"),

@@ -462,6 +462,23 @@ p.question-statement{
   overflow-y:auto;
 }
 
+#right-smart-content {
+    border-color: green;
+    border-width: 2px;
+    width: 200px;
+    /* bottom: 20px !important; */
+    height: 55% !important;
+    border-radius: 6px;
+    z-index:999;
+}
+
+#right-smart-content .handle {
+    background-color:green;
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
 #left-panel-ratings{
     float:right;
     width:50%;

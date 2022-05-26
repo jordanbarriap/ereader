@@ -21,7 +21,7 @@
     <script src="{% static "reader/js/jquery-1.9.1.js" %}"></script>
     <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
 
-
+    <script type="text/javascript" src="{% static "reader/js/smart-learning-content.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/js/annotator-full.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/js/short-unique-id.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/jquery.dateFormat.js" %}"></script>
@@ -177,6 +177,8 @@
 
 
     var assignments = [];
+    var activity_urls = [];
+    
     if(!concept_map){
       $("#concept-map-div").hide();
       $("#left-upper-div").height("98%");
@@ -1250,22 +1252,29 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
             app = 55;
             act=url_section_id;
             section_to_update  = getSectionById(url_section_id);
-            progress = section_to_update["read_pages"]/section_to_update["num_pages"];
-            sub = url_section_id;
-            act = "ReadingMirror";
-            var um_url = "http://adapt2.sis.pitt.edu/cbum/um" + "?app=" + app + 
-                                                  "&act=" + act + 
-                                                  "&sub=" + sub +
-                                                  "&res=" + progress +
-                                                  "&usr=" + username +
-                                                  "&grp=" + group_id +
-                                                  //"&sid=" + "{{request.session.session_key}}" +
-                                                  "&sid=" + url_sid +
-                                                  "&svc=" + "ReadingMirror" +
-                                                  "&cid=" + cid;
-            $.post(um_url);
-            console.log(um_url);
+            if (section_to_update!== null && section_to_update.hasOwnProperty("num_pages") && section_to_update["num_pages"] != 0){
+                progress = section_to_update["read_pages"]/section_to_update["num_pages"];
+                sub = url_section_id;
+                act = "ReadingMirror";
+                var um_url = "http://adapt2.sis.pitt.edu/cbum/um" + "?app=" + app +
+                                                    "&act=" + act + 
+                                                    "&sub=" + sub +
+                                                    "&res=" + progress +
+                                                    "&usr=" + username +
+                                                    "&grp=" + group_id +
+                                                    //"&sid=" + "{{request.session.session_key}}" +
+                                                    "&sid=" + url_sid +
+                                                    "&svc=" + "ReadingMirror" +
+                                                    "&cid=" + cid;
+                $.post(um_url);
+                console.log(um_url);
+            }
+            console.log("Section to update is empty");
+     }
 
+     if (group_id == "PFETest"){
+        console.log("inside PFETest");
+        fetchSmartContent("{{ request.META.HTTP_HOST }}",displaySmartContent);
      }
 
 

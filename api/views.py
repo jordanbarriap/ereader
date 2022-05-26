@@ -17,6 +17,7 @@ from quiz import models as quiz_models
 from reader import models as reader_models
 from reader import views as reader_views
 from recommender import models as rec_models
+from smart_learning_content import models as slc_models
 from knowledgevis import models as knowledgevis_models
 
 from django.contrib.auth.models import User
@@ -473,6 +474,27 @@ def recommended_videos(request):
 
     else:
         return HttpResponseForbidden()
+
+
+@csrf_exempt
+def smart_learning_content(request):
+    """
+    Input: Request object from AJAX api call in the reader.html
+    Method: Utilizes the content_type, provider_id and privacy values to pull the data
+    related to smart learning content from the table in ereader database.
+    Returns: On successful POST request, with JSON values on activity url
+    """
+    if request.method == "POST":
+        content_type = request.POST["content_type"]
+        provider_id = request.POST["provider_id"]
+        privacy = request.POST["privacy"]
+
+        slc_content = slc_models.SmartContent.objects.filter(content_type=content_type, provider_id=provider_id, privacy=privacy)
+
+        return JSONResponse({"activity_url":[row.url for row in slc_content]},status=200)
+    else:
+        return HttpResponseForbidden()
+
 
 @csrf_exempt
 def concept_map(request):
