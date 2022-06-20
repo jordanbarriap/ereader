@@ -564,7 +564,7 @@ function loadHtml() {
     });
 
     //Load student 
-    if(group_id!='CoTaPP22' && group_id!='PFETest'){
+    if(group_id!='CoTaPP22'){// && group_id!='PFETest'){
      $.getJSON("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader/assignments?user="+user_id+"&group="+group_id,function(json){
          var result = json.result;
          if(result){
