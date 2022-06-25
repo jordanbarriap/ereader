@@ -1,9 +1,33 @@
-
-function fetchSmartContent(url_host,callback_f){
+/**
+ * 
+ * @param {string} url_host 
+ * @param {function} callback_f 
+ * @param {string} default_content_id, default: "parsons"
+ * @param {string} default_provider_id, default: "parsons"
+ * 
+ * fetches contents of type --
+        +------------------+------------------+
+        | content_type     | provider_id      |
+        +------------------+------------------+
+        | parsons          | parsons          | -- doesn't load; initialization failed -- 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_calculate_function
+        | animatedexamples | animatedexamples | -- doesn't load; initialization failed -- 404 	http://acos.cs.hut.fi/pitt/jsvee/jsvee-python/ae?example-id=ae_adl_swap
+        | educvideos       | educvideos       | -- doesn't load; timeout; http://columbus.exp.sis.pitt.edu/educvideos/loadVideo.html?videoid=vd_video0013&sub=1
+        | example          | webex            | -- loads; but after selection -- 403 forbidden; http://adapt2.sis.pitt.edu/web_ex_NV0FGdaHzy/Dissection2
+        | question         | quizpet          | -- works without errors
+        | pcrs             | pcrs             | -- doesn't load; response 500 url - https://pcrs.utm.utoronto.ca/mgrids/problems/python/179/embed?act=PCRS&sub=py_sum_product
+        | pcex_set         | pcex             | -- loads without errors
+        | question         | ctat             | -- no entries in the table
+        | pcex_challenge   | pcex_ch          | -- works without errors
+        | question         | codeocean        | -- no entries in the table
+        | question         | parsons          | -- doesn't load; intialization failed; 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_freq_of_char2
+        | readingmirror    | readingmirror    | -- Doesn't load; 500 error can't open page http://adapt2.sis.pitt.edu/ereader/reader/7/pfe-3-1/
+        +------------------+------------------+
+ */
+function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id="parsons"){
     var reader_info = new FormData();
     console.log("inside fetch smart content");
-    reader_info.append("content_type","pcex_set");
-    reader_info.append("provider_id","pcex");
+    reader_info.append("content_type",content_id); 
+    reader_info.append("provider_id",provider_id);
     reader_info.append("privacy","public");
 
     $.ajax({
@@ -24,7 +48,7 @@ function fetchSmartContent(url_host,callback_f){
 }
 
 function displaySmartContent(url_host,activityurls){
-    console.log("baton passed");
+    console.debug("baton passed to display smart content");
     console.log("inside display", activityurls);
 
     if($("#right-smart-content").length == 0){

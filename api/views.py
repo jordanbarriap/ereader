@@ -477,11 +477,11 @@ def recommended_videos(request):
 
 
 @csrf_exempt
-def smart_learning_content(request):
+def slc_programming(request):
     """
     Input: Request object from AJAX api call in the reader.html
     Method: Utilizes the content_type, provider_id and privacy values to pull the data
-    related to smart learning content from the table in ereader database.
+            related to smart learning content from the table in ereader database.
     Returns: On successful POST request, with JSON values on activity url
     """
     if request.method == "POST":
@@ -494,6 +494,23 @@ def smart_learning_content(request):
         return JSONResponse({"activity_url":[row.url for row in slc_content]},status=200)
     else:
         return HttpResponseForbidden()
+
+
+@csrf_exempt
+def slc_provider_list(request):
+    """
+    Input: GET request to retrieve content_type and provider_ids
+    Method: SELECT content_type and provider_id from the 
+            smart learning content from the table in ereader database.
+    Returns: On successful POST request, with JSON values on activity url
+    """
+    if request.method == "GET":
+        content_provider_list = slc_models.SmartContent.objects.order_by('content_type').values('content_type','provider_id').distinct()
+
+        return JSONResponse({"content_providers":[row for row in content_provider_list]},status=200)
+    else:
+        return HttpResponseForbidden()
+
 
 
 @csrf_exempt
