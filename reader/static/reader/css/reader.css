@@ -462,7 +462,7 @@ p.question-statement{
   overflow-y:auto;
 }
 
-#right-smart-content {
+#right-smart-content, #right-wiki-links {
     border-color: green;
     border-width: 2px;
     width: 200px;
@@ -478,6 +478,14 @@ p.question-statement{
     padding-top:3px;
     padding-bottom:3px;
 }
+
+#right-wiki-links .handle{
+    background-color:violet;
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
 
 #left-panel-ratings{
     float:right;

@@ -18,6 +18,7 @@ from reader import models as reader_models
 from reader import views as reader_views
 from recommender import models as rec_models
 from smart_learning_content import models as slc_models
+from wiki_content import models as wiki_models
 from knowledgevis import models as knowledgevis_models
 
 from django.contrib.auth.models import User
@@ -508,6 +509,50 @@ def slc_provider_list(request):
         content_provider_list = slc_models.SmartContent.objects.order_by('content_type').values('content_type','provider_id').distinct()
 
         return JSONResponse({"content_providers":[row for row in content_provider_list]},status=200)
+    else:
+        return HttpResponseForbidden()
+
+
+@csrf_exempt
+def wiki_resources_content(request):
+    """
+    Input: GET request to retrieve Wikipedia content related to the page/section
+    Method: SELECT wiki_page_url by topic_name using topics table in ereader database
+            and retrieving wikipedia pages using MediaWiki API calls (or DBPedia or 
+            a Knowledge Graph server setup)
+    Returns: On successful POST request, with JSON values on wikipedia page urls
+    """
+    if request.method == "POST":
+        resource_id = request.POST['resource_id']
+        page_id = request.POST['page_id']
+
+        ## returns a list of wikipedia topics by course name, section name in the book and 
+        ## page number in the textbook.
+        wiki_articles = []
+        with open(f"./data/concepts/concepts/{resource_id}-{page_id}.txt.concept.json") as concepts_file:
+            list_of_concepts_jsons = concepts_file.readlines()
+            for concept_json in list_of_concepts_jsons:
+                wiki_articles.append(json.loads(concept_json))
+                
+        """
+            - Section Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/sectionkey.php?name=[Section_Name]&type=[“simple/details”]
+            - Question Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=[Question_Name]&type=[“simple/details”]
+
+            These APIs generate two version of the results (simple/details) which can be specified in the URL
+            Simple results returns a list of item with “Rank”, “Title” and “Score” properties. Detail returns the same with the addition of the article summary from wikipedia.
+
+            Here are some examples:
+
+            Relevant Articles for Section iir-2.1 ->    http://scythian.exp.sis.pitt.edu/Textbook/ir/sectionkey.php?name=iir-2.1&type=simple
+            Relevant Articles for Question q380 ->   http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=q380&type=detail    
+        """
+
+
+        ### make url call to wikipedia with the topic names
+        if False: wiki_pages_list = wiki_models.WikiContent.objects.filter(topic_names=wiki_page_topic_name)
+
+        if False: return JSONResponse({"wiki_links":[row.topic_name for row in wiki_page_topic_names]},status=200)
+        return JSONResponse(wiki_articles, status=200)
     else:
         return HttpResponseForbidden()
 

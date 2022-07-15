@@ -11,16 +11,16 @@
         +------------------+------------------+
         | parsons          | parsons          | -- doesn't load; initialization failed -- 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_calculate_function
         | animatedexamples | animatedexamples | -- doesn't load; initialization failed -- 404 	http://acos.cs.hut.fi/pitt/jsvee/jsvee-python/ae?example-id=ae_adl_swap
-        | educvideos       | educvideos       | -- doesn't load; timeout; http://columbus.exp.sis.pitt.edu/educvideos/loadVideo.html?videoid=vd_video0013&sub=1
+        | educvideos       | educvideos (not needed)    | -- doesn't load; timeout; http://columbus.exp.sis.pitt.edu/educvideos/loadVideo.html?videoid=vd_video0013&sub=1 
         | example          | webex            | -- loads; but after selection -- 403 forbidden; http://adapt2.sis.pitt.edu/web_ex_NV0FGdaHzy/Dissection2
         | question         | quizpet          | -- works without errors
         | pcrs             | pcrs             | -- doesn't load; response 500 url - https://pcrs.utm.utoronto.ca/mgrids/problems/python/179/embed?act=PCRS&sub=py_sum_product
         | pcex_set         | pcex             | -- loads without errors
-        | question         | ctat             | -- no entries in the table
-        | pcex_challenge   | pcex_ch          | -- works without errors
-        | question         | codeocean        | -- no entries in the table
-        | question         | parsons          | -- doesn't load; intialization failed; 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_freq_of_char2
-        | readingmirror    | readingmirror    | -- Doesn't load; 500 error can't open page http://adapt2.sis.pitt.edu/ereader/reader/7/pfe-3-1/
+        | question         | ctat             | -- no entries in the table (not needed)
+        | pcex_challenge   | pcex_ch          | -- works without errors (count as pcex_set)
+        | question         | codeocean        | -- no entries in the table (not needed)
+        | question         | parsons          | -- doesn't load; intialization failed; 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_freq_of_char2 (not needed)
+        | readingmirror    | readingmirror    | -- Doesn't load; 500 error can't open page http://adapt2.sis.pitt.edu/ereader/reader/7/pfe-3-1/ (not needed)
         +------------------+------------------+
  */
 function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id="parsons"){
@@ -76,7 +76,29 @@ function displaySmartContent(url_host,activityurls){
         });
     }
     
-    $('#smart-learning-content').html("");
+    $('#smart-learning-content').html('<div>' +
+                                        '<input type="checkbox" id="parsons" name="parsons" checked>' +
+                                        '<label for="Parsons">Parsons</label>' +
+                                        '</div><div>' + 
+                                        '<input type="checkbox" id="pcex" name="pcex" checked>' +
+                                        '<label for="pcex">PCEX_set</label>' + 
+                                        '</div><div>' +
+                                        '<input type="checkbox" id="pcrs" name="pcrs" checked>' +
+                                        '<label for="pcrs">PCRS</label>' + 
+                                        '</div><div>' +
+                                        '<input type="checkbox" name="animatedexamples" checked>'+
+                                        '<label for="animatedexamples">animatedexamples</label>' +
+                                        '</div><div>' +
+                                        '<input type="checkbox" name="webex" checked>'+
+                                        '<label for="webex">webex</label>' +
+                                        '</div><div>'+
+                                        '<input type="checkbox" name="quizpet" checked>'+
+                                        '<label for="quizpet">quizpet</label>' +
+                                        '</div><div>'+
+                                        '<input type="checkbox" name="pcex_ch" checked>'+
+                                        '<label for="pcex_h">pcex challenge</label>' +
+                                        '</div>'
+                                    );
 
     for(var slc_id=0; slc_id<activityurls.length;slc_id++){
         var programming_activity_interface = $(
