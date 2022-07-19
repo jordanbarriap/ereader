@@ -6,28 +6,23 @@
  * @param {string} default_provider_id, default: "parsons"
  * 
  * fetches contents of type --
-        +------------------+------------------+
-        | content_type     | provider_id      |
-        +------------------+------------------+
-        | parsons          | parsons          | -- doesn't load; initialization failed -- 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_calculate_function
-        | animatedexamples | animatedexamples | -- doesn't load; initialization failed -- 404 	http://acos.cs.hut.fi/pitt/jsvee/jsvee-python/ae?example-id=ae_adl_swap
-        | educvideos       | educvideos (not needed)    | -- doesn't load; timeout; http://columbus.exp.sis.pitt.edu/educvideos/loadVideo.html?videoid=vd_video0013&sub=1 
-        | example          | webex            | -- loads; but after selection -- 403 forbidden; http://adapt2.sis.pitt.edu/web_ex_NV0FGdaHzy/Dissection2
-        | question         | quizpet          | -- works without errors
-        | pcrs             | pcrs             | -- doesn't load; response 500 url - https://pcrs.utm.utoronto.ca/mgrids/problems/python/179/embed?act=PCRS&sub=py_sum_product
-        | pcex_set         | pcex             | -- loads without errors
-        | question         | ctat             | -- no entries in the table (not needed)
-        | pcex_challenge   | pcex_ch          | -- works without errors (count as pcex_set)
-        | question         | codeocean        | -- no entries in the table (not needed)
-        | question         | parsons          | -- doesn't load; intialization failed; 404 http://adapt2.sis.pitt.edu/acos/pitt/jsparsons/jsparsons-python/ps?example-id=ps_python_freq_of_char2 (not needed)
-        | readingmirror    | readingmirror    | -- Doesn't load; 500 error can't open page http://adapt2.sis.pitt.edu/ereader/reader/7/pfe-3-1/ (not needed)
-        +------------------+------------------+
+ * 
  */
 function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id="parsons"){
+
+    var section_id = last_page_read["id"];
+    var section_name = last_page_read["name"];
+    var resource_id = last_page_read["resourceid"];
+    var page_num = last_page_read["page"];
+
     var reader_info = new FormData();
     console.log("inside fetch smart content");
     reader_info.append("content_type",content_id); 
     reader_info.append("provider_id",provider_id);
+    reader_info.append("section_id",section_id);
+    reader_info.append("section_name",section_name);
+    reader_info.append("resource_id",resource_id);
+    reader_info.append("page_id",page_num);
     reader_info.append("privacy","public");
 
     $.ajax({
@@ -39,7 +34,7 @@ function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id=
         crossDomain: true,
         success:function(res){
             // console.log("response from programming api",res.activity_url);
-            callback_f(url_host,res.activity_url);
+            callback_f(url_host,res);
         },
         error: function(res){
             console.log("display smart content  call failed",res);
@@ -76,35 +71,26 @@ function displaySmartContent(url_host,activityurls){
         });
     }
     
-    $('#smart-learning-content').html('<div>' +
-                                        '<input type="checkbox" id="parsons" name="parsons" checked>' +
-                                        '<label for="Parsons">Parsons</label>' +
-                                        '</div><div>' + 
-                                        '<input type="checkbox" id="pcex" name="pcex" checked>' +
-                                        '<label for="pcex">PCEX_set</label>' + 
-                                        '</div><div>' +
-                                        '<input type="checkbox" id="pcrs" name="pcrs" checked>' +
-                                        '<label for="pcrs">PCRS</label>' + 
-                                        '</div><div>' +
-                                        '<input type="checkbox" name="animatedexamples" checked>'+
-                                        '<label for="animatedexamples">animatedexamples</label>' +
-                                        '</div><div>' +
-                                        '<input type="checkbox" name="webex" checked>'+
-                                        '<label for="webex">webex</label>' +
-                                        '</div><div>'+
-                                        '<input type="checkbox" name="quizpet" checked>'+
-                                        '<label for="quizpet">quizpet</label>' +
-                                        '</div><div>'+
-                                        '<input type="checkbox" name="pcex_ch" checked>'+
-                                        '<label for="pcex_h">pcex challenge</label>' +
-                                        '</div>'
-                                    );
+    list_of_content_types = '<div>';
+    
+    content_provider_types = activityurls["content_providers"];
 
-    for(var slc_id=0; slc_id<activityurls.length;slc_id++){
-        var programming_activity_interface = $(
-            '<a id="'+slc_id+'" href="#" class="slc">smart_learning_content ' + slc_id 
-            +'</a><br/>');
-        $('#smart-learning-content').append(programming_activity_interface);
+    for (var id in content_provider_types){
+        if (content_provider_types.hasOwnProperty(id)){
+            list_of_content_types += `</div><div><input type="checkbox" id="${content_provider_types[id].provider_id}" name="${content_provider_types[id].content_type}" checked><label for="${content_provider_types[id].content_type}">${content_provider_types[id].content_type}</label></div>`;
+        }
+    }
+
+    $('#smart-learning-content').html(list_of_content_types);
+
+    for(var slc_id in activityurls){
+        if(activityurls.hasOwnProperty(slc_id) &&
+           activityurls[slc_id].hasOwnProperty('display_name')){
+            var programming_activity_interface = $(
+                '<a id="'+slc_id+'" href="#" class="slc">'+ activityurls[slc_id].display_name
+                +'</a><br/>');
+            $('#smart-learning-content').append(programming_activity_interface);
+        }
     }
 
     $(".slc").click(function(evt){
@@ -113,9 +99,24 @@ function displaySmartContent(url_host,activityurls){
 
         $(".modal-body").empty();
 
-        $(".quiz-title").html("Smart Content " + this.id);
+        $(".quiz-title").html(activityurls[this.id].display_name);
         $(".modal-footer").empty();
-        $(".modal-body").append('<iframe src="'+ activityurls[this.id] +'" height="100%" width="100%"></div>').ready();
+        $(".modal-body").append('<iframe src="'+ activityurls[this.id].activity_url 
+        +'&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}}'+
+        ' height="100%" width="100%"></div>').ready();
     });
+
+
+    var checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+    for (id =0; id < checkboxes.length; id++){
+        checkboxes[id].addEventListener('change', function() {
+            if (this.checked) {
+            console.log(`${this.id} is checked`);
+            } else {
+            console.log(`${this.id} is not checked`);
+            }
+        });
+    }
     
 }

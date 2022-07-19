@@ -15,7 +15,6 @@ urlpatterns = [
     re_path(r"^summary/?$", views.summary, name="summary"),
     re_path(r"^recommender/recommended_videos?$", views.recommended_videos, name="recommended_videos"),
     re_path(r"^smart_learning_content/programming?$",views.slc_programming,name="slc"),
-    re_path(r"^smart_learning_content/provider_list?$",views.slc_provider_list,name="slc_providers"),
     re_path(r"^wiki_resources_content?$",views.wiki_resources_content,name="slc"),
     re_path(r"^knowledgevis/concept_map?$",views.concept_map, name="get_concept_map"),
     re_path(r"^knowledgevis/concept_map_log?$",views.concept_map_log, name="concept_map_log"),

@@ -2175,7 +2175,7 @@ function initToc(course_structure){
                 $(".quiz-title").text(data["name"]);
                 var questions = data["questions"];
                 var question_ids = Object.keys(questions);
-                console.log(question_ids);
+                console.log("question_ids",question_ids);
                 var total_corrects = 0;
                 if(question_ids.length>0){
                     //Insert questions in the quiz

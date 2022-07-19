@@ -28,3 +28,40 @@ class SmartContent(models.Model):
     class Meta:
         app_label="smart_learning_content"
         db_table = "smart_learning_content"
+
+class SmartContentConcept(models.Model):
+    content_id = models.AutoField(primary_key=True)
+    content_name = models.CharField(max_length=200)
+    component_name = models.CharField(max_length=200)
+    context_name = models.CharField(max_length=200)
+    domain = models.CharField(max_length=200)
+    weight = models.IntegerField()
+    active = models.BooleanField()
+    source_method = models.CharField(max_length=200)
+    importance = models.IntegerField()
+    contributesK = models.IntegerField()
+
+    def __str__(self):
+        return self.content_name
+
+    class Meta:
+        app_label = "smart_learning_content_concepts"
+        db_table = "smart_learning_content_concepts"
+
+class SmartContentSection(models.Model):
+    concept_id = models.AutoField(primary_key=True)
+    section_id = models.CharField(max_length=200)
+    resource_id = models.CharField(max_length=200)
+    page_id = models.IntegerField()
+    concept = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.concept
+    
+
+    class Meta:
+        app_label = "smart_learning_content_section"
+        db_table = "smart_learning_content_section"
+
+
+

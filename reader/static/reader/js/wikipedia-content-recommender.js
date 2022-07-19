@@ -143,7 +143,7 @@ function displayWikiContent(wiki_links){
 
         $(".modal-body").empty();
 
-        $(".quiz-title").html(wiki_links[this.id].title);
+        $(".quiz-title").html(wiki_links[this.id].concept);
         $(".modal-footer").empty();
         if(false){$(".modal-body").append(wiki_links[this.id].snippet).ready();}
         if(false) {$(".modal-body").append('<iframe src=https://en.wikipedia.org/w/index.php?curid=' + wiki_links[this.id].pageid+' height="100%" width="100%"></iframe>').ready();}

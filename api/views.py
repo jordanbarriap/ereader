@@ -11,6 +11,7 @@ from rest_framework.parsers import JSONParser
 
 from django.core import serializers
 from django.forms.models import model_to_dict
+from django.db.models.functions import Cast
 
 from annotator import models as annotator_models
 from quiz import models as quiz_models
@@ -486,29 +487,37 @@ def slc_programming(request):
     Returns: On successful POST request, with JSON values on activity url
     """
     if request.method == "POST":
+        section_id = request.POST["section_id"]
+        resource_id = request.POST["resource_id"]
+        page_id = request.POST["page_id"]
         content_type = request.POST["content_type"]
         provider_id = request.POST["provider_id"]
         privacy = request.POST["privacy"]
 
-        slc_content = slc_models.SmartContent.objects.filter(content_type=content_type, provider_id=provider_id, privacy=privacy)
-
-        return JSONResponse({"activity_url":[row.url for row in slc_content]},status=200)
-    else:
-        return HttpResponseForbidden()
-
-
-@csrf_exempt
-def slc_provider_list(request):
-    """
-    Input: GET request to retrieve content_type and provider_ids
-    Method: SELECT content_type and provider_id from the 
-            smart learning content from the table in ereader database.
-    Returns: On successful POST request, with JSON values on activity url
-    """
-    if request.method == "GET":
+        slc_content_sections = slc_models.SmartContentSection.objects.filter(section_id=section_id)
+        
         content_provider_list = slc_models.SmartContent.objects.order_by('content_type').values('content_type','provider_id').distinct()
+        
+        return_json = {}
 
-        return JSONResponse({"content_providers":[row for row in content_provider_list]},status=200)
+        return_json["content_providers"] = content_provider_list
+        
+        for row3 in slc_content_sections:
+            slc_content_component = slc_models.SmartContentConcept.objects.filter(component_name = row3.concept.rstrip())
+            
+            for row2 in slc_content_component:
+                slc_content = slc_models.SmartContent.objects.filter(content_name = row2.content_name)
+                for row1 in slc_content:
+                    return_json[row1.content_id] = {
+                                                        "content_name": row1.content_name,
+                                                        "display_name": row1.display_name,
+                                                        "content_type": row1.content_type,
+                                                        "component_name": row2.component_name,
+                                                        "context_name":  row2.context_name,
+                                                        "provider_id" : row1.provider_id,
+                                                        "activity_url": row1.url
+                                                    }
+        return JSONResponse(return_json,status=200)
     else:
         return HttpResponseForbidden()
 
