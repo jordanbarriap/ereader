@@ -462,18 +462,18 @@ p.question-statement{
   overflow-y:auto;
 }
 
-#right-smart-content, #right-wiki-links {
-    border-color: green;
+.right-smart-content, #right-wiki-links {
+    /* border-color: green; */
     border-width: 2px;
-    width: 200px;
+    width: auto;
     /* bottom: 20px !important; */
-    height: 55% !important;
+    height: 35% !important;
     border-radius: 6px;
     z-index:999;
 }
 
-#right-smart-content .handle {
-    background-color:green;
+.right-smart-content .handle {
+    /* background-color:green; */
     height: 32px;
     padding-top:3px;
     padding-bottom:3px;
@@ -484,6 +484,19 @@ p.question-statement{
     height: 32px;
     padding-top:3px;
     padding-bottom:3px;
+}
+
+.slc{
+    font-family:ff1;
+    word-spacing:0.25em; 
+    text-decoration:none;
+    font-weight: bold;
+}
+
+.slc :hover{
+    text-decoration:rgba(64,64,64,1);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: lighter;
 }
 
 

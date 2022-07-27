@@ -488,6 +488,7 @@ def slc_programming(request):
     """
     if request.method == "POST":
         section_id = request.POST["section_id"]
+        section_name = request.POST["section_name"]
         resource_id = request.POST["resource_id"]
         page_id = request.POST["page_id"]
         content_type = request.POST["content_type"]
@@ -500,23 +501,26 @@ def slc_programming(request):
         
         return_json = {}
 
-        return_json["content_providers"] = content_provider_list
-        
+        if False: return_json["content_providers"] = content_provider_list
+
         for row3 in slc_content_sections:
             slc_content_component = slc_models.SmartContentConcept.objects.filter(component_name = row3.concept.rstrip())
             
             for row2 in slc_content_component:
                 slc_content = slc_models.SmartContent.objects.filter(content_name = row2.content_name)
                 for row1 in slc_content:
-                    return_json[row1.content_id] = {
+
+                    if not(row1.provider_id in return_json):
+                        return_json[row1.provider_id] = []
+
+                    return_json[row1.provider_id].append({
                                                         "content_name": row1.content_name,
                                                         "display_name": row1.display_name,
                                                         "content_type": row1.content_type,
                                                         "component_name": row2.component_name,
                                                         "context_name":  row2.context_name,
-                                                        "provider_id" : row1.provider_id,
                                                         "activity_url": row1.url
-                                                    }
+                                                    })
         return JSONResponse(return_json,status=200)
     else:
         return HttpResponseForbidden()
