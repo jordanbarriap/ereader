@@ -67,8 +67,8 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
     var wiki_url = "http://"+url_host+"/api/wiki_resources_content";
     
     var reader_info = new FormData();
-    reader_info.append('resource_id',resource_id);
-    reader_info.append('page_id',page_num);
+    if (page_num.length != 0) reader_info.append('resource_id',`${resource_id}_${page_num}`);
+    if (page_num.length == 0) reader_info.append('resource_id',`${resource_id}`);
 
     $.ajax({
         url: wiki_url,
@@ -90,11 +90,6 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
 
 
 }
-
-function getWikiTopics(){
-    
-}
-
 
 function displayWikiContent(wiki_links){
     console.debug("baton passed to display Wiki content");
@@ -139,15 +134,32 @@ function displayWikiContent(wiki_links){
 
     $(".slc").click(function(evt){
         evt.preventDefault();
-        modal.style.display="block";
-
-        $(".modal-body").empty();
+        var wikimodal = document.getElementsByClassName("modal")[0];
+        
+        wikimodal.style.display="block";
+        wikimodal.style.width = "50%";
 
         $(".quiz-title").html(wiki_links[this.id].concept);
-        $(".modal-footer").empty();
+        $('.modal-body').empty();
+
         if(false){$(".modal-body").append(wiki_links[this.id].snippet).ready();}
         if(false) {$(".modal-body").append('<iframe src=https://en.wikipedia.org/w/index.php?curid=' + wiki_links[this.id].pageid+' height="100%" width="100%"></iframe>').ready();}
-        $(".modal-body").append('<iframe src='+wiki_links[this.id].dbpedia_url + ' height="100%" width="100%"></iframe>').ready();
+        var checked = ["","","",""];
+        
+        $(".modal-body").append(`<div>
+            <iframe src=${wiki_links[this.id].wikipage} + ' height="65%" width="100%"></iframe>
+            <div width="100%">
+                <span id="prompt-video-watching">
+                    Is this recommended wikipedia content relevant for the section you just read?
+                </span> <br />
+                <img id="star1" src="${star1}" alt="0 star" height="20" width="20"><input type="radio" name="relevance" value="0" ${checked[0]}> Not relevant at all<br> 
+                <img id="star2" src="${star2}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" ${checked[1]}> Relevant for the course but not for the current section<br>
+                <img id="star3" src="${star3}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" ${checked[2]}> Partly relevant for the current section<br>
+                <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" ${checked[3]}> Relevant for the current section<br>
+            
+                <textarea id="wiki-feedback" class='textual' rows='3' placeholder="Please explain why you gave this rating here..."/>
+            </div>
+        `).ready();
     });
 }
         

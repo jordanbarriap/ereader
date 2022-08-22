@@ -131,6 +131,10 @@
 
     //Global variables
     var user_id = "{{ request.user.id }}";
+    var star1 = "{% static 'reader/img/0-star.png' %}";
+    var star2 = "{% static 'reader/img/1-star.png' %}";
+    var star3 = "{% static 'reader/img/2-star.png' %}";
+    var star4 = "{% static 'reader/img/3-star.png' %}";
 
     if(user_id==null || user_id==undefined){
       user_id = "{{ request.usr }}";
@@ -1163,7 +1167,7 @@ function initProgressVis(root){
 
 function loadResource(section_id,section_name,resource_id,page_num,source){
 
-    console.log(section_id+" "+section_name+" "+resource_id+" "+page_num);
+    console.log(" section_id " + section_id+" section_name "+section_name+" resource_id "+resource_id+" page_num "+page_num);
      //Sets global variables which keeps the current_section_id
      current_section_id = section_id;
 
@@ -1281,7 +1285,7 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
      }
 
      if (group_id == "INFSCI2300Fall2022"){
-        console.debug("inside HIP");
+        console.debug("inside HIP wiki");
         var section_id = last_page_read["id"];
         var section_name = last_page_read["name"];
         var resource_file_id = last_page_read["resourceid"];
@@ -1308,6 +1312,13 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
             format: 'json' 
         }
         fetchWikiContent("{{ request.META.HTTP_HOST }}", resource_id,page_num, displayWikiContent,requestData);
+     }
+
+
+     if (group_id == "INFSCI2140Fall2022"){
+        console.log("Inside IR wiki");
+        var wikimap_pageid = map_old_new_section_ids[last_page_read["docno"]];
+        fetchWikiContent("{{ request.META.HTTP_HOST }}", wikimap_pageid,"", displayWikiContent,requestData);
      }
 
 
@@ -2106,6 +2117,8 @@ function initToc(course_structure){
 
     function closeModalWindow(){
         modal.style.display = "none";
+        modal.style.width = "100%";                     // wiki-modal
+        console.log("inside close modal")
         $("#left-div").removeClass("blurred");
         $("#page-container").removeClass("blurred");
 

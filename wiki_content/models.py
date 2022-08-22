@@ -6,25 +6,16 @@ from django.utils import timezone
 
 # Create your models here.
 
-class WikiPageTopic(models.Model):
-    content_id = models.AutoField(primary_key=True)
-    content_name = models.CharField(max_length=100, default="activity")
-    content_type = models.CharField(max_length=100, default="parsons")
-    display_name = models.CharField(max_length=50, default="")
-    desc = models.CharField(max_length=500,default="")
-    url = models.CharField(max_length=2083, default="url", unique=True)
-    domain = models.CharField(max_length=10,default="py")
-    provider_id = models.CharField(max_length=100, default="parsons",unique=True)
-    comment = models.CharField(max_length=100,default="")
-    visible = models.BooleanField()
-    creation_date = models.DateTimeField(default=timezone.now)
-    creator_id = models.CharField(max_length=50, default="admin")
-    privacy = models.CharField(max_length=50,default="public")
-    author_name = models.CharField(max_length=50, default="")
+class WikiConcepts(models.Model):
+    id = models.AutoField(primary_key=True)
+    resource_id = models.CharField(max_length=200)
+    concept = models.CharField(max_length=200)
+    wikipage = models.CharField(max_length=200)
+    score = models.IntegerField()
 
     def __str__(self):
-        return self.content_name
+        return f"{self.resource_id},{self.concept},{self.wikipage}"
 
     class Meta:
-        app_label="wiki_page_content"
-        db_table = "wiki_page_topic"
+        app_label="wiki_concepts"
+        db_table = "wiki_concepts"

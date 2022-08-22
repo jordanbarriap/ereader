@@ -48,9 +48,10 @@ function displaySmartContent(url_host,content_provider_types){
 
     display_names = {
         "quizpet":"Questions",
-        "parsons":"Parsons Problems",
-        "animatedexamples": "Animated Examples",
-        "pcex": "Annotated Examples"
+        "parsons":"Parsons",
+        "animatedexamples": "Animations",
+        "pcex": "Annotated Examples",
+        "pcrs": "Coding Problems"
     }
 
 
@@ -125,7 +126,7 @@ function displaySmartContent(url_host,content_provider_types){
     
             $(".quiz-title").html(content_provider_types[id][this.id].display_name);
             $(".modal-footer").empty();
-            $(".modal-body").append(`<iframe src=${content_provider_types[id][this.id].activity_url}&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}} height="100%" width="100%"></div>`).ready();
+            $(".modal-body").append(`<div style="width=50%; height=50%"><iframe src=${content_provider_types[id][this.id].activity_url}&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}} height="100%" width="100%"></div>`).ready();
         });
 
 

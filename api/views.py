@@ -537,16 +537,26 @@ def wiki_resources_content(request):
     """
     if request.method == "POST":
         resource_id = request.POST['resource_id']
-        page_id = request.POST['page_id']
 
         ## returns a list of wikipedia topics by course name, section name in the book and 
         ## page number in the textbook.
+        
+        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id)
         wiki_articles = []
-        with open(f"./data/concepts/concepts/{resource_id}-{page_id}.txt.concept.json") as concepts_file:
-            list_of_concepts_jsons = concepts_file.readlines()
-            for concept_json in list_of_concepts_jsons:
-                wiki_articles.append(json.loads(concept_json))
-                
+
+        for wiki_concept in wiki_concepts:
+            wiki_articles.append({
+                "concept":wiki_concept.concept,
+                "wikipage":wiki_concept.wikipage,
+            })
+        
+        if False:
+            
+            with open(f"./data/concepts/concepts/{resource_id}-{page_id}.txt.concept.json") as concepts_file:
+                list_of_concepts_jsons = concepts_file.readlines()
+                for concept_json in list_of_concepts_jsons:
+                    wiki_articles.append(json.loads(concept_json))
+                    
         """
             - Section Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/sectionkey.php?name=[Section_Name]&type=[“simple/details”]
             - Question Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=[Question_Name]&type=[“simple/details”]
