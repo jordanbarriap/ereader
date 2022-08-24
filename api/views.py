@@ -119,6 +119,8 @@ def reading_log(request):
         data = JSONParser().parse(request)
         serializer = serializers.ReadingLogSerializer(data=data)
         if serializer.is_valid():
+            ## visible_text cannot be null error while committing to database
+            if len(serializer.validated_data["visible_text"]) == 0: serializer.validated_data["visible_text"] = " "
             serializer.save()
             return JSONResponse(serializer.data, status=201)
         else:

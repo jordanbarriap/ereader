@@ -154,7 +154,10 @@
     var session = "{{ request.session.session_key }}";
     var current_section_id = "";
 
-    var extra_base_url = "";//"/ereader";
+    var extra_base_url = ""; 
+    if(location.hostname != "localhost" && location.hostname != '127.0.0.1'){
+        extra_base_url = "/ereader";
+    };
     var recommendation_approach = "jaccard_lemmatized";
 
     var social_comparison = true;
