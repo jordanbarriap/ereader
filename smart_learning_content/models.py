@@ -63,5 +63,26 @@ class SmartContentSection(models.Model):
         app_label = "smart_learning_content_section"
         db_table = "smart_learning_content_section"
 
+class SmartContentFeedback(models.Model):
+    id = models.AutoField(primary_key=True)
+    resource_id = models.CharField(max_length=200)
+    content_name = models.CharField(max_length=200)
+    component_name = models.CharField(max_length=200)
+    context_name = models.CharField(max_length=200)
+    smart_content_rating = models.IntegerField()
+    smart_content_feedback_text = models.CharField(max_length=1000)
+
+    def is_valid(self):
+        return len(self.resource_id) !=0 and len(self.content_name) != 0 and len(self.context_name) != 0
+
+    def __str__(self):
+        return self.concept
+    
+
+
+    class Meta:
+        app_label = "smart_content_feedback"
+        db_table = "smart_content_feedback"
+
 
 

@@ -67,7 +67,7 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
     var wiki_url = "http://"+url_host+"/api/wiki_resources_content";
     
     var reader_info = new FormData();
-    if (page_num.length != 0) reader_info.append('resource_id',`${resource_id}_${page_num}`);
+    if (page_num.length != 0) reader_info.append('resource_id',`${resource_id}-${page_num}`);
     if (page_num.length == 0) reader_info.append('resource_id',`${resource_id}`);
 
     $.ajax({
@@ -158,8 +158,59 @@ function displayWikiContent(wiki_links){
                 <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" ${checked[3]}> Relevant for the current section<br>
             
                 <textarea id="wiki-feedback" class='textual' rows='3' placeholder="Please explain why you gave this rating here..."/>
+                <span id="article-id" style="display:none;">${this.id}</span>
             </div>
         `).ready();
     });
 }
-        
+
+
+function submitWikiFeedback(url_host){
+    console.log("inside wiki feedback")
+    var resource_id = last_page_read["resourceid"];
+    var page_num = last_page_read["page"];
+
+    var article_id = $('#article-id').html();
+    var wiki_rating = $('input[name="relevance"]:checked').val();
+    var concept = $('.quiz-title').html()
+    var wiki_feedback =  $('textarea#wiki-feedback').val();
+    var feedback_url = "http://"+url_host+"/api/wiki_content_feedback";
+
+    var feedback_data = new FormData();
+
+    feedback_data.append("article_id", article_id);
+    feedback_data.append("resource_id",`${resource_id}-${page_num}`);
+    feedback_data.append("concept",concept);
+    feedback_data.append("article_rating",wiki_rating);
+    feedback_data.append("wiki_feedback",wiki_feedback);
+
+    $(".next-btn").prop("disabled",false);
+
+    $(".submit-btn").prop("disabled",true);
+    loaderOn();
+
+    $.ajax({
+        url: feedback_url,
+        type:"POST",
+        data: feedback_data,
+        processData: false,
+        contentType: false,
+        crossDomain: true,
+        success:function(res){
+            console.log(res);
+            loaderOff();
+        },
+        error: function(res, options, err){
+            console.log("error sending feedback, failed!",res.status,err);
+            loaderOff();
+        }
+    });
+    
+    $(".submit-btn").prop("disabled",false);
+}
+
+
+
+
+
+

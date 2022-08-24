@@ -436,7 +436,22 @@
 
         $('.submit-btn').click( function(e) {
             e.preventDefault();
-            submitQuiz();
+            
+            if (group_id != "INFSCI2140Fall2022" 
+                && group_id != "INFSCI2300Fall2022" 
+                && group_id != "PFETest"){
+                submitQuiz();
+            }
+
+            if (group_id == "INFSCI2140Fall2022" || group_id == "INFSCI2300Fall2022"){
+                console.log("inside submit event click");
+                submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url);
+            }
+            if (group_id == "PFETest"){
+                console.log("inside submit event click PFETest");
+                submitActivityResponse("{{ request.META.HTTP_HOST }}"+extra_base_url);
+            }
+            
             return false;
         });
 
@@ -1284,7 +1299,7 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
      if (group_id == "PFETest"){ // || group_id == "INFSCI2300Fall2022"){
         console.debug("inside PFETest");// or INFSCI2300Fall2022 ");
-        fetchSmartContent("{{ request.META.HTTP_HOST }}",displaySmartContent);
+        fetchSmartContent("{{ request.META.HTTP_HOST }}"+extra_base_url,displaySmartContent);
      }
 
      if (group_id == "INFSCI2300Fall2022"){
@@ -1314,14 +1329,14 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
             srlimit: 500,
             format: 'json' 
         }
-        fetchWikiContent("{{ request.META.HTTP_HOST }}", resource_id,page_num, displayWikiContent,requestData);
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, resource_id,page_num, displayWikiContent,requestData);
      }
 
 
      if (group_id == "INFSCI2140Fall2022"){
         console.log("Inside IR wiki");
         var wikimap_pageid = map_old_new_section_ids[last_page_read["docno"]];
-        fetchWikiContent("{{ request.META.HTTP_HOST }}", wikimap_pageid,"", displayWikiContent,requestData);
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, wikimap_pageid,"", displayWikiContent,requestData);
      }
 
 
@@ -2121,7 +2136,7 @@ function initToc(course_structure){
     function closeModalWindow(){
         modal.style.display = "none";
         modal.style.width = "100%";                     // wiki-modal
-        console.log("inside close modal")
+
         $("#left-div").removeClass("blurred");
         $("#page-container").removeClass("blurred");
 

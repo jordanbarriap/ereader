@@ -125,8 +125,28 @@ function displaySmartContent(url_host,content_provider_types){
             $(".modal-body").empty();
     
             $(".quiz-title").html(content_provider_types[id][this.id].display_name);
-            $(".modal-footer").empty();
-            $(".modal-body").append(`<div style="width=50%; height=50%"><iframe src=${content_provider_types[id][this.id].activity_url}&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}} height="100%" width="100%"></div>`).ready();
+            
+            var checked = ["","","",""];
+            
+            $(".modal-body").append(`
+                <div style="width=50%; height=50%">
+                    <iframe src=${content_provider_types[id][this.id].activity_url}&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}} height="65%" width="100%" />
+                    <div width="100%">
+                        <span id="prompt-video-watching">
+                            Is this recommended smart programming exercise relevant for the section you just read?
+                        </span> <br />
+                        <img id="star1" src="${star1}" alt="0 star" height="20" width="20"><input type="radio" name="relevance" value="0" ${checked[0]}> Not relevant at all<br> 
+                        <img id="star2" src="${star2}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" ${checked[1]}> Relevant for the course but not for the current section<br>
+                        <img id="star3" src="${star3}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" ${checked[2]}> Partly relevant for the current section<br>
+                        <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" ${checked[3]}> Relevant for the current section<br>
+                    
+                        <textarea id="slc-feedback" class='textual' rows='3' placeholder="Please explain why you gave this rating here..."/>
+                    </div>
+                </div>
+                <span id="content-name" style="display:none;">${content_provider_types[id][this.id].content_name}</span>
+                <span id="component-name" style="display:none;">${content_provider_types[id][this.id].component_name}</span>
+                <span id="context-name" style="display:none;">${content_provider_types[id][this.id].context_name}</span>
+            `).ready();
         });
 
 
@@ -157,4 +177,51 @@ function displaySmartContent(url_host,content_provider_types){
         }
     }
     
+}
+
+function submitActivityResponse(url_host){
+    console.log("inside smart content feedback")
+    var resource_id = last_page_read["resourceid"];
+    var page_num = last_page_read["page"];
+
+    var content_name = $('#content-name').html();
+    var component_name = $('#component-name').html();
+    var context_name = $('#context-name').html();
+    var smart_content_rating =  $('input[name="relevance"]:checked').val();
+    var smart_content_feedback_text = $('textarea#slc-feedback').val();
+    var feedback_url = "http://"+url_host+"/api/smart_content_feedback";
+
+    var feedback_data = new FormData();
+
+    feedback_data.append("content_name", content_name);
+    feedback_data.append("resource_id",`${resource_id}-${page_num}`);
+    feedback_data.append("component_name",component_name);
+    feedback_data.append("context_name",context_name);
+    feedback_data.append("smart_content_rating",smart_content_rating);
+    feedback_data.append("smart_content_feedback_text",smart_content_feedback_text);
+
+    $(".next-btn").prop("disabled",false);
+
+    $(".submit-btn").prop("disabled",true);
+    loaderOn();
+
+    $.ajax({
+        url: feedback_url,
+        type:"POST",
+        data: feedback_data,
+        processData: false,
+        contentType: false,
+        crossDomain: true,
+        success:function(res){
+            console.log(res);
+            loaderOff();
+        },
+        error: function(res, options, err){
+            console.log("error sending feedback, failed!",res.status,err);
+            loaderOff();
+        }
+    });
+
+    $(".submit-btn").prop("disabled",false);
+
 }

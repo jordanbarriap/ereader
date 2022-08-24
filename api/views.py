@@ -120,7 +120,6 @@ def reading_log(request):
         serializer = serializers.ReadingLogSerializer(data=data)
         if serializer.is_valid():
             ## visible_text cannot be null error while committing to database
-            if len(serializer.validated_data["visible_text"]) == 0: serializer.validated_data["visible_text"] = " "
             serializer.save()
             return JSONResponse(serializer.data, status=201)
         else:
@@ -529,6 +528,33 @@ def slc_programming(request):
 
 
 @csrf_exempt
+def smart_content_feedback(request):
+    if request.method == "POST":
+        resource_id = request.POST["resource_id"]
+        content_name = request.POST["content_name"]
+        component_name = request.POST["component_name"]
+        context_name = request.POST["context_name"]
+        smart_content_rating = request.POST["smart_content_rating"]
+        smart_content_feedback_text = request.POST["smart_content_feedback_text"]
+
+        new_feedback = slc_models.SmartContentFeedback.objects.create(
+                    resource_id = resource_id,
+                    content_name = content_name,
+                    component_name = component_name,
+                    context_name = context_name,
+                    smart_content_rating = smart_content_rating,
+                    smart_content_feedback_text = smart_content_feedback_text
+                )
+
+        if new_feedback.is_valid(): new_feedback.save()
+        return JSONResponse({"answer":1}, status=200)
+
+    else:
+        return HttpResponseForbidden()
+
+
+
+@csrf_exempt
 def wiki_resources_content(request):
     """
     Input: GET request to retrieve Wikipedia content related to the page/section
@@ -581,6 +607,31 @@ def wiki_resources_content(request):
     else:
         return HttpResponseForbidden()
 
+
+@csrf_exempt
+def wiki_content_feedback(request):
+    if request.method == "POST":
+
+        resource_id = request.POST["resource_id"]
+        concept = request.POST["concept"]
+        wiki_article_id = request.POST["article_id"]
+        article_rating = request.POST["article_rating"]
+        wiki_feedback = request.POST["wiki_feedback"]
+
+        new_feedback = wiki_models.WikiFeedback.objects.create(
+                            resource_id = resource_id,
+                            concept = concept,
+                            wiki_article_id = wiki_article_id,
+                            article_rating = article_rating,
+                            wiki_feedback = wiki_feedback
+                        )
+
+        if new_feedback.is_valid(): new_feedback.save()
+
+        return JSONResponse({"answer":1}, status=200)
+
+    else:
+        return HttpResponseForbidden()
 
 
 @csrf_exempt
