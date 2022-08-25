@@ -569,7 +569,7 @@ def wiki_resources_content(request):
         ## returns a list of wikipedia topics by course name, section name in the book and 
         ## page number in the textbook.
         
-        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id)
+        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id).order_by('overall_score')
         wiki_articles = []
 
         for wiki_concept in wiki_concepts:
@@ -612,18 +612,30 @@ def wiki_resources_content(request):
 def wiki_content_feedback(request):
     if request.method == "POST":
 
+        user_id = request.POST["user_id"]
+        group_id = request.POST["group_id"]
         resource_id = request.POST["resource_id"]
         concept = request.POST["concept"]
-        wiki_article_id = request.POST["article_id"]
-        article_rating = request.POST["article_rating"]
-        wiki_feedback = request.POST["wiki_feedback"]
+        article_id = request.POST["article_id"]
+        relevance_rating = request.POST["relevance_rating"]
+        difficulty_rating = request.POST["difficulty_rating"]
+        concept_type = request.POST["concept_type"]
+        action_type = request.POST["action_type"]
+        missing_concepts = request.POST["missing_concepts"]
+        rec_concepts = request.POST["rec_concepts"]
 
         new_feedback = wiki_models.WikiFeedback.objects.create(
+                            user_id = user_id,
+                            group_id = group_id,
                             resource_id = resource_id,
                             concept = concept,
-                            wiki_article_id = wiki_article_id,
-                            article_rating = article_rating,
-                            wiki_feedback = wiki_feedback
+                            wiki_article_id = article_id,
+                            relevance_rating = relevance_rating,
+                            difficulty_rating = difficulty_rating,
+                            concept_type = concept_type,
+                            action_type = action_type,
+                            missing_concepts = missing_concepts,
+                            rec_concepts = rec_concepts
                         )
 
         if new_feedback.is_valid(): new_feedback.save()

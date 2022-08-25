@@ -16,7 +16,7 @@
     Relevant Articles for Question q380 ->   http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=q380&type=detail    
 
  */
-function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data = { 
+function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callback_f,request_data = { 
     origin:'localhost',
     action: 'query',
     page: 'human information processing',
@@ -68,7 +68,7 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
     
     var reader_info = new FormData();
     if (page_num.length != 0) reader_info.append('resource_id',`${resource_id}-${page_num}`);
-    if (page_num.length == 0) reader_info.append('resource_id',`${resource_id}`);
+    if (false) reader_info.append('resource_id',`${resource_id}`);
 
     $.ajax({
         url: wiki_url,
@@ -80,7 +80,7 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
         success:function(res){
             if (false) {recommended_articles = res['query']['search'];}
             if (false) {console.log("wikipedia responses",recommended_articles);}
-            callback_f(res);
+            callback_f(res,url_host,user_id,group_id);
         },
         error: function(res, options, err){
             console.log("display wiki content call failed",res.status,err);
@@ -91,7 +91,7 @@ function fetchWikiContent(url_host,resource_id,page_num, callback_f,request_data
 
 }
 
-function displayWikiContent(wiki_links){
+function displayWikiContent(wiki_links,url_host,user_id,group_id){
     console.debug("baton passed to display Wiki content");
     console.log("inside display", wiki_links);
 
@@ -147,42 +147,81 @@ function displayWikiContent(wiki_links){
         var checked = ["","","",""];
         
         $(".modal-body").append(`<div>
-            <iframe src=${wiki_links[this.id].wikipage} + ' height="65%" width="100%"></iframe>
+            <div id="wikipage" style="overflow:auto;height:65%;width:100%;">
+                <iframe src=${wiki_links[this.id].wikipage} height="5000px" width="100%" scrolling="no" frameborder="0"></iframe>
+            </div>
             <div width="100%">
                 <span id="prompt-video-watching">
-                    Is this recommended wikipedia content relevant for the section you just read?
+                    Please rate the concepts related covered by this article
                 </span> <br />
-                <img id="star1" src="${star1}" alt="0 star" height="20" width="20"><input type="radio" name="relevance" value="0" ${checked[0]}> Not relevant at all<br> 
-                <img id="star2" src="${star2}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" ${checked[1]}> Relevant for the course but not for the current section<br>
-                <img id="star3" src="${star3}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" ${checked[2]}> Partly relevant for the current section<br>
-                <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" ${checked[3]}> Relevant for the current section<br>
-            
-                <textarea id="wiki-feedback" class='textual' rows='3' placeholder="Please explain why you gave this rating here..."/>
+                <table>
+                    <tr>
+                        <td>Relevance</td>
+                        <td><input type="radio" name="relevance" value="0" ${checked[0]}>None</td>
+                        <td><input type="radio" name="relevance" value="1" ${checked[1]}>Partial</td>
+                        <td><input type="radio" name="relevance" value="2" ${checked[2]}>Relevant</td>
+                        <td><input type="radio" name="relevance" value="3" ${checked[3]}>High</td>
+                    </tr>
+                    <tr>
+                        <td>Difficulty</td>
+                        <td><input type="radio" name="difficulty" value="0" ${checked[0]}>Easy</td>
+                        <td><input type="radio" name="difficulty" value="1" ${checked[1]}>Medium</td>
+                        <td><input type="radio" name="difficulty" value="2" ${checked[2]}>Hard</td>
+                    </tr>
+                    <tr>
+                        <td>Type</td>
+                        <td><input type="radio" name="concept_type" value="0" ${checked[0]}>Prerequisite</td>
+                        <td><input type="radio" name="concept_type" value="1" ${checked[1]}>Explained</td>
+                    </tr>
+                </table>
+                <br />
+                <textarea id="missing_concepts" class='textual' rows='1' placeholder="what concepts do you think are missing in this page?"/><br />
+                <textarea id="rec_concepts" class='textual' rows='1' placeholder="what concepts would you like to see on this page?"/>
                 <span id="article-id" style="display:none;">${this.id}</span>
             </div>
         `).ready();
+
+        submitWikiFeedback(url_host,user_id,group_id,"open_wiki");
+        
+        $("#wikipage").on('scroll',function(event){
+            submitWikiFeedback(url_host,user_id,group_id,"scroll_event");
+        });
+            
+        $('.close').click(function(){
+            submitWikiFeedback(url_host,user_id,group_id,"close_wiki");
+        });
     });
 }
 
 
-function submitWikiFeedback(url_host){
-    console.log("inside wiki feedback")
+function submitWikiFeedback(url_host,user_id,group_id,action_type){
+    if (false) console.log("inside wiki feedback"); // enable for debugging
     var resource_id = last_page_read["resourceid"];
     var page_num = last_page_read["page"];
 
-    var article_id = $('#article-id').html();
-    var wiki_rating = $('input[name="relevance"]:checked').val();
-    var concept = $('.quiz-title').html()
-    var wiki_feedback =  $('textarea#wiki-feedback').val();
+    var article_id = ($('#article-id').html() == undefined)? -1:$('#article-id').html();
+    var wiki_rating = ($('input[name="relevance"]:checked').val() === undefined)? -1:$('input[name="relevance"]:checked').val();
+    var difficulty_rating = ($('input[name="difficulty"]:checked').val() === undefined)? -1:$('input[name="difficulty"]:checked').val();
+    var concept_type = ($('input[name="concept_type"]:checked').val() === undefined)? -1: $('input[name="concept_type"]:checked').val();
+    var action_type = action_type;
+    var concept = $('.quiz-title').html();
+    var missing_concepts =  ($('textarea#missing_concepts').val() === undefined)? "":$('textarea#missing_concepts').val();
+    var rec_concepts =  ($('textarea#rec_concepts').val() === undefined)? "":$('textarea#rec_concepts').val();
     var feedback_url = "http://"+url_host+"/api/wiki_content_feedback";
 
     var feedback_data = new FormData();
 
     feedback_data.append("article_id", article_id);
+    feedback_data.append("user_id", user_id);
+    feedback_data.append("group_id", group_id);
     feedback_data.append("resource_id",`${resource_id}-${page_num}`);
     feedback_data.append("concept",concept);
-    feedback_data.append("article_rating",wiki_rating);
-    feedback_data.append("wiki_feedback",wiki_feedback);
+    feedback_data.append("relevance_rating",wiki_rating);
+    feedback_data.append("difficulty_rating",difficulty_rating);
+    feedback_data.append("concept_type",concept_type);
+    feedback_data.append("action_type",action_type);
+    feedback_data.append("missing_concepts",missing_concepts);
+    feedback_data.append("rec_concepts",rec_concepts);
 
     $(".next-btn").prop("disabled",false);
 
@@ -197,7 +236,7 @@ function submitWikiFeedback(url_host){
         contentType: false,
         crossDomain: true,
         success:function(res){
-            console.log(res);
+            if(res["answer"] == 1) {}   // do nothing
             loaderOff();
         },
         error: function(res, options, err){

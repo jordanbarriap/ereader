@@ -445,11 +445,11 @@
 
             if (group_id == "INFSCI2140Fall2022" || group_id == "INFSCI2300Fall2022"){
                 console.log("inside submit event click");
-                submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url);
+                submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,"submit_feedback");
             }
             if (group_id == "PFETest"){
                 console.log("inside submit event click PFETest");
-                submitActivityResponse("{{ request.META.HTTP_HOST }}"+extra_base_url);
+                submitActivityResponse("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id);
             }
             
             return false;
@@ -1302,7 +1302,7 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
         fetchSmartContent("{{ request.META.HTTP_HOST }}"+extra_base_url,displaySmartContent);
      }
 
-     if (group_id == "INFSCI2300Fall2022"){
+     if (group_id == "INFSCI2300Fall2022" || group_id == "INFSCI2140Fall2022"){
         console.debug("inside HIP wiki");
         var section_id = last_page_read["id"];
         var section_name = last_page_read["name"];
@@ -1329,14 +1329,14 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
             srlimit: 500,
             format: 'json' 
         }
-        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, resource_id,page_num, displayWikiContent,requestData);
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, resource_id,page_num, user_id,group_id, displayWikiContent,requestData);
      }
 
 
-     if (group_id == "INFSCI2140Fall2022"){
+     if (false){
         console.log("Inside IR wiki");
         var wikimap_pageid = map_old_new_section_ids[last_page_read["docno"]];
-        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, wikimap_pageid,"", displayWikiContent,requestData);
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, wikimap_pageid,"", user_id,group_id, displayWikiContent,requestData);
      }
 
 

@@ -8,10 +8,21 @@ from django.utils import timezone
 
 class WikiConcepts(models.Model):
     id = models.AutoField(primary_key=True)
-    resource_id = models.CharField(max_length=200)
     concept = models.CharField(max_length=200)
+    db_link_score = models.FloatField()
+    dbpedia_url = models.CharField(max_length=200)
+    duplicates = models.CharField(max_length=200)
+    is_filtered = models.IntegerField()
+    overall_score = models.FloatField()
+    reason_type = models.CharField(max_length=200)
+    resource_id = models.CharField(max_length=200)
+    sim_score = models.FloatField()
+    tf = models.IntegerField()
+    types = models.CharField(max_length=200)
     wikipage = models.CharField(max_length=200)
-    score = models.IntegerField()
+    reason_link = models.CharField(max_length=200)
+    reason_score = models.FloatField()
+    is_active = models.IntegerField()
 
     def __str__(self):
         return f"{self.resource_id},{self.concept},{self.wikipage}"
@@ -22,17 +33,23 @@ class WikiConcepts(models.Model):
 
 class WikiFeedback(models.Model):
     id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=200)
+    group_id = models.CharField(max_length=200)
     resource_id = models.CharField(max_length=200)
     concept = models.CharField(max_length=200)
     wiki_article_id = models.IntegerField()
-    article_rating = models.IntegerField()
-    wiki_feedback = models.CharField(max_length=1000)
+    relevance_rating = models.IntegerField()
+    difficulty_rating = models.IntegerField()
+    concept_type = models.IntegerField()
+    action_type = models.CharField(max_length=200)
+    missing_concepts = models.CharField(max_length=1000)
+    rec_concepts = models.CharField(max_length=1000)
 
     def __str__(self):
         return f"{self.resource_id},{self.concept},{self.wiki_article_id}"
 
     def is_valid(self):
-        return len(self.resource_id)!=0 and len(self.concept) != 0
+        return len(self.user_id) != 0 and len(self.group_id) != 0 and len(self.resource_id)!=0 and len(self.concept) != 0
 
     class Meta:
         app_label="wiki_feedback"
