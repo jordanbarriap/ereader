@@ -139,7 +139,12 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
         wikimodal.style.display="block";
         wikimodal.style.width = "50%";
 
-        $(".quiz-title").html(wiki_links[this.id].concept);
+        if(false) { html(wiki_links[this.id].concept);}
+
+        $('.quiz-title').empty();
+        $('.modal-header').height("3%");
+        $('.modal-body').height("90%");
+        
         $('.modal-body').empty();
 
         if(false){$(".modal-body").append(wiki_links[this.id].snippet).ready();}
