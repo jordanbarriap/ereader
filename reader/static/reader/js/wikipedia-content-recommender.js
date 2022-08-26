@@ -147,10 +147,13 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
         var checked = ["","","",""];
         
         $(".modal-body").append(`<div>
-            <div id="wikipage" style="overflow:auto;height:65%;width:100%;">
+            <div id="wikipage" style="overflow:auto;height:100%;width:100%;">
                 <iframe src=${wiki_links[this.id].wikipage} height="5000px" width="100%" scrolling="no" frameborder="0"></iframe>
             </div>
-            <div width="100%">
+        `).ready();
+
+        if (false){
+            `<div width="100%">
                 <span id="prompt-video-watching">
                     Please rate the concepts related covered by this article
                 </span> <br />
@@ -178,19 +181,18 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
                 <textarea id="missing_concepts" class='textual' rows='1' placeholder="what concepts do you think are missing in this page?"/><br />
                 <textarea id="rec_concepts" class='textual' rows='1' placeholder="what concepts would you like to see on this page?"/>
                 <span id="article-id" style="display:none;">${this.id}</span>
-            </div>
-        `).ready();
+            </div>`
+        }
 
-        submitWikiFeedback(url_host,user_id,group_id,"open_wiki");
+        if(false) {submitWikiFeedback(url_host,user_id,group_id,"open_wiki");}
         
-        $("#wikipage").on('scroll',function(event){
-            submitWikiFeedback(url_host,user_id,group_id,"scroll_event");
-        });
-            
-        $('.close').click(function(){
-            submitWikiFeedback(url_host,user_id,group_id,"close_wiki");
-        });
+        if (false){
+            $("#wikipage").on('scroll',function(event){
+                submitWikiFeedback(url_host,user_id,group_id,"scroll_event");
+            });
+        }
     });
+
 }
 
 
@@ -205,7 +207,6 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
     var concept_type = ($('input[name="concept_type"]:checked').val() === undefined)? -1: $('input[name="concept_type"]:checked').val();
     var action_type = action_type;
     var concept = $('.quiz-title').html();
-    var missing_concepts =  ($('textarea#missing_concepts').val() === undefined)? "":$('textarea#missing_concepts').val();
     var rec_concepts =  ($('textarea#rec_concepts').val() === undefined)? "":$('textarea#rec_concepts').val();
     var feedback_url = "http://"+url_host+"/api/wiki_content_feedback";
 
@@ -220,13 +221,13 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
     feedback_data.append("difficulty_rating",difficulty_rating);
     feedback_data.append("concept_type",concept_type);
     feedback_data.append("action_type",action_type);
-    feedback_data.append("missing_concepts",missing_concepts);
     feedback_data.append("rec_concepts",rec_concepts);
 
     $(".next-btn").prop("disabled",false);
 
     $(".submit-btn").prop("disabled",true);
-    loaderOn();
+
+    if( action_type !== "scroll" ) {loaderOn();}
 
     $.ajax({
         url: feedback_url,
@@ -237,14 +238,16 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
         crossDomain: true,
         success:function(res){
             if(res["answer"] == 1) {}   // do nothing
-            loaderOff();
+
         },
         error: function(res, options, err){
             console.log("error sending feedback, failed!",res.status,err);
-            loaderOff();
+            
         }
     });
     
+    if( action_type !== "scroll") {loaderOff();}
+
     $(".submit-btn").prop("disabled",false);
 }
 

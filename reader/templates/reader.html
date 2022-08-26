@@ -444,8 +444,10 @@
             }
 
             if (group_id == "INFSCI2140Fall2022" || group_id == "INFSCI2300Fall2022"){
-                console.log("inside submit event click");
-                submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,"submit_feedback");
+                if(false) { 
+                    console.log("inside submit event click");    
+                    submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,"submit_feedback");
+                }
             }
             if (group_id == "PFETest"){
                 console.log("inside submit event click PFETest");
@@ -2136,6 +2138,15 @@ function initToc(course_structure){
     function closeModalWindow(){
         modal.style.display = "none";
         modal.style.width = "100%";                     // wiki-modal
+        
+        if(false){
+            if(group_id == "INFSCI2300Fall2022" || group_id == "INFSCI2140Fall2022"){   // store wiki feedback
+                if (document.getElementById('wikipage')){
+                    console.log("inside close_wiki");
+                    submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url,user_id,group_id,"close_wiki");
+                }
+            }
+        }
 
         $("#left-div").removeClass("blurred");
         $("#page-container").removeClass("blurred");
