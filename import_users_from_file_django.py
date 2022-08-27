@@ -13,7 +13,7 @@ django.setup()
 
 from django.contrib.auth.models import User
 
-file_name = 'INFSCI_2140_IR_Student_list.csv'
+file_name = '???????????????'
 row_count = 0
 map_index_column = {}
 users_list = []
