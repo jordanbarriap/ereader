@@ -443,12 +443,6 @@
                 submitQuiz();
             }
 
-            if (group_id == "INFSCI2140Fall2022" || group_id == "INFSCI2300Fall2022"){
-                if(false) { 
-                    console.log("inside submit event click");    
-                    submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,"submit_feedback");
-                }
-            }
             if (group_id == "PFETest"){
                 console.log("inside submit event click PFETest");
                 submitActivityResponse("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id);
@@ -1301,7 +1295,7 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
      if (group_id == "PFETest"){ // || group_id == "INFSCI2300Fall2022"){
         console.debug("inside PFETest");// or INFSCI2300Fall2022 ");
-        fetchSmartContent("{{ request.META.HTTP_HOST }}"+extra_base_url,displaySmartContent);
+        fetchSmartContent("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,displaySmartContent);
      }
 
      if (group_id == "INFSCI2300Fall2022" || group_id == "INFSCI2140Fall2022"){

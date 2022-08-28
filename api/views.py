@@ -530,6 +530,9 @@ def slc_programming(request):
 @csrf_exempt
 def smart_content_feedback(request):
     if request.method == "POST":
+        user_id = request.POST["user_id"]
+        group_id = request.POST["group_id"]
+        feedback_date = request.POST["feedback_date"]
         resource_id = request.POST["resource_id"]
         content_name = request.POST["content_name"]
         component_name = request.POST["component_name"]
@@ -538,6 +541,9 @@ def smart_content_feedback(request):
         smart_content_feedback_text = request.POST["smart_content_feedback_text"]
 
         new_feedback = slc_models.SmartContentFeedback.objects.create(
+                    user_id = user_id,
+                    group_id = group_id,
+                    feedback_date = feedback_date,
                     resource_id = resource_id,
                     content_name = content_name,
                     component_name = component_name,
@@ -552,7 +558,18 @@ def smart_content_feedback(request):
     else:
         return HttpResponseForbidden()
 
+@csrf_exempt
+def completed_smart_activities(request):
+    if request.method == "GET":
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
 
+        smart_activity_feed_rows = slc_models.SmartContentFeedback.objects.filter(user_id=user_id,group_id=group_id).values('content_name','component_name')
+
+        completed_smart_activities = []
+        return JSONResponse(completed_smart_activities,status=200)
+    else:
+        return HttpResponseForbidden()
 
 @csrf_exempt
 def wiki_resources_content(request):
@@ -614,6 +631,7 @@ def wiki_content_feedback(request):
 
         user_id = request.POST["user_id"]
         group_id = request.POST["group_id"]
+        date_added = request.POST["date_added"]
         resource_id = request.POST["resource_id"]
         concept = request.POST["concept"]
         article_id = request.POST["article_id"]
@@ -621,21 +639,20 @@ def wiki_content_feedback(request):
         difficulty_rating = request.POST["difficulty_rating"]
         concept_type = request.POST["concept_type"]
         action_type = request.POST["action_type"]
-        missing_concepts = request.POST["missing_concepts"]
         rec_concepts = request.POST["rec_concepts"]
 
         new_feedback = wiki_models.WikiFeedback.objects.create(
                             user_id = user_id,
                             group_id = group_id,
+                            date_added = date_added,
                             resource_id = resource_id,
                             concept = concept,
                             wiki_article_id = article_id,
                             relevance_rating = relevance_rating,
                             difficulty_rating = difficulty_rating,
-                            concept_type = concept_type,
+                            #concept_type = concept_type,
                             action_type = action_type,
-                            missing_concepts = missing_concepts,
-                            rec_concepts = rec_concepts
+                            #rec_concepts = rec_concepts
                         )
 
         if new_feedback.is_valid(): new_feedback.save()
@@ -645,6 +662,29 @@ def wiki_content_feedback(request):
     else:
         return HttpResponseForbidden()
 
+
+@csrf_exempt
+def get_wiki_articles_read(request):
+    if request.method == "GET":
+
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id).values('wiki_article_id','concept').distinct()
+
+        read_wiki_articles = []
+
+        for wikifeedback_row in wikifeedback_rows:
+            
+            read_wiki_articles.append({
+                "article_id":wikifeedback_row['wiki_article_id'],
+                "concept":wikifeedback_row['concept']
+            })
+
+        return JSONResponse(read_wiki_articles, status=201)
+
+    else:
+        return HttpResponseForbidden()
 
 @csrf_exempt
 def concept_map(request):

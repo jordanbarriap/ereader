@@ -86,8 +86,30 @@ function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callb
             console.log("display wiki content call failed",res.status,err);
         }
     });
+    
+    displayReadWikiContent({},url_host,user_id,group_id);
+    
+    $(document).on('slideouttabopen', function(evt){
+        console.log("tab open",evt.target.id);
+        if (evt.target.id === 'read-wiki-links'){
+            
+            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_read?user_id=${user_id}&group_id=${group_id}`;
 
-
+            $.ajax({
+                url: read_wiki_url,
+                type:"GET",
+                processData: false,
+                contentType: false,
+                crossDomain: true,
+                success:function(res){
+                    displayReadWikiContent(res,url_host,user_id,group_id);
+                },
+                error: function(res, options, err){
+                    console.log("display wiki read content call failed",res.status,err);
+                }
+            });
+        }
+    });
 
 }
 
@@ -101,7 +123,7 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
 
     if($("#right-wiki-links").length == 0){
         $('#reader-div').append('<div id="right-wiki-links">' +
-        '<a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded">Wiki Links <i class="far fa-play-circle fa-lg"></i></a>' +
+        '<a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded">Wiki Links <i class="fas fa-book"></i></i></a>' +
         '      <div id="right-subpanel">' +
         '      <div id="wiki-link-list"></div>' +
         '      </div>' +
@@ -123,7 +145,7 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
         ]
         });
     }
-    
+
     $('#wiki-link-list').empty();
     for(var slc_id=0; slc_id < wiki_links.length; slc_id++){
         var programming_activity_interface = $(
@@ -143,7 +165,8 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
 
         $('.quiz-title').empty();
         $('.modal-header').height("3%");
-        $('.modal-body').height("90%");
+        $('.modal-body').height("87%");
+        $('.modal-footer').height("10%");
         
         $('.modal-body').empty();
 
@@ -155,27 +178,37 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
             <div id="wikipage" style="overflow:auto;height:100%;width:100%;">
                 <iframe src=${wiki_links[this.id].wikipage} height="5000px" width="100%" scrolling="no" frameborder="0"></iframe>
             </div>
+            <span id="article-id" style="display:none;">${this.id}</span>
+            <span id="concept" style="display:none;">${wiki_links[this.id].concept}</span>
         `).ready();
+        
+        $('.modal-footer').empty();
 
+        $('.modal-footer').append(`
+            <span id="wiki-feedback-prompt-text">Please, read this wikipedia article to rate it</span>
+            <table id="feedback-table">
+                <tr>
+                    <td>Is this article Relevant?</td>
+                    <td><span class="tooltip"><input type="radio" name="relevance" value="0" ${checked[0]}><img src="${star1}" alt="0 star" width="15"><span class="tooltiptext">No Relevance</span></span></td>
+                    <td><span class="tooltip"><input type="radio" name="relevance" value="1" ${checked[1]}><img src="${star2}" alt="1 star" width="15"><span class="tooltiptext">Relevant to the course, not this section</span></span></td>
+                    <td><span class="tooltip"><input type="radio" name="relevance" value="2" ${checked[2]}><img src="${star3}" alt="2 star" width="30"><span class="tooltiptext">Partly relevant to the section</span></span></td>
+                    <td><span class="tooltip"><input type="radio" name="relevance" value="3" ${checked[3]}><img src="${star4}" alt="3 star" width="45"><span class="tooltiptext">Relevant to the section</span></span></td>
+                </tr>
+                <tr>
+                    <td>Is this concept/article difficult to understand?</td>
+                    <td><input type="radio" name="difficulty" value="0" ${checked[0]}><span>Easy <i class="fas fa-grin"></i></span></td>
+                    <td><input type="radio" name="difficulty" value="1" ${checked[1]}>Medium <i class="fas fa-meh"></i></td>
+                    <td><input type="radio" name="difficulty" value="2" ${checked[2]}>Hard <i class="fas fa-sad-cry"></i></td>
+                </tr>
+            </table>
+        `)
+        
         if (false){
             `<div width="100%">
                 <span id="prompt-video-watching">
                     Please rate the concepts related covered by this article
                 </span> <br />
-                <table>
-                    <tr>
-                        <td>Relevance</td>
-                        <td><input type="radio" name="relevance" value="0" ${checked[0]}>None</td>
-                        <td><input type="radio" name="relevance" value="1" ${checked[1]}>Partial</td>
-                        <td><input type="radio" name="relevance" value="2" ${checked[2]}>Relevant</td>
-                        <td><input type="radio" name="relevance" value="3" ${checked[3]}>High</td>
-                    </tr>
-                    <tr>
-                        <td>Difficulty</td>
-                        <td><input type="radio" name="difficulty" value="0" ${checked[0]}>Easy</td>
-                        <td><input type="radio" name="difficulty" value="1" ${checked[1]}>Medium</td>
-                        <td><input type="radio" name="difficulty" value="2" ${checked[2]}>Hard</td>
-                    </tr>
+
                     <tr>
                         <td>Type</td>
                         <td><input type="radio" name="concept_type" value="0" ${checked[0]}>Prerequisite</td>
@@ -185,18 +218,67 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
                 <br />
                 <textarea id="missing_concepts" class='textual' rows='1' placeholder="what concepts do you think are missing in this page?"/><br />
                 <textarea id="rec_concepts" class='textual' rows='1' placeholder="what concepts would you like to see on this page?"/>
-                <span id="article-id" style="display:none;">${this.id}</span>
+                
             </div>`
         }
 
-        if(false) {submitWikiFeedback(url_host,user_id,group_id,"open_wiki");}
+        submitWikiFeedback(url_host,user_id,group_id,"open_wiki");
         
-        if (false){
-            $("#wikipage").on('scroll',function(event){
-                submitWikiFeedback(url_host,user_id,group_id,"scroll_event");
-            });
-        }
+        $('input[name="relevance"]').change(function(event){
+            console.log("relevance checked");
+            submitWikiFeedback(url_host, user_id, group_id,"relevance_feedback");
+        });
+
+        $('input[name="difficulty"]').change(function(event){
+            console.log("difficulty checked");
+            submitWikiFeedback(url_host, user_id, group_id,"difficulty_feedback");
+        });
+
+        $("#wikipage").on('scroll',function(event){
+            submitWikiFeedback(url_host,user_id,group_id,"scroll_event");
+        });
     });
+
+}
+
+
+function displayReadWikiContent(read_wiki_links, url_host, user_id, group_id){
+    
+
+    var bcolor = randomColor({ luminosity:"dark", format:'rgb'});
+    if($("#read-wiki-links").length == 0){
+        $('#reader-div').append(`<div id="read-wiki-links">
+            <a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded" style="background-color:${bcolor};">Read <i class="fas fa-book-open"></i></a>
+            <div id="right-subpanel">
+            <div id="read-wiki-link-list"></div>
+            </div>
+        </div>`);
+
+        $('#read-wiki-links').tabSlideOut({
+        tabLocation: 'right',
+        offset: '300px',         // offset from bottom
+        offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+        otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
+        handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
+        onLoadSlideOut: false, // open by default
+        // don't close this tab if a button is clicked, or if the checkbox is set 
+        clickScreenToCloseFilters: [
+        //'button', // ignore button clicks
+        function(event){ // custom filter
+            // filters need to return true to filter out the click passed in the parameter
+            return $('#keepTabOpen').is(':checked');
+        }
+        ]
+        });
+    }
+
+    $('#read-wiki-link-list').empty();
+    for(var slc_id=0; slc_id < read_wiki_links.length; slc_id++){
+        var programming_activity_interface = $(
+            '<span id="'+read_wiki_links[slc_id].article_id+'" class="slc">' + read_wiki_links[slc_id].concept 
+            +'</span><br/>');
+        $('#read-wiki-link-list').append(programming_activity_interface);
+    }
 
 }
 
@@ -208,10 +290,12 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
 
     var article_id = ($('#article-id').html() == undefined)? -1:$('#article-id').html();
     var wiki_rating = ($('input[name="relevance"]:checked').val() === undefined)? -1:$('input[name="relevance"]:checked').val();
+    var currentDate = new Date();
+    var date_time = currentDate.toISOString();
     var difficulty_rating = ($('input[name="difficulty"]:checked').val() === undefined)? -1:$('input[name="difficulty"]:checked').val();
     var concept_type = ($('input[name="concept_type"]:checked').val() === undefined)? -1: $('input[name="concept_type"]:checked').val();
     var action_type = action_type;
-    var concept = $('.quiz-title').html();
+    var concept = ($('#concept').html() == undefined)? -1:$('#concept').html();
     var rec_concepts =  ($('textarea#rec_concepts').val() === undefined)? "":$('textarea#rec_concepts').val();
     var feedback_url = "http://"+url_host+"/api/wiki_content_feedback";
 
@@ -220,6 +304,7 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
     feedback_data.append("article_id", article_id);
     feedback_data.append("user_id", user_id);
     feedback_data.append("group_id", group_id);
+    feedback_data.append("date_added", date_time);
     feedback_data.append("resource_id",`${resource_id}-${page_num}`);
     feedback_data.append("concept",concept);
     feedback_data.append("relevance_rating",wiki_rating);

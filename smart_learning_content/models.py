@@ -65,6 +65,9 @@ class SmartContentSection(models.Model):
 
 class SmartContentFeedback(models.Model):
     id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=200)
+    group_id = models.CharField(max_length=200)
+    feedback_date = models.DateTimeField()
     resource_id = models.CharField(max_length=200)
     content_name = models.CharField(max_length=200)
     component_name = models.CharField(max_length=200)

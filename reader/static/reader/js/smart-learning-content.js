@@ -8,7 +8,7 @@
  * fetches contents of type --
  * 
  */
-function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id="parsons"){
+function fetchSmartContent(url_host,user_id,group_id,callback_f,content_id="parsons",provider_id="parsons"){
 
     var section_id = last_page_read["id"];
     var section_name = last_page_read["name"];
@@ -34,15 +34,40 @@ function fetchSmartContent(url_host,callback_f,content_id="parsons",provider_id=
         crossDomain: true,
         success:function(res){
             // console.log("response from programming api",res.activity_url);
-            callback_f(url_host,res);
+            callback_f(url_host,res,user_id,group_id);
         },
         error: function(res){
             console.log("display smart content  call failed",res);
         }
     });
+
+    displayCompletedActivities({},url_host,user_id,group_id);
+    
+    $(document).on('slideouttabopen', function(evt){
+        console.log("tab open",evt.target.id);
+        if (evt.target.id === 'complete-smart-content'){
+            
+            var read_wiki_url = `http://${url_host}/api/get_smart_content_completed?user_id=${user_id}&group_id=${group_id}`;
+
+            $.ajax({
+                url: read_wiki_url,
+                type:"GET",
+                processData: false,
+                contentType: false,
+                crossDomain: true,
+                success:function(res){
+                    displayCompletedActivities(url_host,res,user_id,group_id);
+                },
+                error: function(res, options, err){
+                    console.log("display completed smart content call failed",res.status,err);
+                }
+            });
+        }
+    });
+
 }
 
-function displaySmartContent(url_host,content_provider_types){
+function displaySmartContent(url_host,content_provider_types,user_id,group_id){
     console.debug("baton passed to display smart content");
     console.log("inside display", content_provider_types);
 
@@ -98,6 +123,7 @@ function displaySmartContent(url_host,content_provider_types){
                     ]
                     });
                     
+                    /// Add the list of smart content to content specific tabs
                     for(var slc_id in content_provider_types[id]){
                         var activity = content_provider_types[id][slc_id];
                         // console.log(activity);
@@ -132,14 +158,16 @@ function displaySmartContent(url_host,content_provider_types){
                 <div style="width=50%; height=50%">
                     <iframe src=${content_provider_types[id][this.id].activity_url}&svc={{request.svc}}&grp={{request.grp}}&usr={{request.usr}}&sid={{sid}}&cid={{cid}} height="65%" width="100%" />
                     <div width="100%">
-                        <span id="prompt-video-watching">
-                            Is this recommended smart programming exercise relevant for the section you just read?
+                        <span>Please, work on the smart content exercises to rate it</span> <br />
+                        <span>
+                            Is this recommended smart programming exercise relevant for the section you just read? <br />
+                        
+                            <img id="star1" src="${star1}" alt="0 star" height="20" width="20"><input type="radio" name="smart-content-relevance" value="0" ${checked[0]}> Not relevant at all<br> 
+                            <img id="star2" src="${star2}" alt="1 star" height="20" width="20"><input type="radio" name="smart-content-relevance" value="1" ${checked[1]}> Relevant for the course but not for the current section<br>
+                            <img id="star3" src="${star3}" alt="2 star" height="20" width="40"><input type="radio" name="smart-content-relevance" value="2" ${checked[2]}> Partly relevant for the current section<br>
+                            <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="smart-content-relevance" value="3" ${checked[3]}> Relevant for the current section<br>
+                        
                         </span> <br />
-                        <img id="star1" src="${star1}" alt="0 star" height="20" width="20"><input type="radio" name="relevance" value="0" ${checked[0]}> Not relevant at all<br> 
-                        <img id="star2" src="${star2}" alt="1 star" height="20" width="20"><input type="radio" name="relevance" value="1" ${checked[1]}> Relevant for the course but not for the current section<br>
-                        <img id="star3" src="${star3}" alt="2 star" height="20" width="40"><input type="radio" name="relevance" value="2" ${checked[2]}> Partly relevant for the current section<br>
-                        <img id="star4" src="${star4}" alt="3 star" height="20" width="60"><input type="radio" name="relevance" value="3" ${checked[3]}> Relevant for the current section<br>
-                    
                         <textarea id="slc-feedback" class='textual' rows='3' placeholder="Please explain why you gave this rating here..."/>
                     </div>
                 </div>
@@ -152,6 +180,16 @@ function displaySmartContent(url_host,content_provider_types){
 
     }
     
+    $('input[name="smart-content-relevance"]').change(function(event){
+        console.log("smart-content-relevance checked");
+        smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_rating");
+    });
+
+    $('#slc-feedback').blur(function(event){
+        console.log("slc feedback text changed");
+        smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_text");
+    })
+
     if (false){
         
         list_of_content_types = '<div>';
@@ -179,26 +217,36 @@ function displaySmartContent(url_host,content_provider_types){
     
 }
 
-function submitActivityResponse(url_host){
-    console.log("inside smart content feedback")
+function displayCompletedActivities(url_host,completed_activities,user_id,group_id){
+
+}
+
+
+function smartContentFeedback(url_host,user_id,group_id,action_type){
     var resource_id = last_page_read["resourceid"];
     var page_num = last_page_read["page"];
-
+    
     var content_name = $('#content-name').html();
     var component_name = $('#component-name').html();
     var context_name = $('#context-name').html();
     var smart_content_rating =  $('input[name="relevance"]:checked').val();
     var smart_content_feedback_text = $('textarea#slc-feedback').val();
     var feedback_url = "http://"+url_host+"/api/smart_content_feedback";
+    var current_date = new Date();
+    var feedback_date = current_date.toISOString();
 
     var feedback_data = new FormData();
 
+    feedback_data.append("user_id",user_id);
+    feedback_data.append("group_id",group_id);
+    feedback_data.append("feedback_date",feedback_date);
     feedback_data.append("content_name", content_name);
     feedback_data.append("resource_id",`${resource_id}-${page_num}`);
     feedback_data.append("component_name",component_name);
     feedback_data.append("context_name",context_name);
     feedback_data.append("smart_content_rating",smart_content_rating);
     feedback_data.append("smart_content_feedback_text",smart_content_feedback_text);
+    feedback_data.append("action_type",action_type);
 
     $(".next-btn").prop("disabled",false);
 
@@ -224,4 +272,9 @@ function submitActivityResponse(url_host){
 
     $(".submit-btn").prop("disabled",false);
 
+}
+
+function submitActivityResponse(url_host,user_id,group_id){
+    console.log("inside smart content response")
+    
 }
