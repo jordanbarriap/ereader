@@ -313,10 +313,6 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
     feedback_data.append("action_type",action_type);
     feedback_data.append("rec_concepts",rec_concepts);
 
-    $(".next-btn").prop("disabled",false);
-
-    $(".submit-btn").prop("disabled",true);
-
     if( action_type !== "scroll" ) {loaderOn();}
 
     $.ajax({
@@ -338,7 +334,6 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
     
     if( action_type !== "scroll") {loaderOff();}
 
-    $(".submit-btn").prop("disabled",false);
 }
 
 

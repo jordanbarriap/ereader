@@ -248,11 +248,6 @@ function smartContentFeedback(url_host,user_id,group_id,action_type){
     feedback_data.append("smart_content_feedback_text",smart_content_feedback_text);
     feedback_data.append("action_type",action_type);
 
-    $(".next-btn").prop("disabled",false);
-
-    $(".submit-btn").prop("disabled",true);
-    loaderOn();
-
     $.ajax({
         url: feedback_url,
         type:"POST",
@@ -269,8 +264,6 @@ function smartContentFeedback(url_host,user_id,group_id,action_type){
             loaderOff();
         }
     });
-
-    $(".submit-btn").prop("disabled",false);
 
 }
 

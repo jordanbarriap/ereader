@@ -436,18 +436,10 @@
 
         $('.submit-btn').click( function(e) {
             e.preventDefault();
-            
-            if (group_id != "INFSCI2140Fall2022" 
-                && group_id != "INFSCI2300Fall2022" 
-                && group_id != "PFETest"){
-                submitQuiz();
-            }
+            var modal_header_text = e.target.parentNode.parentNode.childNodes[1].childNodes[3].innerHTML;
+            console.log("inside submit",modal_header_text);
+            submitQuiz();
 
-            if (group_id == "PFETest"){
-                console.log("inside submit event click PFETest");
-                submitActivityResponse("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id);
-            }
-            
             return false;
         });
 
@@ -2104,10 +2096,33 @@ function initToc(course_structure){
 
     }
 
+    function resetModalHeaderFooter(){
+        
+        $('.quiz-title').html(`Quiz time!`);
+
+        $('.modal-footer').empty();                         
+        $('.modal-footer').append(`<button class="submit-btn">Submit</button>`); // reset to submit button
+        $('.modal-header').height("8%");
+        $('.modal-body').height("85%");
+        $('.modal-footer').height("7%");
+
+        
+        $('.submit-btn').click( function(e) {
+            e.preventDefault();
+            var modal_header_text = e.target.parentNode.parentNode.childNodes[1].childNodes[3].innerHTML;
+            console.log("inside submit",modal_header_text);
+            submitQuiz();
+            
+            return false;
+        });
+    }
+    
     function openQuizWindow(){
         modal.style.display = "block";
         $("#left-div").addClass("blurred");
         $("#page-container").addClass("blurred");
+        
+        resetModalHeaderFooter();   // reset wiki feedback or smart content feedback
 
         var section_id = last_page_read["id"];
         var section_name = last_page_read["name"];
