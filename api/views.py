@@ -586,7 +586,7 @@ def wiki_resources_content(request):
         ## returns a list of wikipedia topics by course name, section name in the book and 
         ## page number in the textbook.
         
-        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id).order_by('overall_score')
+        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id,is_active=1).order_by('overall_score')
         wiki_articles = []
 
         for wiki_concept in wiki_concepts:
