@@ -591,7 +591,7 @@ def wiki_resources_content(request):
 
         for wiki_concept in wiki_concepts:
             wiki_articles.append({
-                "concept":wiki_concept.concept,
+                "concept":wiki_concept.concept.title(),
                 "wikipage":wiki_concept.wikipage,
             })
         
