@@ -678,7 +678,7 @@ def get_wiki_articles_read(request):
             
             read_wiki_articles.append({
                 "article_id":wikifeedback_row['wiki_article_id'],
-                "concept":wikifeedback_row['concept']
+                "concept":wikifeedback_row['concept'].title()
             })
 
         return JSONResponse(read_wiki_articles, status=201)
