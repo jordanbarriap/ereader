@@ -189,7 +189,7 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
             <table id="feedback-table">
                 <tr>
                     <td>Is this article Relevant?</td>
-                    <td><span class="tooltip"><input type="radio" name="relevance" value="0" ${checked[0]}><img src="${star1}" alt="0 star" width="15"><span class="tooltiptext">No Relevance</span></span></td>
+                    <td><span class="tooltip"><input type="radio" name="relevance" value="0" ${checked[0]}><i class="fas fa-thumbs-down"></i><span class="tooltiptext">No Relevance</span></span></td>
                     <td><span class="tooltip"><input type="radio" name="relevance" value="1" ${checked[1]}><img src="${star2}" alt="1 star" width="15"><span class="tooltiptext">Relevant to the course, not this section</span></span></td>
                     <td><span class="tooltip"><input type="radio" name="relevance" value="2" ${checked[2]}><img src="${star3}" alt="2 star" width="30"><span class="tooltiptext">Partly relevant to the section</span></span></td>
                     <td><span class="tooltip"><input type="radio" name="relevance" value="3" ${checked[3]}><img src="${star4}" alt="3 star" width="45"><span class="tooltiptext">Relevant to the section</span></span></td>
