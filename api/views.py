@@ -262,8 +262,19 @@ def assess(request):
                     if correct_answer["choice_id"] != answer_id:
                         correct = False
                         quiz_correctness = False
+
+                try:
+                    all_are_qids = all([qid.isdigit() for qid in quiz_id])
+                    
+                    if not(all_are_qids): 
+                        query_str = quiz_id[0] if isinstance(quiz_id,list) else quiz_id
+                        row = quiz_models.Quiz.objects.filter(course_section=query_str).first()
+                        quiz_id = row.id
+                except Exception as e:
+                    pass
+                    
                 answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                                                   answer=answer_id, correct=correct, submitted=True, marked=True)
+                                                    answer=answer_id, correct=correct, submitted=True, marked=True) 
                 answer_log.save()
 
             #Process answers from multiple-choice multiple-answer questions
@@ -310,7 +321,7 @@ def attempt(request):
         answer_data = data["answer"].split(" ")# 0: answer id, 1: marked or unmarked
         answer = answer_data[0]
         marked = False
-        if answer_data[1] == "marked":
+        if len(answer_data) == 1 or (len(answer_data) == 2 and answer_data[1] == "marked"):
             marked = True
 
         if type == "multiple-choice-one-answer" or type == "multiple-choice-multiple-answer":
