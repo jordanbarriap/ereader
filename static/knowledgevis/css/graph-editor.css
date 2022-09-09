@@ -6,7 +6,7 @@ body{
 
 p{ 
      text-align: center; 
-     overflow: overlay;
+     /*overflow: overlay; -- interferes with annotator text in chrome; invalid property*/
      position: relative;
 }
 
