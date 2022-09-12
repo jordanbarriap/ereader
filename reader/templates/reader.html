@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.css" %}" />
     <!--<link rel="stylesheet" type="text/css" href="{% static "annotator/css/annotator.min.css" %}" />-->
     <link rel="stylesheet" type="text/css" href="{% static "knowledgevis/css/graph-editor.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css?v=202203151700" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "reader/css/reader.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/modal.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "reader/css/recommender.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "annotator/view_annotator/css/style.css" %}" />
@@ -21,7 +21,8 @@
     <script src="{% static "reader/js/jquery-1.9.1.js" %}"></script>
     <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
 
-
+    <script type="text/javascript" src="{% static "reader/js/smart-learning-content.js" %}"></script>
+    <script type="text/javascript" src="{% static "reader/js/wikipedia-content-recommender.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/js/annotator-full.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/js/short-unique-id.min.js" %}"></script>
     <script type="text/javascript" src="{% static "annotator/view_annotator/js/jquery.dateFormat.js" %}"></script>
@@ -54,11 +55,12 @@
     <!--<script type="text/javascript" src="{% static "reader/js/rater/rater.js" %}"></script>-->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.6.1/randomColor.min.js" integrity="sha512-vPeZ7JCboHcfpqSx5ZD+/jpEhS4JpXxfz9orSvAPPj0EKUVShU2tgy7XkU+oujBJKnWmu4hU7r9MMQNWPfXsYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--Tab sliders library and stylesheet-->
     <script src="https://cdn.rawgit.com/hawk-ip/jquery.tabSlideOut.js/v2.4/jquery.tabSlideOut.js"></script>
     <link rel="stylesheet" href="https://cdn.rawgit.com/hawk-ip/jquery.tabSlideOut.js/v2.4/jquery.tabSlideOut.css">
 
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
 
@@ -129,6 +131,10 @@
 
     //Global variables
     var user_id = "{{ request.user.id }}";
+    var star1 = "{% static 'reader/img/0-star.png' %}";
+    var star2 = "{% static 'reader/img/1-star.png' %}";
+    var star3 = "{% static 'reader/img/2-star.png' %}";
+    var star4 = "{% static 'reader/img/3-star.png' %}";
 
     if(user_id==null || user_id==undefined){
       user_id = "{{ request.usr }}";
@@ -148,7 +154,10 @@
     var session = "{{ request.session.session_key }}";
     var current_section_id = "";
 
-    var extra_base_url = "/ereader";
+    var extra_base_url = ""; 
+    if(location.hostname != "localhost" && location.hostname != '127.0.0.1'){
+        extra_base_url = "/ereader";
+    };
     var recommendation_approach = "jaccard_lemmatized";
 
     var social_comparison = true;
@@ -177,6 +186,8 @@
 
 
     var assignments = [];
+    var activity_urls = [];
+    
     if(!concept_map){
       $("#concept-map-div").hide();
       $("#left-upper-div").height("98%");
@@ -425,7 +436,10 @@
 
         $('.submit-btn').click( function(e) {
             e.preventDefault();
+            var modal_header_text = e.target.parentNode.parentNode.childNodes[1].childNodes[3].innerHTML;
+            console.log("inside submit",modal_header_text);
             submitQuiz();
+
             return false;
         });
 
@@ -561,8 +575,9 @@ function loadHtml() {
         focusCurrentTocSection();
     });
 
+    if (false) {(group_id!='CoTaPP22'&& group_id!='PFETest');}  // defunct condition check for specific groups to not load recommmendations or smart content
     //Load student 
-    if(group_id!='CoTaPP22' && group_id!='PFETest'){
+    if(true){
      $.getJSON("http://{{ request.META.HTTP_HOST }}"+extra_base_url+"/api/reader/assignments?user="+user_id+"&group="+group_id,function(json){
          var result = json.result;
          if(result){
@@ -1158,7 +1173,7 @@ function initProgressVis(root){
 
 function loadResource(section_id,section_name,resource_id,page_num,source){
 
-    console.log(section_id+" "+section_name+" "+resource_id+" "+page_num);
+    console.log(" section_id " + section_id+" section_name "+section_name+" resource_id "+resource_id+" page_num "+page_num);
      //Sets global variables which keeps the current_section_id
      current_section_id = section_id;
 
@@ -1250,22 +1265,66 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
             app = 55;
             act=url_section_id;
             section_to_update  = getSectionById(url_section_id);
-            progress = section_to_update["read_pages"]/section_to_update["num_pages"];
-            sub = url_section_id;
-            act = "ReadingMirror";
-            var um_url = "http://adapt2.sis.pitt.edu/cbum/um" + "?app=" + app + 
-                                                  "&act=" + act + 
-                                                  "&sub=" + sub +
-                                                  "&res=" + progress +
-                                                  "&usr=" + username +
-                                                  "&grp=" + group_id +
-                                                  //"&sid=" + "{{request.session.session_key}}" +
-                                                  "&sid=" + url_sid +
-                                                  "&svc=" + "ReadingMirror" +
-                                                  "&cid=" + cid;
-            $.post(um_url);
-            console.log(um_url);
+            if (section_to_update!== null && section_to_update.hasOwnProperty("num_pages") && section_to_update["num_pages"] != 0){
+                progress = section_to_update["read_pages"]/section_to_update["num_pages"];
+                sub = url_section_id;
+                act = "ReadingMirror";
+                var um_url = "http://adapt2.sis.pitt.edu/cbum/um" + "?app=" + app +
+                                                    "&act=" + act + 
+                                                    "&sub=" + sub +
+                                                    "&res=" + progress +
+                                                    "&usr=" + username +
+                                                    "&grp=" + group_id +
+                                                    //"&sid=" + "{{request.session.session_key}}" +
+                                                    "&sid=" + url_sid +
+                                                    "&svc=" + "ReadingMirror" +
+                                                    "&cid=" + cid;
+                $.post(um_url);
+                console.log(um_url);
+            }
+            console.log("Section to update is empty");
+     }
 
+     if (group_id == "PFETest"){ // || group_id == "INFSCI2300Fall2022"){
+        console.debug("inside PFETest");// or INFSCI2300Fall2022 ");
+        fetchSmartContent("{{ request.META.HTTP_HOST }}"+extra_base_url, user_id, group_id,displaySmartContent);
+     }
+
+     if (group_id == "INFSCI2300Fall2022" || group_id == "INFSCI2140Fall2022"){
+        console.debug("inside HIP wiki");
+        var section_id = last_page_read["id"];
+        var section_name = last_page_read["name"];
+        var resource_file_id = last_page_read["resourceid"];
+        var resource_page = last_page_read["page"];
+        /*
+        * last_page_read keys -- id(section_id), name (section_name),
+        * spage (start page), epage(end page), resourceid (filename in html)
+        *  num_pages, read_pages, read_pages_list, group_read_pages, quiz.
+        *  parent, x, x0, y, y0
+        * quiz - corrects, incorrects, corrects_group, incorrects_group, name
+        * parent - id (group/course id), course name, num_pages (in book),
+        * read_pages (num pages read), read_pages_list (pagenums read), value,
+        * x, x0 , y, y0
+        */
+        var search_terms = section_name.split(' ');
+        search_terms = search_terms.slice(2, search_terms.length).join(' ');
+        var requestData = { 
+            origin:'localhost',
+            action: 'query',
+            page: 'human information processing',   // not used
+            list:'search',
+            srsearch: search_terms, //'Cognitive Psychology: History and Overview', 
+            srlimit: 500,
+            format: 'json' 
+        }
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, resource_id,page_num, user_id,group_id, displayWikiContent,requestData);
+     }
+
+
+     if (false){
+        console.log("Inside IR wiki");
+        var wikimap_pageid = map_old_new_section_ids[last_page_read["docno"]];
+        fetchWikiContent("{{ request.META.HTTP_HOST }}"+extra_base_url, wikimap_pageid,"", user_id,group_id, displayWikiContent,requestData);
      }
 
 
@@ -1332,8 +1391,10 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
           }
          });
 
-        $('#page-container').annotator().annotator('addPlugin', 'AnnotatorViewer');
-
+        $('#page-container').annotator().annotator('addPlugin', 'AnnotatorViewer',{
+            "user": {{request.user.id}}
+        });
+        
         // $('#anotacions-uoc-panel').slimscroll({height: '100%'});
 
 
@@ -1482,8 +1543,8 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
 
         })
 
-        if(group_id!="CoTaPP22" && group_id!="PFETest"){
-         updateRecommendations();
+        if(false){ //group_id!="CoTaPP22" && group_id!="PFETest"){
+            updateRecommendations();
         }
         /*$("#page-container").scrollEnd(function(){
             //Log scroll event by using the reader api
@@ -2037,10 +2098,33 @@ function initToc(course_structure){
 
     }
 
+    function resetModalHeaderFooter(){
+        
+        $('.quiz-title').html(`Quiz time!`);
+
+        $('.modal-footer').empty();                         
+        $('.modal-footer').append(`<button class="submit-btn">Submit</button>`); // reset to submit button
+        $('.modal-header').height("8%");
+        $('.modal-body').height("85%");
+        $('.modal-footer').height("7%");
+
+        
+        $('.submit-btn').click( function(e) {
+            e.preventDefault();
+            var modal_header_text = e.target.parentNode.parentNode.childNodes[1].childNodes[3].innerHTML;
+            console.log("inside submit",modal_header_text);
+            submitQuiz();
+            
+            return false;
+        });
+    }
+    
     function openQuizWindow(){
         modal.style.display = "block";
         $("#left-div").addClass("blurred");
         $("#page-container").addClass("blurred");
+        
+        resetModalHeaderFooter();   // reset wiki feedback or smart content feedback
 
         var section_id = last_page_read["id"];
         var section_name = last_page_read["name"];
@@ -2064,6 +2148,17 @@ function initToc(course_structure){
 
     function closeModalWindow(){
         modal.style.display = "none";
+        modal.style.width = "100%";                     // wiki-modal
+        
+        if(false){
+            if(group_id == "INFSCI2300Fall2022" || group_id == "INFSCI2140Fall2022"){   // store wiki feedback
+                if (document.getElementById('wikipage')){
+                    console.log("inside close_wiki");
+                    submitWikiFeedback("{{ request.META.HTTP_HOST }}"+extra_base_url,user_id,group_id,"close_wiki");
+                }
+            }
+        }
+
         $("#left-div").removeClass("blurred");
         $("#page-container").removeClass("blurred");
 
@@ -2134,7 +2229,7 @@ function initToc(course_structure){
                 $(".quiz-title").text(data["name"]);
                 var questions = data["questions"];
                 var question_ids = Object.keys(questions);
-                console.log(question_ids);
+                console.log("question_ids",question_ids);
                 var total_corrects = 0;
                 if(question_ids.length>0){
                     //Insert questions in the quiz
@@ -2472,7 +2567,7 @@ function initToc(course_structure){
     }
 
     function highlightVisSection(section_id){
-      if(group_id!='CoTaPP22' && group_id!='PFETest'){
+      if(true){//(group_id!='CoTaPP22' && group_id!='PFETest'){
         var vis_path_to_highlight = getAncestors(d3.select("#vis-section-"+section_id).node().__data__);
         var sections_ids_to_highlight = vis_path_to_highlight.map(function(d){return d.id});
         for(var i=0;i<vis_path_to_highlight.length;i++){
@@ -2511,7 +2606,7 @@ function initToc(course_structure){
     }
 
     function unhighlightVisSections(){
-      if(group_id!='CoTaPP22' && group_id!='PFETest'){
+      if(true){ //(group_id!='CoTaPP22' && group_id!='PFETest'){
         var selected_sections = getAncestors(d3.select("#vis-section-"+last_page_read["id"]).node().__data__);
         var selected_sections_ids =  selected_sections.map(function(d){return d.id;});
         var selector = "g.vis-section.active";

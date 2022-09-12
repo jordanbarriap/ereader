@@ -462,6 +462,56 @@ p.question-statement{
   overflow-y:auto;
 }
 
+.right-smart-content, #right-wiki-links, #read-wiki-links, #rated-wiki-links,#completed_slc {
+    /* border-color: green; */
+    border-width: 2px;
+    width: auto;
+    /* bottom: 20px !important; */
+    height: 35% !important;
+    border-radius: 6px;
+    z-index:999;
+}
+
+.right-smart-content .handle {
+    /* background-color:green; */
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+#right-wiki-links .handle{
+    background-color:violet;
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+#read-wiki-links .handle{
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+#rated-wiki-links .handle{
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+.slc{
+    font-family:ff1;
+    word-spacing:0.25em; 
+    text-decoration:none;
+    font-weight: bold;
+}
+
+.slc :hover{
+    text-decoration:rgba(64,64,64,1);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: lighter;
+}
+
+
 #left-panel-ratings{
     float:right;
     width:50%;

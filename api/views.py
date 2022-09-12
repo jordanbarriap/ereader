@@ -11,12 +11,15 @@ from rest_framework.parsers import JSONParser
 
 from django.core import serializers
 from django.forms.models import model_to_dict
+from django.db.models.functions import Cast
 
 from annotator import models as annotator_models
 from quiz import models as quiz_models
 from reader import models as reader_models
 from reader import views as reader_views
 from recommender import models as rec_models
+from smart_learning_content import models as slc_models
+from wiki_content import models as wiki_models
 from knowledgevis import models as knowledgevis_models
 
 from django.contrib.auth.models import User
@@ -116,6 +119,7 @@ def reading_log(request):
         data = JSONParser().parse(request)
         serializer = serializers.ReadingLogSerializer(data=data)
         if serializer.is_valid():
+            ## visible_text cannot be null error while committing to database
             serializer.save()
             return JSONResponse(serializer.data, status=201)
         else:
@@ -258,8 +262,19 @@ def assess(request):
                     if correct_answer["choice_id"] != answer_id:
                         correct = False
                         quiz_correctness = False
+
+                try:
+                    all_are_qids = all([qid.isdigit() for qid in quiz_id])
+                    
+                    if not(all_are_qids): 
+                        query_str = quiz_id[0] if isinstance(quiz_id,list) else quiz_id
+                        row = quiz_models.Quiz.objects.filter(course_section=query_str).first()
+                        quiz_id = row.id
+                except Exception as e:
+                    pass
+                    
                 answer_log = quiz_models.AnswerLog(user=User.objects.get(id=user_id), group=reader_models.Group.objects.get(id=group_id), session=session_id, datetime=datetime, quiz=quiz_models.Quiz.objects.get(id=quiz_id), question=quiz_models.Question(id=question_id),
-                                                   answer=answer_id, correct=correct, submitted=True, marked=True)
+                                                    answer=answer_id, correct=correct, submitted=True, marked=True) 
                 answer_log.save()
 
             #Process answers from multiple-choice multiple-answer questions
@@ -306,7 +321,7 @@ def attempt(request):
         answer_data = data["answer"].split(" ")# 0: answer id, 1: marked or unmarked
         answer = answer_data[0]
         marked = False
-        if answer_data[1] == "marked":
+        if len(answer_data) == 1 or (len(answer_data) == 2 and answer_data[1] == "marked"):
             marked = True
 
         if type == "multiple-choice-one-answer" or type == "multiple-choice-multiple-answer":
@@ -473,6 +488,252 @@ def recommended_videos(request):
 
     else:
         return HttpResponseForbidden()
+
+
+@csrf_exempt
+def slc_programming(request):
+    """
+    Input: Request object from AJAX api call in the reader.html
+    Method: Utilizes the content_type, provider_id and privacy values to pull the data
+            related to smart learning content from the table in ereader database.
+    Returns: On successful POST request, with JSON values on activity url
+    """
+    if request.method == "POST":
+        section_id = request.POST["section_id"]
+        section_name = request.POST["section_name"]
+        resource_id = request.POST["resource_id"]
+        page_id = request.POST["page_id"]
+        content_type = request.POST["content_type"]
+        provider_id = request.POST["provider_id"]
+        privacy = request.POST["privacy"]
+
+        slc_content_sections = slc_models.SmartContentSection.objects.filter(section_id=section_id,is_active=1)
+        
+        content_provider_list = slc_models.SmartContent.objects.order_by('content_type').values('content_type','provider_id').distinct()
+        
+        return_json = {}
+
+        if False: return_json["content_providers"] = content_provider_list
+
+        for row3 in slc_content_sections:
+            slc_content_component = slc_models.SmartContentConcept.objects.filter(component_name = row3.concept.rstrip())
+            
+            for row2 in slc_content_component:
+                slc_content = slc_models.SmartContent.objects.filter(content_name = row2.content_name)
+                for row1 in slc_content:
+
+                    if not(row1.provider_id in return_json):
+                        return_json[row1.provider_id] = []
+
+                    return_json[row1.provider_id].append({
+                                                        "content_name": row1.content_name,
+                                                        "display_name": row1.display_name,
+                                                        "content_type": row1.content_type,
+                                                        "component_name": row2.component_name,
+                                                        "context_name":  row2.context_name,
+                                                        "activity_url": row1.url
+                                                    })
+        return JSONResponse(return_json,status=200)
+    else:
+        return HttpResponseForbidden()
+
+
+@csrf_exempt
+def smart_content_feedback(request):
+    if request.method == "POST":
+        user_id = request.POST["user_id"]
+        group_id = request.POST["group_id"]
+        feedback_date = request.POST["feedback_date"]
+        resource_id = request.POST["resource_id"]
+        content_name = request.POST["content_name"]
+        component_name = request.POST["component_name"]
+        context_name = request.POST["context_name"]
+        smart_content_rating = request.POST["smart_content_rating"]
+        smart_content_feedback_text = request.POST["smart_content_feedback_text"]
+
+        new_feedback = slc_models.SmartContentFeedback.objects.create(
+                    user_id = user_id,
+                    group_id = group_id,
+                    feedback_date = feedback_date,
+                    resource_id = resource_id,
+                    content_name = content_name,
+                    component_name = component_name,
+                    context_name = context_name,
+                    smart_content_rating = smart_content_rating,
+                    smart_content_feedback_text = smart_content_feedback_text
+                )
+
+        if new_feedback.is_valid(): new_feedback.save()
+        return JSONResponse({"answer":1}, status=200)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def completed_smart_activities(request):
+    if request.method == "GET":
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        smart_activity_feed_rows = slc_models.SmartContentFeedback.objects.filter(user_id=user_id,group_id=group_id,smart_content_rating__gte=0).values('content_name','component_name')
+
+        completed_smart_activities = []
+        return JSONResponse(completed_smart_activities,status=200)
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def rated_smart_activities(request):
+    if request.method == "GET":
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        smart_activity_feed_rows = slc_models.SmartContentFeedback.objects.filter(user_id=user_id,group_id=group_id).values('content_name','component_name')
+
+        completed_smart_activities = []
+        return JSONResponse(completed_smart_activities,status=200)
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def wiki_resources_content(request):
+    """
+    Input: GET request to retrieve Wikipedia content related to the page/section
+    Method: SELECT wiki_page_url by topic_name using topics table in ereader database
+            and retrieving wikipedia pages using MediaWiki API calls (or DBPedia or 
+            a Knowledge Graph server setup)
+    Returns: On successful POST request, with JSON values on wikipedia page urls
+    """
+    if request.method == "POST":
+        resource_id = request.POST['resource_id']
+
+        ## returns a list of wikipedia topics by course name, section name in the book and 
+        ## page number in the textbook.
+        
+        wiki_concepts = wiki_models.WikiConcepts.objects.filter(resource_id=resource_id,is_active=1).order_by('overall_score')
+        wiki_articles = []
+
+        for wiki_concept in wiki_concepts:
+            wiki_articles.append({
+                "concept":wiki_concept.concept.title(),
+                "wikipage":wiki_concept.wikipage,
+            })
+        
+        if False:
+            
+            with open(f"./data/concepts/concepts/{resource_id}-{page_id}.txt.concept.json") as concepts_file:
+                list_of_concepts_jsons = concepts_file.readlines()
+                for concept_json in list_of_concepts_jsons:
+                    wiki_articles.append(json.loads(concept_json))
+                    
+        """
+            - Section Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/sectionkey.php?name=[Section_Name]&type=[“simple/details”]
+            - Question Articles: http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=[Question_Name]&type=[“simple/details”]
+
+            These APIs generate two version of the results (simple/details) which can be specified in the URL
+            Simple results returns a list of item with “Rank”, “Title” and “Score” properties. Detail returns the same with the addition of the article summary from wikipedia.
+
+            Here are some examples:
+
+            Relevant Articles for Section iir-2.1 ->    http://scythian.exp.sis.pitt.edu/Textbook/ir/sectionkey.php?name=iir-2.1&type=simple
+            Relevant Articles for Question q380 ->   http://scythian.exp.sis.pitt.edu/Textbook/ir/questionkey.php?name=q380&type=detail    
+        """
+
+
+        ### make url call to wikipedia with the topic names
+        if False: wiki_pages_list = wiki_models.WikiContent.objects.filter(topic_names=wiki_page_topic_name)
+
+        if False: return JSONResponse({"wiki_links":[row.topic_name for row in wiki_page_topic_names]},status=200)
+        return JSONResponse(wiki_articles, status=200)
+    else:
+        return HttpResponseForbidden()
+
+
+@csrf_exempt
+def wiki_content_feedback(request):
+    if request.method == "POST":
+
+        user_id = request.POST["user_id"]
+        group_id = request.POST["group_id"]
+        date_added = request.POST["date_added"]
+        resource_id = request.POST["resource_id"]
+        concept = request.POST["concept"]
+        article_id = request.POST["article_id"]
+        relevance_rating = request.POST["relevance_rating"]
+        difficulty_rating = request.POST["difficulty_rating"]
+        concept_type = request.POST["concept_type"]
+        action_type = request.POST["action_type"]
+        rec_concepts = request.POST["rec_concepts"]
+
+        new_feedback = wiki_models.WikiFeedback.objects.create(
+                            user_id = user_id,
+                            group_id = group_id,
+                            date_added = date_added,
+                            resource_id = resource_id,
+                            concept = concept,
+                            wiki_article_id = article_id,
+                            relevance_rating = relevance_rating,
+                            difficulty_rating = difficulty_rating,
+                            #concept_type = concept_type,
+                            action_type = action_type,
+                            #rec_concepts = rec_concepts
+                        )
+
+        if new_feedback.is_valid(): new_feedback.save()
+
+        return JSONResponse({"answer":1}, status=200)
+
+    else:
+        return HttpResponseForbidden()
+
+
+@csrf_exempt
+def get_wiki_articles_read(request):
+    if request.method == "GET":
+
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id).values('wiki_article_id','concept').distinct()
+
+        read_wiki_articles = []
+
+        for wikifeedback_row in wikifeedback_rows:
+            
+            read_wiki_articles.append({
+                "article_id":wikifeedback_row['wiki_article_id'],
+                "concept":wikifeedback_row['concept'].title()
+            })
+
+        return JSONResponse(read_wiki_articles, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def get_wiki_articles_rated(request):
+    if request.method == "GET":
+
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id, action_type = 'relevance_feedback').values('wiki_article_id','concept').distinct()
+
+        read_wiki_articles = []
+
+        for wikifeedback_row in wikifeedback_rows:
+            
+            read_wiki_articles.append({
+                "article_id":wikifeedback_row['wiki_article_id'],
+                "concept":wikifeedback_row['concept'].title()
+            })
+
+        return JSONResponse(read_wiki_articles, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+
 
 @csrf_exempt
 def concept_map(request):

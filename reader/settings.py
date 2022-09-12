@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'reader',
     'quiz',
     'api',
+    'smart_learning_content'
 ]
 
 MIDDLEWARE = [
