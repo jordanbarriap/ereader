@@ -2567,7 +2567,7 @@ function initToc(course_structure){
     }
 
     function highlightVisSection(section_id){
-      if(group_id!='CoTaPP22' && group_id!='PFETest'){
+      if(true){//(group_id!='CoTaPP22' && group_id!='PFETest'){
         var vis_path_to_highlight = getAncestors(d3.select("#vis-section-"+section_id).node().__data__);
         var sections_ids_to_highlight = vis_path_to_highlight.map(function(d){return d.id});
         for(var i=0;i<vis_path_to_highlight.length;i++){

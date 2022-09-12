@@ -41,11 +41,11 @@ function fetchSmartContent(url_host,user_id,group_id,callback_f,content_id="pars
         }
     });
 
-    displayCompletedActivities({},url_host,user_id,group_id);
+    // displayCompletedActivities({},url_host,user_id,group_id);
     
     $(document).on('slideouttabopen', function(evt){
         console.log("tab open",evt.target.id);
-        if (evt.target.id === 'complete-smart-content'){
+        if (evt.target.id === 'completed_slc'){
             
             var read_wiki_url = `http://${url_host}/api/get_smart_content_completed?user_id=${user_id}&group_id=${group_id}`;
 
@@ -59,7 +59,7 @@ function fetchSmartContent(url_host,user_id,group_id,callback_f,content_id="pars
                     displayCompletedActivities(url_host,res,user_id,group_id);
                 },
                 error: function(res, options, err){
-                    console.log("display completed smart content call failed",res.status,err);
+                    console.log("display completed smart content completed call failed",res.status,err);
                 }
             });
         }
@@ -175,20 +175,22 @@ function displaySmartContent(url_host,content_provider_types,user_id,group_id){
                 <span id="component-name" style="display:none;">${content_provider_types[id][this.id].component_name}</span>
                 <span id="context-name" style="display:none;">${content_provider_types[id][this.id].context_name}</span>
             `).ready();
+
+            $('input[name="smart-content-relevance"]').change(function(event){
+                console.log("smart-content-relevance checked");
+                smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_rating");
+            });
+        
+            $('#slc-feedback').blur(function(event){
+                console.log("slc feedback text changed");
+                smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_text");
+            })
+
         });
 
 
     }
     
-    $('input[name="smart-content-relevance"]').change(function(event){
-        console.log("smart-content-relevance checked");
-        smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_rating");
-    });
-
-    $('#slc-feedback').blur(function(event){
-        console.log("slc feedback text changed");
-        smartContentFeedback(url_host, user_id, group_id,"smart_content_relevance_text");
-    })
 
     if (false){
         
@@ -217,10 +219,43 @@ function displaySmartContent(url_host,content_provider_types,user_id,group_id){
     
 }
 
-function displayCompletedActivities(url_host,completed_activities,user_id,group_id){
+function displayCompletedActivities(completed_activities,url_host,user_id,group_id){
+    var bcolor = randomColor({ luminosity:"dark", format:'rgb'});
+    if($("#completed_slc").length == 0){
+        $('#reader-div').append(`<div id="completed_slc">
+            <a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded" style="background-color:${bcolor};width:100px;">Rated Content <i class="fas fa-book-open"></i></a>
+            <div id="right-subpanel">
+            <div id="completed-slc-link-list"></div>
+            </div>
+        </div>`);
 
+        $('#completed_slc').tabSlideOut({
+        tabLocation: 'right',
+        offset: '600px',         // offset from bottom
+        offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+        otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
+        handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
+        onLoadSlideOut: false, // open by default
+        // don't close this tab if a button is clicked, or if the checkbox is set 
+        clickScreenToCloseFilters: [
+        //'button', // ignore button clicks
+        function(event){ // custom filter
+            // filters need to return true to filter out the click passed in the parameter
+            return $('#keepTabOpen').is(':checked');
+        }
+        ]
+        });
+    }
+
+    $('#completed-slc-link-list').empty();
+    
+    for(var slc_id=0; slc_id < completed_activities.length; slc_id++){
+        var programming_activity_interface = $(
+            '<span id="'+slc_id+'" class="slc">' + completed_activities[slc_id].content_name 
+            +'</span><br/>');
+        $('#completed-slc-link-list').append(programming_activity_interface);
+    }
 }
-
 
 function smartContentFeedback(url_host,user_id,group_id,action_type){
     var resource_id = last_page_read["resourceid"];
@@ -229,7 +264,7 @@ function smartContentFeedback(url_host,user_id,group_id,action_type){
     var content_name = $('#content-name').html();
     var component_name = $('#component-name').html();
     var context_name = $('#context-name').html();
-    var smart_content_rating =  $('input[name="relevance"]:checked').val();
+    var smart_content_rating =  $('input[name="smart-content-relevance"]:checked').val();
     var smart_content_feedback_text = $('textarea#slc-feedback').val();
     var feedback_url = "http://"+url_host+"/api/smart_content_feedback";
     var current_date = new Date();

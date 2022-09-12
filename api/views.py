@@ -507,7 +507,7 @@ def slc_programming(request):
         provider_id = request.POST["provider_id"]
         privacy = request.POST["privacy"]
 
-        slc_content_sections = slc_models.SmartContentSection.objects.filter(section_id=section_id)
+        slc_content_sections = slc_models.SmartContentSection.objects.filter(section_id=section_id,is_active=1)
         
         content_provider_list = slc_models.SmartContent.objects.order_by('content_type').values('content_type','provider_id').distinct()
         
@@ -571,6 +571,19 @@ def smart_content_feedback(request):
 
 @csrf_exempt
 def completed_smart_activities(request):
+    if request.method == "GET":
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        smart_activity_feed_rows = slc_models.SmartContentFeedback.objects.filter(user_id=user_id,group_id=group_id,smart_content_rating__gte=0).values('content_name','component_name')
+
+        completed_smart_activities = []
+        return JSONResponse(completed_smart_activities,status=200)
+    else:
+        return HttpResponseForbidden()
+
+@csrf_exempt
+def rated_smart_activities(request):
     if request.method == "GET":
         user_id = request.GET["user_id"]
         group_id = request.GET["group_id"]

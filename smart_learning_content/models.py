@@ -54,6 +54,9 @@ class SmartContentSection(models.Model):
     resource_id = models.CharField(max_length=200)
     page_id = models.IntegerField()
     concept = models.CharField(max_length=200)
+    is_active = models.IntegerField()
+    date_added = models.DateTimeField()
+    owner = models.CharField(max_length=200)
 
     def __str__(self):
         return self.concept

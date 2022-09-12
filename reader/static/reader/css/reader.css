@@ -462,7 +462,7 @@ p.question-statement{
   overflow-y:auto;
 }
 
-.right-smart-content, #right-wiki-links, #read-wiki-links, #rated-wiki-links {
+.right-smart-content, #right-wiki-links, #read-wiki-links, #rated-wiki-links,#completed_slc {
     /* border-color: green; */
     border-width: 2px;
     width: auto;
