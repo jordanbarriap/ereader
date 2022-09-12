@@ -65,7 +65,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
       AnnotatorViewer.__super__.constructor.apply(this, arguments);
 
-      $( "#page-container").append( this.createAnnotationPanel() );//modified by Jordan Barria-Pineda
+      $( "#page-container").append( this.createAnnotationPanel(options["user"]) );//modified by Jordan Barria-Pineda
 
       $(".container-anotacions").toggle();
       $("#annotations-panel").click(function(event) {
@@ -88,7 +88,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
     /*
     Check the checkboxes filter to search the annotations to show.
     Shared annotations have the class shared
-    My annotations have the me class
+    My annotations have the "user_id" class
     */
     AnnotatorViewer.prototype.onFilter = function(event) {
       var annotations_panel = $(".container-anotacions").find('.annotator-marginviewer-element');
@@ -311,8 +311,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
       return annotation_layer;
     };
 
-    AnnotatorViewer.prototype.createAnnotationPanel = function(annotation) {
-      var checboxes = '<label class="checkbox-inline"><input type="checkbox" id="type_own" rel="me"/>My annotations</label><label class="checkbox-inline">  <input type="checkbox" id="type_share" rel="shared"/>Shared</label>';
+    AnnotatorViewer.prototype.createAnnotationPanel = function(annotation_user) {
+      var annotation_user = (annotation_user !==undefined)? annotation_user: "shared";
+      var checboxes = `<label class="checkbox-inline"><input type="checkbox" id="type_own" rel='${annotation_user}'/>My annotations</label><label class="checkbox-inline">  <input type="checkbox" id="type_share" rel="shared"/>Shared</label>`;
 
       var annotation_layer =  '<div  class="annotations-list-uoc" style="background-color:#ddd;"><div id="annotations-panel"><span class="rotate" title="'+ i18n_dict.view_annotations +' '+ i18n_dict.pdf_resum +'" style="padding:5px;background-color:#ddd;position: absolute; top:10em;left: -50px; width: 155px; height: 110px;cursor:pointer">'+ i18n_dict.view_annotations +'<span class="label-counter" style="padding:0.2em 0.3em;float:right" id="count-anotations">0</span></span></div><div id="anotacions-uoc-panel" style="height:80%;overflow:scroll;"><ul class="container-anotacions"><li class="filter-panel">'+checboxes+'</li></ul></div></div>';
 
@@ -323,7 +324,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
     AnnotatorViewer.prototype.createReferenceAnnotation = function(annotation) {
 
      var anotation_reference = null;
-     var data_owner = "me";
+     var data_owner = annotation.user;
      var data_type = "";
      var myAnnotation=false;
      console.log("createReferenceAnnotation id:");

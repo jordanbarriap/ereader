@@ -462,7 +462,7 @@ p.question-statement{
   overflow-y:auto;
 }
 
-.right-smart-content, #right-wiki-links, #read-wiki-links {
+.right-smart-content, #right-wiki-links, #read-wiki-links, #rated-wiki-links {
     /* border-color: green; */
     border-width: 2px;
     width: auto;
@@ -487,6 +487,12 @@ p.question-statement{
 }
 
 #read-wiki-links .handle{
+    height: 32px;
+    padding-top:3px;
+    padding-bottom:3px;
+}
+
+#rated-wiki-links .handle{
     height: 32px;
     padding-top:3px;
     padding-bottom:3px;

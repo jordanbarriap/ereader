@@ -18,6 +18,7 @@ urlpatterns = [
     re_path(r"^smart_content_feedback?$",views.smart_content_feedback,name="slc_feedback"),
     re_path(r"^wiki_resources_content?$",views.wiki_resources_content,name="wiki_content"),
     re_path(r"^get_wiki_articles_read?$",views.get_wiki_articles_read,name="read_wiki_content"),
+    re_path(r"^get_wiki_articles_rated?$",views.get_wiki_articles_rated,name="rated_wiki_content"),
     re_path(r"^wiki_content_feedback?$",views.wiki_content_feedback, name="wiki_feedback"),
     re_path(r"^knowledgevis/concept_map?$",views.concept_map, name="get_concept_map"),
     re_path(r"^knowledgevis/concept_map_log?$",views.concept_map_log, name="concept_map_log"),

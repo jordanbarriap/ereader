@@ -698,6 +698,31 @@ def get_wiki_articles_read(request):
         return HttpResponseForbidden()
 
 @csrf_exempt
+def get_wiki_articles_rated(request):
+    if request.method == "GET":
+
+        user_id = request.GET["user_id"]
+        group_id = request.GET["group_id"]
+
+        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id, action_type = 'relevance_feedback').values('wiki_article_id','concept').distinct()
+
+        read_wiki_articles = []
+
+        for wikifeedback_row in wikifeedback_rows:
+            
+            read_wiki_articles.append({
+                "article_id":wikifeedback_row['wiki_article_id'],
+                "concept":wikifeedback_row['concept'].title()
+            })
+
+        return JSONResponse(read_wiki_articles, status=201)
+
+    else:
+        return HttpResponseForbidden()
+
+
+
+@csrf_exempt
 def concept_map(request):
     """
     Returning a requested concept map created from an specific user for an specific course section

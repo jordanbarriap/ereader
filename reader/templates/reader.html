@@ -1391,8 +1391,10 @@ function loadResource(section_id,section_name,resource_id,page_num,source){
           }
          });
 
-        $('#page-container').annotator().annotator('addPlugin', 'AnnotatorViewer');
-
+        $('#page-container').annotator().annotator('addPlugin', 'AnnotatorViewer',{
+            "user": {{request.user.id}}
+        });
+        
         // $('#anotacions-uoc-panel').slimscroll({height: '100%'});
 
 
@@ -2604,7 +2606,7 @@ function initToc(course_structure){
     }
 
     function unhighlightVisSections(){
-      if(group_id!='CoTaPP22' && group_id!='PFETest'){
+      if(true){ //(group_id!='CoTaPP22' && group_id!='PFETest'){
         var selected_sections = getAncestors(d3.select("#vis-section-"+last_page_read["id"]).node().__data__);
         var selected_sections_ids =  selected_sections.map(function(d){return d.id;});
         var selector = "g.vis-section.active";

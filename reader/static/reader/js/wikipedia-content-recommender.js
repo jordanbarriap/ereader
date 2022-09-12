@@ -111,6 +111,30 @@ function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callb
         }
     });
 
+    displayRatedWikiContent({},url_host,user_id,group_id);
+
+    $(document).on('slideouttabopen', function(evt){
+        console.log("tab open",evt.target.id);
+        if (evt.target.id === 'rated-wiki-links'){
+            
+            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}`;
+
+            $.ajax({
+                url: read_wiki_url,
+                type:"GET",
+                processData: false,
+                contentType: false,
+                crossDomain: true,
+                success:function(res){
+                    displayRatedWikiContent(res,url_host,user_id,group_id);
+                },
+                error: function(res, options, err){
+                    console.log("display wiki rated content call failed",res.status,err);
+                }
+            });
+        }
+    });
+
 }
 
 function displayWikiContent(wiki_links,url_host,user_id,group_id){
@@ -132,6 +156,7 @@ function displayWikiContent(wiki_links,url_host,user_id,group_id){
         $('#right-wiki-links').tabSlideOut({
         tabLocation: 'right',
         offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+        offset: '100px',
         otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
         handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
         onLoadSlideOut: false, // open by default
@@ -248,7 +273,7 @@ function displayReadWikiContent(read_wiki_links, url_host, user_id, group_id){
     var bcolor = randomColor({ luminosity:"dark", format:'rgb'});
     if($("#read-wiki-links").length == 0){
         $('#reader-div').append(`<div id="read-wiki-links">
-            <a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded" style="background-color:${bcolor};">Read <i class="fas fa-book-open"></i></a>
+            <a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded" style="background-color:${bcolor};width:100px;">Read Wiki <i class="fas fa-book-open"></i></a>
             <div id="right-subpanel">
             <div id="read-wiki-link-list"></div>
             </div>
@@ -256,7 +281,7 @@ function displayReadWikiContent(read_wiki_links, url_host, user_id, group_id){
 
         $('#read-wiki-links').tabSlideOut({
         tabLocation: 'right',
-        offset: '300px',         // offset from bottom
+        offset: '200px',         // offset from bottom
         offsetReverse: true, // position the panel from the bottom of the page, rather than the top
         otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
         handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
@@ -337,6 +362,43 @@ function submitWikiFeedback(url_host,user_id,group_id,action_type){
 }
 
 
+function displayRatedWikiContent(rated_wiki_links,url_host, user_id, group_id){
+    var bcolor = randomColor({ luminosity:"dark", format:'rgb'});
+    if($("#rated-wiki-links").length == 0){
+        $('#reader-div').append(`<div id="rated-wiki-links">
+            <a id="right-handle" class="handle ui-slideouttab-handle ui-slideouttab-handle-rounded" style="background-color:${bcolor};width:100px;">Rated Wiki <i class="fas fa-book-open"></i></a>
+            <div id="right-subpanel">
+            <div id="rated-wiki-link-list"></div>
+            </div>
+        </div>`);
+
+        $('#rated-wiki-links').tabSlideOut({
+        tabLocation: 'right',
+        offset: '320px',         // offset from bottom
+        offsetReverse: true, // position the panel from the bottom of the page, rather than the top
+        otherOffset: '40px', // force panel to be fixed height (required to get the scrollbars to appear in the sub-panel)
+        handleOffsetReverse: true, // position the tab from the bottom of the panel, rather than the top
+        onLoadSlideOut: false, // open by default
+        // don't close this tab if a button is clicked, or if the checkbox is set 
+        clickScreenToCloseFilters: [
+        //'button', // ignore button clicks
+        function(event){ // custom filter
+            // filters need to return true to filter out the click passed in the parameter
+            return $('#keepTabOpen').is(':checked');
+        }
+        ]
+        });
+    }
+
+    $('#rated-wiki-link-list').empty();
+    
+    for(var slc_id=0; slc_id < rated_wiki_links.length; slc_id++){
+        var programming_activity_interface = $(
+            '<span id="'+rated_wiki_links[slc_id].article_id+'" class="slc">' + rated_wiki_links[slc_id].concept 
+            +'</span><br/>');
+        $('#rated-wiki-link-list').append(programming_activity_interface);
+    }
+}
 
 
 
