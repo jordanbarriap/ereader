@@ -93,7 +93,7 @@ function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callb
         console.log("tab open",evt.target.id);
         if (evt.target.id === 'read-wiki-links'){
             
-            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_read?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}`;
+            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_read?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
 
             $.ajax({
                 url: read_wiki_url,
@@ -117,7 +117,7 @@ function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callb
         console.log("tab open",evt.target.id);
         if (evt.target.id === 'rated-wiki-links'){
             
-            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}`;
+            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
 
             $.ajax({
                 url: read_wiki_url,

@@ -717,6 +717,7 @@ def get_wiki_articles_rated(request):
 
         user_id = request.GET["user_id"]
         group_id = request.GET["group_id"]
+        resource_id = request.GET["resource_id"]
 
         wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id, resource_id = resource_id, action_type = 'relevance_feedback').values('wiki_article_id','concept').distinct()
 
