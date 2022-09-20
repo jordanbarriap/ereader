@@ -12,6 +12,7 @@ from rest_framework.parsers import JSONParser
 from django.core import serializers
 from django.forms.models import model_to_dict
 from django.db.models.functions import Cast
+from django.db.models import Q
 
 from annotator import models as annotator_models
 from quiz import models as quiz_models
@@ -719,7 +720,7 @@ def get_wiki_articles_rated(request):
         group_id = request.GET["group_id"]
         resource_id = request.GET["resource_id"]
 
-        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(user_id=user_id, group_id = group_id, resource_id = resource_id, action_type = 'relevance_feedback').values('wiki_article_id','concept').distinct()
+        wikifeedback_rows = wiki_models.WikiFeedback.objects.filter(Q(action_type = 'relevance_feedback') | Q(action_type =  'difficulty_feedback'), user_id=user_id, group_id = group_id, resource_id = resource_id).values('wiki_article_id','concept').distinct()
 
         read_wiki_articles = []
 
