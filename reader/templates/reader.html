@@ -749,7 +749,11 @@ function initProgressVis(root){
 
 
         //var quiz_sections_comp = d3.selectAll("g.vis-comp-section").filter(function(d){return !d.children && d.quiz;});
-        var quiz_sections_comp = d3.selectAll("g.vis-comp-section").filter(function(d){return d.depth==level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){return e.quiz;}).length>0));});
+        var quiz_sections_comp = d3.selectAll("g.vis-comp-section").filter(function(d){
+            return d.depth<=level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){
+                    return e.quiz;
+                }).length>0));
+            });
 
         quiz_sections_comp.append("rect")
             .attr("class","incorrects-bar")
@@ -863,9 +867,9 @@ function initProgressVis(root){
                 var visited_pages = d.read_pages;
                 var total_section_pages = d.num_pages;
                 var group_visited_pages = d.group_read_pages;
-                var proportion_visited_pages = visited_pages / total_section_pages;
-                var proportion_group_visited_pages = group_visited_pages / total_section_pages;
-                if(d.depth==level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){return e.quiz;}).length>0))){
+                var proportion_visited_pages = (total_section_pages > visited_pages)? visited_pages / total_section_pages : 1;
+                var proportion_group_visited_pages = (total_section_pages > group_visited_pages)? group_visited_pages / total_section_pages : 1;
+                if(d.depth<=level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){return e.quiz;}).length>0))){
                     var performance_quizzes = summarizePerformanceQuizzes(d,false);
                     var corrects = performance_quizzes.corrects;
                     var incorrects = performance_quizzes.incorrects;
@@ -970,7 +974,11 @@ function initProgressVis(root){
 
 
         //var quiz_sections = d3.selectAll("g.vis-section").filter(function(d){return !d.children && d.quiz;});
-        var quiz_sections = d3.selectAll("g.vis-section").filter(function(d){return d.depth==level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){return e.quiz;}).length>0));});
+        var quiz_sections = d3.selectAll("g.vis-section").filter(function(d){
+            return d.depth<=level_quiz_showing && (d.quiz || (d.children && d.children.map(function(e){
+                return e.quiz;
+            }).length>0));
+        });
 
         quiz_sections.append("rect")
             .attr("class","incorrects-bar")
