@@ -89,49 +89,68 @@ function fetchWikiContent(url_host,resource_id,page_num, user_id,group_id, callb
     
     if (false) {displayReadWikiContent({},url_host,user_id,group_id);} // keep hidden for now.
     
-    $(document).on('slideouttabopen', function(evt){
-        console.log("tab open",evt.target.id);
-        if (evt.target.id === 'read-wiki-links'){
+    if(false){
+        $(document).on('slideouttabopen', function(evt){
+            console.log("tab open",evt.target.id);
+            if (evt.target.id === 'read-wiki-links'){
+                
+                var read_wiki_url = `http://${url_host}/api/get_wiki_articles_read?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
+
+                $.ajax({
+                    url: read_wiki_url,
+                    type:"GET",
+                    processData: false,
+                    contentType: false,
+                    crossDomain: true,
+                    success:function(res){
+                        displayReadWikiContent(res,url_host,user_id,group_id);
+                    },
+                    error: function(res, options, err){
+                        console.log("display wiki read content call failed",res.status,err);
+                    }
+                });
+            }
+        });
+    }
+
+    if(false) {displayRatedWikiContent({},url_host,user_id,group_id);}
+
+    if(false){
+        $(document).on('slideouttabopen', function(evt){
+            console.log("tab open",evt.target.id);
+            if (evt.target.id === 'rated-wiki-links'){
+                var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
+
+                $.ajax({
+                    url: read_wiki_url,
+                    type:"GET",
+                    processData: false,
+                    contentType: false,
+                    crossDomain: true,
+                    success:function(res){
+                        displayRatedWikiContent(res,url_host,user_id,group_id);
+                    },
+                    error: function(res, options, err){
+                        console.log("display wiki rated content call failed",res.status,err);
+                    }
+                });
+            }
+        });
+    }
             
-            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_read?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
+    var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
 
-            $.ajax({
-                url: read_wiki_url,
-                type:"GET",
-                processData: false,
-                contentType: false,
-                crossDomain: true,
-                success:function(res){
-                    displayReadWikiContent(res,url_host,user_id,group_id);
-                },
-                error: function(res, options, err){
-                    console.log("display wiki read content call failed",res.status,err);
-                }
-            });
-        }
-    });
-
-    displayRatedWikiContent({},url_host,user_id,group_id);
-
-    $(document).on('slideouttabopen', function(evt){
-        console.log("tab open",evt.target.id);
-        if (evt.target.id === 'rated-wiki-links'){
-            
-            var read_wiki_url = `http://${url_host}/api/get_wiki_articles_rated?user_id=${user_id}&group_id=${group_id}&resource_id=${resource_id}-${page_num}`;
-
-            $.ajax({
-                url: read_wiki_url,
-                type:"GET",
-                processData: false,
-                contentType: false,
-                crossDomain: true,
-                success:function(res){
-                    displayRatedWikiContent(res,url_host,user_id,group_id);
-                },
-                error: function(res, options, err){
-                    console.log("display wiki rated content call failed",res.status,err);
-                }
-            });
+    $.ajax({
+        url: read_wiki_url,
+        type:"GET",
+        processData: false,
+        contentType: false,
+        crossDomain: true,
+        success:function(res){
+            displayRatedWikiContent(res,url_host,user_id,group_id);
+        },
+        error: function(res, options, err){
+            console.log("display wiki rated content call failed",res.status,err);
         }
     });
 
